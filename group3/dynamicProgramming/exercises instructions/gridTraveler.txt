@@ -1,0 +1,2 @@
+in how many ways can a traveler travel on a 2d n*m grid from the top left corner to the bottom right corner
+the traveler can ONLY move down and right

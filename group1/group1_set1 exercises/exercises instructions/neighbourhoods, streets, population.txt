@@ -1,0 +1,37 @@
+1. Intr-un oras sunt X cartiere. Fiecare cartier are un numar
+(indice), si Y numar de strazi (Fiecare cartier are minim 2
+strazi). In baza de date al municipiului este stocat pentru
+fiecare strada in parte numarul persoanelor care au
+resedinta pe strada respectiva.
+Format:
+7 (numarul cartierelor)
+499 50 79 300
+76 89
+10 80 80 10 10
+689 78 202 34
+976 234 566 80
+877 590 23 10 10 10
+30 59 73 189 200 500 600 700
+
+Cerinte:
+a. Sa se caute straziile cu numarul de locuitori mai mare decat 500.
+Sa se afiseze numarul cartierului si numarul strazii(a catea strada este din cartier) si numarul de
+persoane.
+Ex: 3 - 0 - 689 (cartierul cu indexul 3, strada cu indexul 0, 689 de persoane)
+
+a. Extra: Sa se contopeasca strazile vecine care au o populatie scazuta, dar total sa nu
+depaseasca 100 de persoane.
+
+b. Sa se sorteze strazile in fiecare cartier in parte in functie de “popularitate”. Se afiseaza tot
+orasul.
+(De la cea mai nepopulata strada → pana la cea mai populata strada. Se sorteaza numerele de
+pe fiecare linie in parte)
+
+c. Sa se caute cel mai populat cartier. Se afiseaza numarul cartierului si populatia lui.
+
+d. Sa se sorteze cartierele in functie de popularitate totala pe cartier. Se afiseaza orasul
+
+e. Sa se sorteze cartierele in functie de numarul strazilor. Se afiseaza orasul
+
+f. Sa se sorteze toate strazile din oras in functie de popularitate.(de la cea mai nepopulata
+strada → pana la cea mai populata strada) .Se afiseaza toate strazile din oras, NU pe cartiere.

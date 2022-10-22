@@ -1,0 +1,5 @@
+check if a number is smiley. a number is smiley when it is strictly descending to a point then strictly ascending
+ex:65432345 is a smiley number
+872468 is a smiley number
+1234321 is NOT a smiley number
+54322334 is NOT a smiley number
