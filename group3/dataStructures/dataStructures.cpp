@@ -139,6 +139,10 @@ public:
 		return lengthOfList;
 	}
 
+	~DoublyLinkedList(){
+		if(!checkIfEmpty())
+			clear();
+	}
 }DoublyLinkedList;
 
 class SinglyLinkedList{
@@ -203,6 +207,11 @@ public:
 
 	int size(){
 		return nbOfElem;
+	}
+
+	~SinglyLinkedList(){
+		if(!empty())
+			clear();
 	}
 }SinglyLinkedList;
 
@@ -316,7 +325,6 @@ public:
 		if(!isEmpty())
 			clearTable();
 	}
-
 }HashTable1(5);
 
 class HashTableWithOpenAdressing{
@@ -465,9 +473,6 @@ public:
 			std::cout << "the depth of the node is: " << depth << " \n";
 	}
 
-	~BinaryTree(){
-
-	}
 }BinaryTree;
 
 class BinarySearchTree{
