@@ -3,7 +3,7 @@
 #include <string>
 #include <random>
 
-class Lot1{
+class Lot1_of_set1{
 	bool canMove(std::string piece, std::string current, std::string target){
 		char j1 = current[0], j2 = target[0];
 		int i1 = current[1] - 48, i2 = target[1] - 48;
@@ -73,6 +73,7 @@ public:
 		std::cout << text << "\n";
 	}
 
+
 	void checkIfUnder21blackjack(){
 		std::vector<char> cards = {'K', 'K', 'K'};
 		int sumofcards = 0, countaces = 0;
@@ -93,6 +94,7 @@ public:
 		else std::cout << "the value of the cards exceeds 21!!! \n";
 	}
 
+
 	void checkIfPieceCanMove(){
 		std::string piece{"rook"}, current{"a8"}, target{"h8"};
 		if(canMove(piece, current, target))
@@ -100,6 +102,7 @@ public:
 		else
 			std::cout << "the " << piece << " from " << current << " to " << target << " is an invalid move!!! \n";
 	}
+
 
 	void groupNeighbouringChars(){
 		std::string text = "paapppy the cattt";
@@ -123,6 +126,7 @@ public:
 		}
 	}
 
+
 	void countSieveOfErathostene(){
 		int n = 1000; ++n;
 		std::vector<bool> primeArr(n, true);
@@ -136,6 +140,7 @@ public:
 				k++;
 		std::cout << "there are " << k << " prime numbers up to " << n - 1 << "\n";
 	}
+
 
 	void countSharedLetters(){
 		std::string str1 = "apple", str2 = "papi";
@@ -161,6 +166,7 @@ public:
 		std::cout << "there are " << nbOfShared << " shared letters between " << "\"" << str1 << "\"" << " and " << "\"" << str2 << "\"" << "\n";
 	}
 
+
 	void letterDistanceBtwnTwoWords(){
 		std::string word1 = "house", word2 = "fly";
 		if(word2.size() < word1.size()) std::swap(word1, word2);
@@ -174,6 +180,7 @@ public:
 		dist += word2.size() - word1.size();
 		std::cout << "the distance between " << "\"" << word1 << "\"" << " and " << "\"" << word2 << "\"" << " is " << dist << "\n";
 	}
+
 
 	void checkIfNumberIsSmiley(){
 		long long number = 8873459;
@@ -207,6 +214,7 @@ public:
 		else std::cout << "the number " << number << " is smiley. \n";
 	}
 
+
 	void rootsOfQuadraticEquation(){
 		int a = -2, b = 5, c = 2;
 		if(a == 0){
@@ -237,6 +245,7 @@ public:
 		}
 	}
 
+
 	void replaceLettersWithPosInAlphabet(){
 		std::string text = "No i didnt sleep on the bed, because IM not gay.", text2 = "";
 		int pos;
@@ -248,6 +257,7 @@ public:
 		}
 		std::cout << text2 << "\n";
 	}
+
 
 	class Nbhoods_streets_population{
 		struct hoodstrasse{
@@ -380,6 +390,7 @@ public:
 			}
 		}
 	}nbh;
+
 }lot1;
 
 
