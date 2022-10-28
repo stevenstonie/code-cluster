@@ -1,7 +1,7 @@
 # exercise cluster
 
 /* 
-this is a project containing different types of exercises, for example: dynamic programming, data structures, or just simple operations like number manipulation. the reason i created this project and why i will upate it regularly is mostly for beginners to have some content to learn from. 
+this is a project containing different types of exercises, for example: dynamic programming, data structures, or just simple operations like number manipulation. the reason i created this project and why i will update it regularly is mostly for beginners to have some content to learn from. 
 */
 
 in the cpp folder
