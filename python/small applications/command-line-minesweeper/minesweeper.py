@@ -1,4 +1,4 @@
-import random
+from random import sample
 import re
 
 class Board:
@@ -6,6 +6,7 @@ class Board:
     def __init__(self, dim_size, nb_bombs):
         self.dim_size = dim_size
         self.nb_bombs = nb_bombs
+        # create the board and insert the bombs
         self.board = self.make_new_board()
         self.assign_values_to_board()
         # 'dug' is a set of already dug squares
@@ -14,7 +15,7 @@ class Board:
     def make_new_board(self):
         board = [[None for _ in range(self.dim_size)] for _ in range(self.dim_size)]
         # create an array of random indexes where bombs will be placed
-        bombs_arr = random.sample(range(self.dim_size**2), self.nb_bombs)
+        bombs_arr = sample(range(self.dim_size**2), self.nb_bombs)
         for idx in bombs_arr:
             row = idx // self.dim_size
             col = idx % self.dim_size
@@ -75,32 +76,30 @@ class Board:
                 else:
                     visible_board[i_row][i_col] = ' '
         
-        # "beautifying" the output
+        # "beautifying" the output using 'str_rep' as a table representation
         str_rep = ''
         widths = []
         for idx in range(self.dim_size):
             columns = map(lambda x: x[idx], visible_board)
             widths.append(
-				len(
-					max(columns, key = len)
-				)
+				len(max(columns, key = len))
 			)
         indices = [i for i in range(self.dim_size)]
         indices_row = '    '
         cells = []
         for idx, col in enumerate(indices):
-            format = '%-' + str(widths[idx]) + "s"
+            format = '%-' + str(widths[idx]) + "s" # print indexes above
             cells.append(format % (col))
         indices_row += '  '.join(cells)
         indices_row += '  \n'
         
         
-        for i in range(len(visible_board)):
+        for i in range(len(visible_board)):     # for every row
             row = visible_board[i]
             str_rep += f'{i}  |'
             cells = []
             for idx, col in enumerate(row):
-                format = '%-' + str(widths[idx]) + "s"
+                format = '%-' + str(widths[idx]) + "s"  # print indexes to the left
                 cells.append(format % (col))
             str_rep += ' |'.join(cells)
             str_rep += ' |\n'
@@ -119,12 +118,19 @@ def play(dim_size = 10, nb_bombs=10):
     is_safe = True
     # repeat the loop as long as the number of the dug squares is smaller than the squares that are safe
     while len(board.dug) < board.dim_size ** 2 - nb_bombs:
-    	# show the board and ask for place to dig
+    	# show the board and ask for a place to dig
         print(board)
-        user_input = re.split(',(\\s)*| (\\s)*', input("input a place to dig (as either \"i,j\" or \"i j\"): "))
+        # the re.split() below takes input as 
+        user_input = re.split(', *| (\\s)*', input("input a place to dig (as either \"i,j\" or \"i j\"): "))
         print('\n\n')
-        i_row, i_col = int(user_input[0]), int(user_input[-1])
-        # skip 1 iteration if input is not correct
+        
+        # skip iteration if input is not a number
+        try:
+            i_row, i_col = int(user_input[0]), int(user_input[-1])
+        except ValueError:
+            print("invalid input. try again")
+            continue
+        # skip iteration if input is not correct
         if i_row < 0 or i_row >= board.dim_size or i_col < 0 or i_col >= dim_size:
             print("invalid location. try again.")
             continue
