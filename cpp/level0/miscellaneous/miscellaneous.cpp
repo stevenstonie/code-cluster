@@ -3,6 +3,15 @@
 #include <random>
 
 class Algorithms{
+public:
+	void binarySearch(){
+		std::vector<int> arr{2,4,4,5,8,9,12,13,13,15,18};
+		int a = 13;
+		if(binarySearch(arr, 0, arr.size() - 1, a) != -1) std::cout << a << " has been found. \n";
+		else std::cout << a << " has NOT been found..\n";
+	}
+
+private:
 	int binarySearch(std::vector<int> arr, int left, int right, int a){
 		if(left > right) return -1;
 		int middle = (left + right) / 2;
@@ -23,22 +32,20 @@ class Algorithms{
 		}
 		return -1;
 	}*/
-public:
-	void binarySearch(){
-		std::vector<int> arr{2,4,4,5,8,9,12,13,13,15,18};
-		int a = 13;
-		if(binarySearch(arr, 0, arr.size() - 1, a) != -1) std::cout << a << " has been found. \n";
-		else std::cout << a << " has NOT been found..\n";
-	}
 }alg;
 
-void generateRandomNbBtwn1and100(){
-	std::random_device random;
-	std::default_random_engine randomer{random()};
-	std::uniform_int_distribution<int> probability(1, 100);
-	std::cout << probability(random);
-}
+class Others{
+public:
+	void generateRandomNbBtwn1and100(){
+		std::random_device random;
+		std::default_random_engine randomer{random()};
+		std::uniform_int_distribution<int> range(1, 100);
+		std::cout << range(random);
+	}
+}others;
+
 
 int main(){
-	alg.fibonacci();
+	for(int i = 0; i < 100; i++, std::cout<<"\n")
+		others.generateRandomNbBtwn1and100();
 }
