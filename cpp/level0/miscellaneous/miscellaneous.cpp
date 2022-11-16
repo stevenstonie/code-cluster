@@ -36,16 +36,16 @@ private:
 
 class Others{
 public:
-	void generateRandomNbBtwn1and100(){
+	int generateRandomNbBtwn1andN(int n){
 		std::random_device random;
 		std::default_random_engine randomer{random()};
-		std::uniform_int_distribution<int> range(1, 100);
-		std::cout << range(random);
+		std::uniform_int_distribution<int> range(1, n);
+		return range(randomer);
 	}
 }others;
 
 
 int main(){
-	for(int i = 0; i < 100; i++, std::cout<<"\n")
-		others.generateRandomNbBtwn1and100();
+	for(int i = 0; i < 100; i++)
+		std::cout<<others.generateRandomNbBtwn1andN(100)<<"\n";
 }
