@@ -141,19 +141,101 @@ std::string Grammar::GenerateWord(){
 }
 
 void Grammar::PrintGrammar(){
-	// use the '<<' operator overloading
+	std::cout << *this;
 }
 
 void Grammar::ReadGrammar(){
-	// read from keyboard
+	int VnSize = 0;
+	std::cout << "Vn.size(): ";
+	std::cin >> VnSize;
+	for(int i = 0; i < VnSize; i++){
+		char chr;
+		std::cout << "Vn[" << i << "]: ";
+		std::cin >> chr;
+		this->Vn.push_back(chr);
+	}
+
+	std::cout << "Vt.size(): ";
+	int VtSize = 0;
+	std::cin >> VtSize;
+	for(int i = 0; i < VtSize; i++){
+		char chr;
+		std::cout << "Vt[" << i << "]: ";
+		std::cin >> chr;
+		this->Vt.push_back(chr);
+	}
+
+	std::cout << "S: ";
+	std::cin >> this->S;
+
+	std::cout << "P.size(): ";
+	int PSize = 0;
+	std::cin >> PSize;
+	for(int i = 0; i < PSize; i++){
+		std::string u = "", v = "";
+		std::cout << "P[" << i << "]'s u: ";
+		std::cin >> u;
+		std::cout << "P[" << i << "]'s v: ";
+		std::cin >> v;
+		this->P.push_back({u, v});
+	}
 }
 
+
 std::ostream& operator<<(std::ostream& output, const Grammar& grammar){
-	// print the grammar
+	output << "Vn: ";
+	for(int i = 0; i < grammar.Vn.size() - 1; i++)
+		output << grammar.Vn[i] << ", ";
+	output << grammar.Vn[grammar.Vn.size() - 1] << " \n";
+
+	output << "Vt: ";
+	for(int i = 0; i < grammar.Vt.size() - 1; i++)
+		output << grammar.Vt[i] << ", ";
+	output << grammar.Vt[grammar.Vt.size() - 1] << " \n";
+
+	output << "S: " << grammar.S << " \n";
+
+	output << "P: \n";
+	for(auto& u_v : grammar.P)
+		output << u_v.first << " -> " << u_v.second << " \n";
+
+	return output;
 }
 
 std::istream& operator>>(std::istream& input, Grammar& grammar){
-	// take input from file and read the grammar from it
+	std::string input_str;
+	input >> input_str;
+	// test the first input to check if file is empty
+	if(input_str == ""){
+		std::cout << "the file might be empty. please check the input.. \n";
+		return input;
+	}
+
+	int VnSize = std::stoi(input_str);
+	for(int i = 0; i < VnSize; i++){
+		input >> input_str;
+		grammar.Vn.push_back(input_str[0]);
+	}
+
+	input >> input_str;
+	int VtSize = std::stoi(input_str);
+	for(int i = 0; i < VtSize; i++){
+		input >> input_str;
+		grammar.Vt.push_back(input_str[0]);
+	}
+
+	input >> input_str;
+	grammar.S = input_str[0];
+
+	input >> input_str;
+	int PSize = std::stoi(input_str);
+	for(int i = 0; i < PSize; i++){
+		std::string u, v;
+		input >> u >> v;
+		grammar.P.push_back({u, v});
+	}
+
+	return input;
 }
 
 int Grammar::randomIntFrom0untilN(int n){
