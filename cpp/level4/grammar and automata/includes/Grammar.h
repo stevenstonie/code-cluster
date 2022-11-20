@@ -4,7 +4,21 @@
 
 class Grammar{
 public:
+	Grammar();
 
+	bool VerifyGrammar();
+
+	bool IsRegular();
+
+	std::string GenerateWord();
+
+	void PrintGrammar();
+
+	void ReadGrammar();
+
+	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
+
+	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
 private:
 	std::vector<char> Vn, Vt;
 	char S;
