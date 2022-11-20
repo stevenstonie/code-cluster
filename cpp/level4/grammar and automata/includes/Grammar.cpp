@@ -1,8 +1,5 @@
 #include "Grammar.h"
 
-#include <iostream>
-#include <random>
-
 Grammar::Grammar() = default;
 
 bool Grammar::VerifyGrammar(){
@@ -81,6 +78,15 @@ bool Grammar::IsRegular(){
 				return false;
 		}
 
+		// else if v's size is two then the first elem has to be from Vt and the other one from Vn
+		if(u_v.second.size() == 2){
+			auto chrInVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
+			auto chrInVn = std::find(Vn.begin(), Vn.end(), u_v.second[1]);
+			if(chrInVt == Vt.end() || chrInVn == Vn.end())
+				return false;
+		}
+
+		/* solution for a grammar that is regular but not necessarily generative
 		// else if v's size is two then one elem has to be from Vt and the other one from Vn
 		if(u_v.second.size() == 2){
 			// search v's first elem in Vt
@@ -102,7 +108,7 @@ bool Grammar::IsRegular(){
 				if(chrInVn == Vn.end())
 					return false;
 			}
-		}
+		}*/
 	}
 	return true;
 }
@@ -238,9 +244,26 @@ std::istream& operator>>(std::istream& input, Grammar& grammar){
 	return input;
 }
 
+std::vector<char> Grammar::GetVn() const{
+	return Vn;
+}
+
+std::vector<char> Grammar::GetVt() const{
+	return Vt;
+}
+
+char Grammar::GetS() const{
+	return S;
+}
+
+std::vector<std::pair<std::string, std::string>> Grammar::GetP() const{
+	return P;
+}
+
 int Grammar::randomIntFrom0untilN(int n){
 	std::random_device random;
 	std::default_random_engine randomer{random()};
 	std::uniform_int_distribution<int> range(0, n - 1);
 	return range(randomer);
 }
+
