@@ -21,9 +21,15 @@
     <ClCompile Include="includes\Grammar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="includes\FiniteAutomaton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Grammar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\FiniteAutomaton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

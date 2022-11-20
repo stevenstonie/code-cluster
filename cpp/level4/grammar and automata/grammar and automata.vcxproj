@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="grammar and automata.cpp" />
+    <ClCompile Include="includes\FiniteAutomaton.cpp" />
     <ClCompile Include="includes\Grammar.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\FiniteAutomaton.h" />
     <ClInclude Include="includes\Grammar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
