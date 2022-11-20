@@ -23,4 +23,7 @@ private:
 	std::vector<char> Vn, Vt;
 	char S;
 	std::vector<std::pair<std::string, std::string>> P;
+
+private:
+	int randomIntFrom0untilN(int n);
 };
