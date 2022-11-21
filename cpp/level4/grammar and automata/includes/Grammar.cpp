@@ -209,38 +209,38 @@ std::ostream& operator<<(std::ostream& output, const Grammar& grammar){
 }
 
 std::istream& operator>>(std::istream& input, Grammar& grammar){
-	std::string input_str;
-	input >> input_str;
-	// test the first input to check if file is empty
-	if(input_str == ""){
-		std::cout << "the file might be empty. please check the input.. \n";
-		return input;
-	}
+	try{
+		std::string input_str;
 
-	int VnSize = std::stoi(input_str);
-	for(int i = 0; i < VnSize; i++){
 		input >> input_str;
-		grammar.Vn.push_back(input_str[0]);
-	}
+		int VnSize = std::stoi(input_str);
+		for(int i = 0; i < VnSize; i++){
+			input >> input_str;
+			grammar.Vn.push_back(input_str[0]);
+		}
 
-	input >> input_str;
-	int VtSize = std::stoi(input_str);
-	for(int i = 0; i < VtSize; i++){
 		input >> input_str;
-		grammar.Vt.push_back(input_str[0]);
+		int VtSize = std::stoi(input_str);
+		for(int i = 0; i < VtSize; i++){
+			input >> input_str;
+			grammar.Vt.push_back(input_str[0]);
+		}
+
+		input >> input_str;
+		grammar.S = input_str[0];
+
+		input >> input_str;
+		int PSize = std::stoi(input_str);
+		for(int i = 0; i < PSize; i++){
+			std::string u, v;
+			input >> u >> v;
+			grammar.P.push_back({u, v});
+		}
 	}
-
-	input >> input_str;
-	grammar.S = input_str[0];
-
-	input >> input_str;
-	int PSize = std::stoi(input_str);
-	for(int i = 0; i < PSize; i++){
-		std::string u, v;
-		input >> u >> v;
-		grammar.P.push_back({u, v});
+	catch(std::invalid_argument){
+		std::cerr << "the file is either empty or doesnt contain the right data..";
+		exit(1);
 	}
-
 	return input;
 }
 
