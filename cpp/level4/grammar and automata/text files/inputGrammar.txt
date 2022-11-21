@@ -1,0 +1,18 @@
+3
+S A B 
+
+3
+a b c
+
+S
+
+9
+S a
+S b
+S aA
+S bB
+A a
+A aA
+A aS
+B c
+B cS
