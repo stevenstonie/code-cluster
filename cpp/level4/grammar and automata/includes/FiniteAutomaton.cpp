@@ -1,5 +1,12 @@
 #include "FiniteAutomaton.h"
 
+FiniteAutomaton::FiniteAutomaton(std::vector<std::string> p_Q, std::vector<std::string> p_sigma,
+	std::vector<std::tuple<std::string, std::string, std::string>> p_delta,
+	std::string p_initial,
+	std::vector<std::string> p_final)
+	: Q(p_Q), sigma(p_sigma), delta(p_delta), initial(p_initial), final(p_final)
+{}
+
 bool FiniteAutomaton::VerifyAutomaton(){
 	// no element should be empty
 	if(Q.empty() || sigma.empty() || delta.empty() || initial.empty() || final.empty())
@@ -40,8 +47,7 @@ bool FiniteAutomaton::VerifyAutomaton(){
 }
 
 void FiniteAutomaton::PrintAutomaton(){
-	// std::cout << *this;
-	std::cout << "still in maintenance.. \n";
+	std::cout << *this;
 }
 
 // go through the given word. for every letter check in delta which states go in which states and change the 'currentStates' accordingly
@@ -69,4 +75,69 @@ bool FiniteAutomaton::CheckWord(std::string givenWord){
 			return true;
 	}
 	return false;
+}
+
+// an automaton is deterministic when every state in delta has no more than one instance regarding a specific symbol/letter. 
+// if, for example, delta has ```q0 x 0 -> q0``` and also ```q0 x 0 -> q2``` then it is not deterministic
+/// ...... i think...........
+// https://www.stechies.com/difference-between-nfa-dfa/, https://www.tutorialspoint.com/what-is-the-difference-between-dfa-and-nfa
+bool FiniteAutomaton::IsDeterministic(){
+	// do it like this: go through delta and use a vector to remember states that have already been encountered. 
+	// if the state is new add it to the vector and iterate for the same state throughout delta.
+	// if the state is not new ignore it
+	std::vector<std::string> alreadyCheckedqs;
+	for(int i = 0; i < delta.size(); i++){
+		std::string qOfDelta = std::get<0>(delta[i]);
+		auto qOfDeltaAleadyChecked = std::find(alreadyCheckedqs.begin(), alreadyCheckedqs.end(), qOfDelta);
+		if(qOfDeltaAleadyChecked != alreadyCheckedqs.end())
+			continue;
+
+		alreadyCheckedqs.push_back(qOfDelta);
+		// for every new state iterate through delta for the same state and remember the letter that it uses in a vector.
+		// if the state uses the same letter multiple times it is NOT deterministic and so we return false
+		std::vector<std::string> usedLettersByCurrentq;
+		usedLettersByCurrentq.push_back(std::get<1>(delta[i]));
+		for(int j = i + 1; j < delta.size(); j++){
+			std::string qOfDeltaa = std::get<0>(delta[j]);
+			std::string aOfDeltaa = std::get<1>(delta[j]);
+			if(qOfDeltaa == qOfDelta){
+				auto findIfLetterAlreadyUsed = std::find(usedLettersByCurrentq.begin(), usedLettersByCurrentq.end(), aOfDeltaa);
+				if(findIfLetterAlreadyUsed != usedLettersByCurrentq.end())
+					return false;
+				else
+					usedLettersByCurrentq.push_back(aOfDeltaa);
+			}
+		}
+	}
+	return true;
+}
+
+std::ostream& operator<<(std::ostream& output, const FiniteAutomaton& finiteautomaton){
+	int i;
+
+	output << "Q: ";
+	for(i = 0; i < finiteautomaton.Q.size() - 1; i++)
+		output << finiteautomaton.Q[i] << ", ";
+	output << finiteautomaton.Q[i] << std::endl;
+
+	output << "sigma: ";
+	for(i = 0; i < finiteautomaton.sigma.size() - 1; i++)
+		output << finiteautomaton.sigma[i] << ", ";
+	output << finiteautomaton.sigma[i] << std::endl;
+
+	output << "delta: \n";
+	for(i = 0; i < finiteautomaton.delta.size(); i++){
+		output << "&(" << std::get<0>(finiteautomaton.delta[i]) << ", ";
+		output << std::get<1>(finiteautomaton.delta[i]) << ") = ";
+		output << std::get<2>(finiteautomaton.delta[i]) << std::endl;
+	}
+
+	output << "initial state: " << finiteautomaton.initial << std::endl;
+
+	output << "final states: ";
+	for(i = 0; i < finiteautomaton.final.size() - 1; i++)
+		output << finiteautomaton.final[i] << ", ";
+	output << finiteautomaton.final[i] << std::endl;
+
+	return output;
 }
