@@ -130,10 +130,12 @@
     <ClCompile Include="grammar and automata.cpp" />
     <ClCompile Include="includes\FiniteAutomaton.cpp" />
     <ClCompile Include="includes\Grammar.cpp" />
+    <ClCompile Include="includes\GrammarToAutomaton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\FiniteAutomaton.h" />
     <ClInclude Include="includes\Grammar.h" />
+    <ClInclude Include="includes\GrammarToAutomaton.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

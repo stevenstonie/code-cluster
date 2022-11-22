@@ -1,8 +1,6 @@
 #pragma once
-
-#include <unordered_map>
-
-#include "Grammar.h"
 #include "FiniteAutomaton.h"
+#include "Grammar.h"
+
 
 FiniteAutomaton GrammarToFiniteAutomaton(const Grammar& grammar);
