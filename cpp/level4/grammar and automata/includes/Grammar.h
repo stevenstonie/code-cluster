@@ -7,7 +7,7 @@
 
 class Grammar{
 public:
-	Grammar();
+	Grammar() = default;
 
 	bool VerifyGrammar();
 

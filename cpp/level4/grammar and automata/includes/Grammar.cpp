@@ -1,7 +1,5 @@
 #include "Grammar.h"
 
-Grammar::Grammar() = default;
-
 bool Grammar::VerifyGrammar(){
 	//each element has to be NOT null
 	if(Vn.empty() || Vt.empty() || S == 0 || P.empty())
