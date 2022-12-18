@@ -10,3 +10,5 @@ level 1 -> etc. are based on "difficulty"
 
 the python folder currently consists of school homework as i am still learning the language
 (TODO: add data science in here)
+
+the java folder consists of the same type of exercises as the cpp one
