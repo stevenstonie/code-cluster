@@ -39,7 +39,7 @@ public class AllClasses {
 		queryOutput.next();
 
 		if (queryOutput.getString(1) == null) {
-			queryCreateTable = "create table movies(movie_name varchar(40) not null, genre varchar(20) not null, release_date date not null, likes int not null);"; // "if not exists" not necessary here (already checked above)
+			queryCreateTable = "create table movies(id serial primary key, name varchar(40) not null, genre varchar(20) not null, release_date date not null, likes int not null);"; // "if not exists" not necessary here (already checked above)
 			stmt = connection.prepareStatement(queryCreateTable);
 			stmt.executeUpdate();
 			System.out.println("table \"movies\" created successfully");
@@ -51,16 +51,43 @@ public class AllClasses {
 	}
 
 	public static void createTableUsers(Connection connection) throws SQLException {
+		String queryCreateTable = "Select to_regclass('public.users');";
+		PreparedStatement stmt = connection.prepareStatement(queryCreateTable);
+		ResultSet queryOutput = stmt.executeQuery();
+		queryOutput.next();
 
+		if (queryOutput.getString(1) == null) {
+			queryCreateTable = "create table users(id serial primary key ,name varchar(40) not null, password varchar(40) not null, role varchar(10) not null);"; // "if not exists" not necessary here (already checked above)
+			stmt = connection.prepareStatement(queryCreateTable);
+			stmt.executeUpdate();
+			System.out.println("table \"users\" created successfully");
+		} else {
+			System.out.println("the table \"users\" already exists");
+		}
+
+		stmt.close();
+	}
+
+	public static void createTableUsersMovies(Connection connection) throws SQLException {
+		String queryCreateTable = "select to_regclass('public.users_movies');";
+		PreparedStatement stmt = connection.prepareStatement(queryCreateTable);
+		ResultSet queryOutput = stmt.executeQuery();
+		queryOutput.next();
+
+		if (queryOutput.getString(1) == null) {
+			queryCreateTable = "create table users_movies(id serial primary key, user_id int not null, movie_id int not null, foreign key (user_id) references users(id), foreign key (movie_id) references movies(id));"; // "if not exists" not necessary here (already checked above)
+		} else {
+			System.out.println("the table \"users_movies\" already exists");
+		}
 	}
 
 	//
 
 	public static void insertIntoTableMoviesByFile(Connection connection) {
 		PreparedStatement stmt = null;
-		ResultSet queryOutput = null;
-		String queryInsert = "insert into movies (movie_name, genre, release_date, likes) values (?, ?, ?, ?);";
-		String queryCount1 = "select count(*) from movies where movie_name = ?;"; // + "'movie_name';"
+		ResultSet queryCountOutput = null;
+		String queryInsert = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
+		String queryCount = "select count(*) from movies where name = ?;"; // + "'movie_name';"
 
 		try {
 			File movieList = new File("movie_list.in");
@@ -71,12 +98,12 @@ public class AllClasses {
 				line = fileReader.nextLine();
 				String[] tokens = line.split(", ");
 
-				stmt = connection.prepareStatement(queryCount1);
+				stmt = connection.prepareStatement(queryCount);
 				stmt.setString(1, tokens[0]);
-				queryOutput = stmt.executeQuery();
-				queryOutput.next();
+				queryCountOutput = stmt.executeQuery();
+				queryCountOutput.next();
 
-				if (queryOutput.getInt(1) == 0) {
+				if (queryCountOutput.getInt(1) == 0) {
 					stmt = connection.prepareStatement(queryInsert);
 					stmt.setString(1, tokens[0]);
 					stmt.setString(2, tokens[1]);
@@ -89,7 +116,7 @@ public class AllClasses {
 			}
 
 			stmt.close();
-			queryOutput.close();
+			queryCountOutput.close();
 			fileReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("The file could not be found...");
@@ -101,10 +128,55 @@ public class AllClasses {
 		System.out.println("Records created successfully");
 	}
 
-	public static void insertIntoTableByConsole(Connection connection) {
+	/*public static void insertIntoTableByConsole(Connection connection) {
 		PreparedStatement stmt = null;
-		ResultSet queryOutput = null;
-		String queryInsert = "";
-	}
-	// finish it
+		ResultSet queryCountOutput = null;
+		String queryInsert = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
+		String queryCount = "select count(*) from movies where name = ?;";
+	
+		int n;
+		Scanner console = new Scanner(System.in);
+		System.out.println("how many entries would you like to add to the database?");
+		n = console.nextInt(); // Exception in thread "main" java.util.NoSuchElementException
+	
+		try {
+			String text;
+			for (int i = 1; i <= n; i++) {
+				System.out.print("the name of the movie " + i + ": ");
+				text = console.nextLine();
+				stmt = connection.prepareStatement(queryCount);
+				stmt.setString(1, text);
+				queryCountOutput = stmt.executeQuery();
+				queryCountOutput.next();
+	
+				if (queryCountOutput.getInt(i) == 0) {
+					stmt = connection.prepareStatement(queryInsert);
+					stmt.setString(1, text);
+	
+					System.out.print("what type of genre is the specified movie? ");
+					text = console.nextLine();
+					stmt.setString(2, text);
+	
+					System.out.print("when was the movie released? (insert yyyy-mm-dd) ");
+					text = console.nextLine();
+					stmt.setString(3, text);
+	
+					System.out.print("how many likes does the movie have? ");
+					text = console.nextLine();
+					stmt.setString(4, text);
+	
+				} else {
+					System.out.println("the movie " + text + " already exists.");
+				}
+			}
+	
+			console.close();
+			stmt.close();
+			queryCountOutput.close();
+		} catch (SQLException e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+		}
+	
+	}*/
+	/// !!!!!!!!!!!!!!!!! EXCEPTION THROWN AT READING
 }
