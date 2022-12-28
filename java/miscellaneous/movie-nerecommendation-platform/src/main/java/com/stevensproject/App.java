@@ -3,15 +3,19 @@ package com.stevensproject;
 import classes.AllClasses;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class App {
+	public static Scanner console = new Scanner(System.in);
 
 	public static void main(String[] args) throws SQLException {
 		AllClasses app = new AllClasses();
-		Connection connection = app.connectToDatabase();
+		Connection connection = app.connectToDatabase(false);
 		AllClasses.createTableUsers(connection);
 		AllClasses.createTableMovies(connection);
 		AllClasses.createTableUsersMovies(connection);
+
+		AllClasses.menu(connection);
 		// prompt user for login
 		// "press 0 for login"
 		// "press 1 for registering"
@@ -36,6 +40,7 @@ public class App {
 		// and also a password censorer?
 		// gui if i have some free time
 
+		console.close();
 		connection.close();
 	}
 }
