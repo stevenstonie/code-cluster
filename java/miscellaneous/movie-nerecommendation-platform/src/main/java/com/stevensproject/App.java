@@ -1,6 +1,9 @@
 package com.stevensproject;
 
-import classes.AllClasses;
+import classes.PromptAndMenu;
+import classes.ConnectToDB;
+import classes.CreateTables;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -9,13 +12,14 @@ public class App {
 	public static Scanner console = new Scanner(System.in);
 
 	public static void main(String[] args) throws SQLException {
-		AllClasses app = new AllClasses();
+		ConnectToDB app = new ConnectToDB();
 		Connection connection = app.connectToDatabase(false);
-		AllClasses.createTableUsers(connection);
-		AllClasses.createTableMovies(connection);
-		AllClasses.createTableUsersMovies(connection);
+		CreateTables.createTableUsers(connection);
+		CreateTables.createTableMovies(connection);
+		CreateTables.createTableUsersMovies(connection);
 
-		AllClasses.menu(connection);
+		PromptAndMenu.menu(connection);
+
 		// prompt user for login
 		// "press 0 for login"
 		// "press 1 for registering"
@@ -44,9 +48,3 @@ public class App {
 		connection.close();
 	}
 }
-
-// have classes 
-// one for menu 
-// 
-
-// SEE HOW TO CHANGE CLASSPATH FOR THIS PROJECT
