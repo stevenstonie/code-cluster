@@ -1,6 +1,6 @@
 package classes;
 
-import com.stevensproject.App;
+// import com.stevensproject.App;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -15,9 +15,9 @@ import java.sql.Date;
 public class InsertIntoTables {
 	public static void insertIntoTableMoviesByFile(Connection connection) {
 		PreparedStatement stmt = null;
-		ResultSet queryCountOutput = null;
+		ResultSet queryCheckForMovieExistenceOutput = null;
 		String queryInsertMovie = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
-		String queryCount = "select count(*) from movies where name = ?;"; // + "'movie_name';"
+		String queryCheckForMovieExistence = "select count(*) from movies where name = ?;"; // + "'movie_name';"
 
 		try {
 			File movieList = new File("movie_list.in");
@@ -28,12 +28,12 @@ public class InsertIntoTables {
 				line = fileReader.nextLine();
 				String[] tokens = line.split(", ");
 
-				stmt = connection.prepareStatement(queryCount);
+				stmt = connection.prepareStatement(queryCheckForMovieExistence);
 				stmt.setString(1, tokens[0]);
-				queryCountOutput = stmt.executeQuery();
-				queryCountOutput.next();
+				queryCheckForMovieExistenceOutput = stmt.executeQuery();
+				queryCheckForMovieExistenceOutput.next();
 
-				if (queryCountOutput.getInt(1) == 0) {
+				if (queryCheckForMovieExistenceOutput.getInt(1) == 0) {
 					stmt = connection.prepareStatement(queryInsertMovie);
 					stmt.setString(1, tokens[0]);
 					stmt.setString(2, tokens[1]);
@@ -46,7 +46,7 @@ public class InsertIntoTables {
 			}
 
 			stmt.close();
-			queryCountOutput.close();
+			queryCheckForMovieExistenceOutput.close();
 			fileReader.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("The file could not be found...");
@@ -58,54 +58,55 @@ public class InsertIntoTables {
 		System.out.println("Records created successfully");
 	}
 
-	public static void insertIntoTableMoviesByConsole(Connection connection) {
+	/*public static void insertIntoTableMoviesByConsole(Connection connection) {
 		PreparedStatement stmt = null;
-		ResultSet queryCountOutput = null;
+		ResultSet queryCheckForMovieExistenceOutput = null;
 		String queryInsertMovie = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
-		String queryCount = "select count(*) from movies where name = ?;";
-
+		String queryCheckForMovieExistence = "select count(*) from movies where name = ?;";
+	
 		int n;
 		System.out.println("how many entries would you like to add to the database?");
 		n = App.console.nextInt(); // Exception in thread "main" java.util.NoSuchElementException
 		App.console.nextLine(); // ignores stray newline
-
+	
 		try {
 			String text;
 			for (int i = 1; i <= n; i++) {
 				System.out.print("the name of the movie " + i + ": ");
 				text = App.console.nextLine();
-				stmt = connection.prepareStatement(queryCount);
+				stmt = connection.prepareStatement(queryCheckForMovieExistence);
 				stmt.setString(1, text);
-				queryCountOutput = stmt.executeQuery();
-				queryCountOutput.next();
-
-				if (queryCountOutput.getInt(i) == 0) {
+				queryCheckForMovieExistenceOutput = stmt.executeQuery();
+				queryCheckForMovieExistenceOutput.next();
+	
+				if (queryCheckForMovieExistenceOutput.getInt(i) == 0) {
 					stmt = connection.prepareStatement(queryInsertMovie);
 					stmt.setString(1, text);
-
+	
 					System.out.print("what type of genre is the specified movie? ");
 					text = App.console.nextLine();
 					stmt.setString(2, text);
-
+	
 					System.out.print("when was the movie released? (insert yyyy-mm-dd) ");
 					text = App.console.nextLine();
 					stmt.setString(3, text);
-
+	
 					System.out.print("how many likes does the movie have? ");
 					// make a check for string input
 					text = App.console.nextLine();
 					stmt.setString(4, text);
-
+					// TODO: the setString adds '' around an int. the string should be for example 43 not '43'!!!!!!!!!!!!!!!!
+					// org.postgresql.util.PSQLException: The column index is out of range: 2, number of columns: 1.
+	
 				} else {
 					System.out.println("the movie " + text + " already exists.");
 				}
 			}
-
+	
 			stmt.close();
-			queryCountOutput.close();
+			queryCheckForMovieExistenceOutput.close();
 		} catch (SQLException e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-	}
-	/// !!!!!!!!!!!!!!!!! EXCEPTION THROWN AT READING
+	}*/
 }

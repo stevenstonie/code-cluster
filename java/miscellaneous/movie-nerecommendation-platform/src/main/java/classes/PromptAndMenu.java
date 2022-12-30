@@ -17,7 +17,7 @@ public class PromptAndMenu {
 
 	// returns user_id. if id returned is -1 the user has not logged in
 	public static int promptUser(Connection connection) throws SQLException {
-		System.out.println("\n~~~~~~~~~~~ welcome to my movie recommendation platform! ~~~~~~~~~~~");
+		System.out.println("\n~~~~~~~~~~~ login window ~~~~~~~~~~~");
 		int user_id = -1;
 		boolean exit = false;
 		byte option;
@@ -62,7 +62,6 @@ public class PromptAndMenu {
 					break;
 				}
 				default: {
-					System.out.println("exiting program..");
 					exit = true;
 					break;
 				}
@@ -72,12 +71,31 @@ public class PromptAndMenu {
 	}
 
 	public static void menu(Connection connection) throws SQLException {
-		promptUser(connection);
-		// LOOP
+		int user_id = promptUser(connection);
+		if (user_id == -1) {
+			System.out.println("login unsuccessful. exiting program..");
+			return;
+		}
+
+		System.out.println("\n~~~~~~~~~~~ welcome to my movie recommendation platform! ~~~~~~~~~~~");
+		// query to get role of user
+
+		// if role is 'user' => menu for user
+		// // search by name (regex if possible)
+		// // view feed (sort by release date or likes)
+		// // like system (??)
+		// // logout
+		// when liking a movie insert into the users_movies the id of the user and the id of the movie
+		// the feed priority is by how many likes a genre has so count genres and sort. then sort the individual movies in each genre by whatever the user wants
+
+		// if role is 'admin' => menu for admin
+		// // add movies in the database by file or console
+		// // maybe also delete from / update the database?
+		// // logout
 
 	}
 
 	// count(something) ignores set limit ??????????
-	// try to do checks without count
+	//TODO: try to do the checking without count
 
 }

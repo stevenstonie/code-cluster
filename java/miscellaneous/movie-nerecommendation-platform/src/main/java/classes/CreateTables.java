@@ -53,16 +53,22 @@ public class CreateTables {
 			queryCreateTable = "create table users_movies(id serial primary key, user_id int not null, movie_id int not null, foreign key (user_id) references users(id), foreign key (movie_id) references movies(id));"; // "if not exists" not necessary here (already checked above)
 			stmt = connection.prepareStatement(queryCreateTable);
 			stmt.executeUpdate();
+
 			System.out.println("table \"users_movies\" created successfully");
 		} else {
-			String queryCheckExistenceOfForeignKeys = "select count(1) from information_schema.table_constraints WHERE constraint_name=? AND table_name='users_movies';";
+
+			String queryCheckExistenceOfForeignKeys = "select count(1) from information_schema.table_constraints WHERE constraint_name = ? AND table_name = 'users_movies';";
 			stmt = connection.prepareStatement(queryCheckExistenceOfForeignKeys);
 			stmt.setString(1, "users_movies_user_id_fkey");
 			queryOutput = stmt.executeQuery();
 			queryOutput.next();
+			if (queryOutput.getString(1).equals("0")) {
+				// with "alter table users_movies add constraint ? foreign key(user_id) references users(id);"
+				//TODO: stmt.setString(1, "users_movies_user_id_fkey"); doesnt work as it inserts '' around the string (which is not allowed in this case)
+				String queryAddUserForeignKey = "alter table users_movies add constraint users_movies_user_id_fkey foreign key(user_id) references users(id);";
+				stmt = connection.prepareStatement(queryAddUserForeignKey);
+				stmt.executeUpdate();
 
-			if (queryOutput.getString(1) == "0") {
-				// insert user_id foreign key into users_movies table
 				System.out.println("inserted user_id foreign key into users_movies table");
 			}
 
@@ -70,9 +76,12 @@ public class CreateTables {
 			stmt.setString(1, "users_movies_movie_id_fkey");
 			queryOutput = stmt.executeQuery();
 			queryOutput.next();
+			if (queryOutput.getString(1).equals("0")) {
+				// same thing as above
+				String queryAddMovieForeignKey = "alter table users_movies add constraint users_movies_movie_id_fkey foreign key(movie_id) references movies(id);";
+				stmt = connection.prepareStatement(queryAddMovieForeignKey);
+				stmt.executeUpdate();
 
-			if (queryOutput.getString(1) == "0") {
-				// insert movie_id foreign key into users_movies table
 				System.out.println("inserted movie_id foreign key into users_movies table");
 			}
 
