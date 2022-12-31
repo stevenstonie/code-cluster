@@ -19,7 +19,8 @@ public class App {
 		CreateTables.createTableUsersMovies(connection);
 
 		PromptAndMainMenu.mainMenu(connection);
-		// maybe make a password generator?
+		// maybe make a function to unlike a movie?
+		// and maybe make a password generator?
 		// and also a password censorer?
 		// gui if i have some free time
 

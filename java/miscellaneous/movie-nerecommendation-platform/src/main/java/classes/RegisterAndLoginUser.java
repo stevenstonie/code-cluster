@@ -21,6 +21,13 @@ public class RegisterAndLoginUser {
 		String name = App.console.nextLine();
 		System.out.print("input password: ");
 		String password = App.console.nextLine();
+		System.out.print("reenter the password: ");
+		String password2 = App.console.nextLine();
+
+		if (!password.equals(password2)) {
+			System.out.println("the passwords do not match. please try again..");
+			return -1;
+		}
 
 		stmt = connection.prepareStatement(queryCheckForUserExistence);
 		stmt.setString(1, name);

@@ -10,11 +10,13 @@ import java.sql.Connection;
 
 public class PromptAndMainMenu {
 	private static void printPromptUserMenu() {
-		System.out
-				.println(
-						"to bring back this menu press 0\nif you are a new user press 1 to register.\nif you want to register as an admin press 2.");
-		System.out.println(
-				"if you are an existing user / admin press 3 to login.\nif you wish to exit the login process press anything else.\n");
+		System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println("to bring back this menu press 0");
+		System.out.println("if you are a new user press 1 to register");
+		System.out.println("if you want to register as an admin press 2");
+		System.out.println("if you are an existing user / admin press 3 to login");
+		System.out.println("if you wish to exit the login process press anything else");
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
 	public static byte getIntFromUser() {
@@ -110,7 +112,7 @@ public class PromptAndMainMenu {
 		String user_role = getRoleOfUser(connection, user_id);
 
 		if (user_role.equals("user")) {
-			Menus.userMenu(connection);
+			Menus.userMenu(connection, user_id);
 		}
 
 		if (user_role.equals("admin")) {
