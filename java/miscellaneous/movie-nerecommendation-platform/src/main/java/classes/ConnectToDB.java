@@ -9,14 +9,14 @@ import java.sql.DriverManager;
 
 public class ConnectToDB {
 	public Connection connectToDatabase(boolean isCheckingForAdmin) {
-		final String db_url = "jdbc:postgresql://localhost/movie_recommendation_platform";
-		final String db_user = "postgres";
+		final String db_url = "jdbc:postgresql://localhost/movie_recommendation_platform"; // name of database
+		final String db_user = "postgres"; // default user
 		final String db_password;
 		if (isCheckingForAdmin == true) {
 			System.out.print("input database password: ");
 			db_password = App.console.nextLine();
 		} else {
-			db_password = "ThisIsAPassword1234!";
+			db_password = "ThisIsAPassword1234!"; // password
 		}
 		Connection connection = null;
 
