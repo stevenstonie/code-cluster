@@ -1,6 +1,6 @@
 package com.stevensproject;
 
-import classes.PromptAndMenu;
+import classes.PromptAndMainMenu;
 import classes.ConnectToDB;
 import classes.CreateTables;
 
@@ -18,7 +18,7 @@ public class App {
 		CreateTables.createTableMovies(connection);
 		CreateTables.createTableUsersMovies(connection);
 
-		PromptAndMenu.menu(connection);
+		PromptAndMainMenu.mainMenu(connection);
 		// maybe make a password generator?
 		// and also a password censorer?
 		// gui if i have some free time
