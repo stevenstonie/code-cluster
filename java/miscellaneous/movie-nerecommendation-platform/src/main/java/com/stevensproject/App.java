@@ -3,6 +3,7 @@ package com.stevensproject;
 import classes.PromptAndMainMenu;
 import classes.ConnectToDB;
 import classes.CreateTables;
+import classes.InsertIntoTables;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -20,6 +21,7 @@ public class App {
 
 		PromptAndMainMenu.mainMenu(connection);
 		// maybe make a function to unlike a movie?
+		// also increase the number of the likes if the users likes the movies? (or decrease if dislikes)
 		// and maybe make a password generator?
 		// and also a password censorer?
 		// gui if i have some free time

@@ -1,10 +1,9 @@
 package classes;
 
-// import com.stevensproject.App;
+import com.stevensproject.App;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-
 import java.sql.PreparedStatement; // https://www.baeldung.com/java-statement-preparedstatement
 import java.sql.ResultSet;
 import java.io.File;
@@ -58,55 +57,59 @@ public class InsertIntoTables {
 		System.out.println("Records created successfully");
 	}
 
-	/*public static void insertIntoTableMoviesByConsole(Connection connection) {
+	public static void insertIntoTableMoviesByConsole(Connection connection) {
 		PreparedStatement stmt = null;
 		ResultSet queryCheckForMovieExistenceOutput = null;
-		String queryInsertMovie = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
-		String queryCheckForMovieExistence = "select count(*) from movies where name = ?;";
-	
+
 		int n;
 		System.out.println("how many entries would you like to add to the database?");
-		n = App.console.nextInt(); // Exception in thread "main" java.util.NoSuchElementException
+		n = App.console.nextInt();
 		App.console.nextLine(); // ignores stray newline
-	
+
 		try {
-			String text;
 			for (int i = 1; i <= n; i++) {
+				String textInput;
+				String queryInsertMovie = "insert into movies (name, genre, release_date, likes) values(";
+				String queryCheckForMovieExistence = "select count(*) from movies where name = ?;";
+
 				System.out.print("the name of the movie " + i + ": ");
-				text = App.console.nextLine();
+				textInput = App.console.nextLine();
 				stmt = connection.prepareStatement(queryCheckForMovieExistence);
-				stmt.setString(1, text);
+				stmt.setString(1, textInput);
 				queryCheckForMovieExistenceOutput = stmt.executeQuery();
 				queryCheckForMovieExistenceOutput.next();
-	
-				if (queryCheckForMovieExistenceOutput.getInt(i) == 0) {
-					stmt = connection.prepareStatement(queryInsertMovie);
-					stmt.setString(1, text);
-	
+
+				if (queryCheckForMovieExistenceOutput.getString(1).equals("0")) {
+					queryInsertMovie += "\'" + textInput + "\', ";
+
 					System.out.print("what type of genre is the specified movie? ");
-					text = App.console.nextLine();
-					stmt.setString(2, text);
-	
+					textInput = App.console.nextLine();
+					queryInsertMovie += "\'" + textInput + "\', ";
+
 					System.out.print("when was the movie released? (insert yyyy-mm-dd) ");
-					text = App.console.nextLine();
-					stmt.setString(3, text);
-	
+					textInput = App.console.nextLine();
+					queryInsertMovie += "\'" + textInput + "\', ";
+
 					System.out.print("how many likes does the movie have? ");
-					// make a check for string input
-					text = App.console.nextLine();
-					stmt.setString(4, text);
-					// TODO: the setString adds '' around an int. the string should be for example 43 not '43'!!!!!!!!!!!!!!!!
-					// org.postgresql.util.PSQLException: The column index is out of range: 2, number of columns: 1.
-	
+					textInput = App.console.nextLine();
+					queryInsertMovie += textInput + ");";
+
+					stmt = connection.prepareStatement(queryInsertMovie);
+					stmt.executeUpdate();
+
 				} else {
-					System.out.println("the movie " + text + " already exists.");
+					System.out.println("the movie " + textInput + " already exists.");
 				}
 			}
-	
-			stmt.close();
-			queryCheckForMovieExistenceOutput.close();
+
+			try {
+				stmt.close();
+				queryCheckForMovieExistenceOutput.close();
+			} catch (java.lang.NullPointerException e2) {
+				// ignore exception
+			}
 		} catch (SQLException e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
-	}*/
+	}
 }

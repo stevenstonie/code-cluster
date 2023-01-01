@@ -58,6 +58,7 @@ public class CreateTables {
 		} else {
 
 			String queryCheckExistenceOfForeignKeys = "select count(1) from information_schema.table_constraints WHERE constraint_name = ? AND table_name = 'users_movies';";
+			stmt.close();
 			stmt = connection.prepareStatement(queryCheckExistenceOfForeignKeys);
 			stmt.setString(1, "users_movies_user_id_fkey");
 			queryOutput = stmt.executeQuery();
@@ -73,6 +74,7 @@ public class CreateTables {
 			}
 
 			queryCheckExistenceOfForeignKeys = "select count(1) from information_schema.table_constraints WHERE constraint_name = ? AND table_name = 'users_movies';";
+			stmt.close();
 			stmt = connection.prepareStatement(queryCheckExistenceOfForeignKeys);
 			stmt.setString(1, "users_movies_movie_id_fkey");
 			queryOutput = stmt.executeQuery();
@@ -92,5 +94,4 @@ public class CreateTables {
 
 		stmt.close();
 	}
-
 }
