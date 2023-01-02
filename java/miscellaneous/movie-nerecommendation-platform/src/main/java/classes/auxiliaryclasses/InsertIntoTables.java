@@ -1,4 +1,4 @@
-package classes.secondaryclasses;
+package classes.auxiliaryclasses;
 
 import com.stevensproject.App;
 

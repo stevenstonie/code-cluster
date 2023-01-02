@@ -1,11 +1,11 @@
-package classes.mainclasses;
+package classes;
 
 import com.stevensproject.App;
 // import classes.InsertIntoTables;
 // import classes.Inutils;
 
-import classes.secondaryclasses.InsertIntoTables;
-import classes.secondaryclasses.Inutils;
+import classes.auxiliaryclasses.InsertIntoTables;
+import classes.auxiliaryclasses.Inutils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -122,35 +122,180 @@ public class Menus {
 	}
 
 	class Funks {
-		private static void likeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
-			if (checkIfUserLikedTheMovieAlready(connection, user_id, movie_id) == true) {
-				System.out.println("you already liked the movie before..");
-				return;
+		class Auxiliaries {
+			private static boolean checkIfUserLikedTheMovieAlready(Connection connection, int user_id, int movie_id)
+					throws SQLException {
+				String querySearchIfUserLikedAMovie = "select count(*) from users_movies where user_id = " + user_id
+						+ " and movie_id = " + movie_id + ";";
+				PreparedStatement stmt = connection.prepareStatement(querySearchIfUserLikedAMovie);
+				ResultSet queryOutput = stmt.executeQuery();
+				queryOutput.next();
+
+				if (queryOutput.getInt(1) == 1) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 
-			String queryAddUserAndMovieToUsersMovies = "insert into users_movies(user_id, movie_id) values("
-					+ user_id
-					+ ", " + movie_id + ");";
-			PreparedStatement stmt = connection.prepareStatement(queryAddUserAndMovieToUsersMovies);
-			stmt.executeUpdate();
-			System.out.println("you have added the movie to your likes list");
-		}
+			private static void likeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
+				if (Auxiliaries.checkIfUserLikedTheMovieAlready(connection, user_id, movie_id) == true) {
+					System.out.println("you already liked the movie before..");
+					return;
+				}
 
-		private static void dislikeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
-			if (checkIfUserLikedTheMovieAlready(connection, user_id, movie_id) == false) {
-				System.out.println("you dont have the specified movie in your likes list..");
-				return;
+				String queryAddUserAndMovieToUsersMovies = "insert into users_movies(user_id, movie_id) values("
+						+ user_id
+						+ ", " + movie_id + ");";
+				PreparedStatement stmt = connection.prepareStatement(queryAddUserAndMovieToUsersMovies);
+				stmt.executeUpdate();
+				System.out.println("you have added the movie to your likes list");
 			}
 
-			String queryDeleteUserAndMovieFromUsersMovies = "delete from users_movies where user_id = " + user_id
-					+ " and movie_id = " + movie_id + ";";
-			PreparedStatement stmt = connection.prepareStatement(queryDeleteUserAndMovieFromUsersMovies);
-			stmt.executeUpdate();
-			System.out.println("you have deleted the movie from your likes list");
+			private static void dislikeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
+				if (Auxiliaries.checkIfUserLikedTheMovieAlready(connection, user_id, movie_id) == false) {
+					System.out.println("you dont have the specified movie in your likes list..");
+					return;
+				}
+
+				String queryDeleteUserAndMovieFromUsersMovies = "delete from users_movies where user_id = " + user_id
+						+ " and movie_id = " + movie_id + ";";
+				PreparedStatement stmt = connection.prepareStatement(queryDeleteUserAndMovieFromUsersMovies);
+				stmt.executeUpdate();
+				System.out.println("you have deleted the movie from your likes list");
+			}
+
+			private static void sortGenresByLikes(ArrayList<Genres> genres) {
+				genres.sort((Genres g1, Genres g2) -> g2.getLikesOfUser() - g1.getLikesOfUser());
+			}
+
+			private static void addUnlikedGenresToGenreArray(Connection connection, ArrayList<Genres> genres)
+					throws SQLException {
+				ArrayList<String> unlikedGenres = new ArrayList<String>();
+				String queryGetAllGenres = "select distinct genre from movies;";
+				PreparedStatement stmt = connection.prepareStatement(queryGetAllGenres);
+				ResultSet queryOutput = stmt.executeQuery();
+				queryOutput.next();
+				try {
+					while (true != false) {
+						boolean genreExists = false;
+						for (Genres genre : genres) {
+							if (genre.getName().equals(queryOutput.getString(1))) {
+								genreExists = true;
+								break;
+							}
+						}
+						if (genreExists == false) {
+							unlikedGenres.add(queryOutput.getString(1));
+						}
+						queryOutput.next();
+					}
+				} catch (org.postgresql.util.PSQLException e) {
+					// no more movies to read
+					Collections.shuffle(unlikedGenres);
+					for (String newGenre : unlikedGenres) {
+						genres.add(new Genres(newGenre, 0));
+					}
+
+					addMoviesFromDbToGenres(connection, genres);
+				}
+			}
+
+			private static void addMoviesFromDbToGenres(Connection connection, ArrayList<Genres> genres)
+					throws SQLException {
+				for (Genres genre : genres) {
+					String queryGetAllMoviesFromGenre = "select * from movies where genre = '" + genre.getName() + "';";
+					PreparedStatement stmt = connection.prepareStatement(queryGetAllMoviesFromGenre);
+					ResultSet queryOutput = stmt.executeQuery();
+					queryOutput.next();
+
+					try {
+						while (true != false) {
+							genre.addMovie(new Genres.Movies(queryOutput.getString(2), queryOutput.getString(3),
+									queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
+							queryOutput.next();
+						}
+					} catch (org.postgresql.util.PSQLException e) {
+						// no more movies to read
+					}
+				}
+			}
+
 		}
 
-		private static void sortGenresByLikes(ArrayList<Genres> genres) {
-			genres.sort((Genres g1, Genres g2) -> g2.getLikesOfUser() - g1.getLikesOfUser());
+		private static int getMovieIdFromGivenName(Connection connection) throws SQLException {
+			System.out.println("search for the movie: ");
+			String movie_name = App.console.nextLine();
+			String queryCheckIfMovieExists = "select count(*) from movies where name = '" + movie_name + "';";
+			PreparedStatement stmt = connection.prepareStatement(queryCheckIfMovieExists);
+			ResultSet queryOutput = stmt.executeQuery();
+			queryOutput.next();
+			if (queryOutput.getInt(1) == 0)
+				return -1;
+			// TODO: do search by regex
+			String querySearchIdOfMovie = "select id from movies where name = '" + movie_name + "';";
+			stmt = connection.prepareStatement(querySearchIdOfMovie);
+			queryOutput = stmt.executeQuery();
+			queryOutput.next();
+
+			stmt.close();
+			return queryOutput.getInt(1);
+		}
+
+		private static String searchMovieCredentialsById(Connection connection, int movie_id) throws SQLException {
+			String querySearchMovieCredentials = "select * from movies where id = " + movie_id + ";";
+			PreparedStatement stmt = connection.prepareStatement(querySearchMovieCredentials);
+			ResultSet queryOutput = stmt.executeQuery();
+			queryOutput.next();
+
+			return queryOutput.getString(2) + " | " + queryOutput.getString(3) + " | "
+					+ queryOutput.getString(4)
+					+ " | " + queryOutput.getString(5);
+		}
+
+		private static void promptUserForLike(Connection connection, int user_id, int movie_id) throws SQLException {
+			PrintMenus.printIfUserWantsToLikeTheMovie();
+
+			String subOption = App.console.nextLine();
+			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
+					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
+				Auxiliaries.likeMovie(connection, user_id, movie_id);
+			}
+		}
+
+		private static void promptUserForDislike(Connection connection, int user_id, int movie_id) throws SQLException {
+			PrintMenus.printIfUserWantsToDislikeTheMovie();
+
+			String subOption = App.console.nextLine();
+			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
+					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
+				Auxiliaries.dislikeMovie(connection, user_id, movie_id);
+			}
+		}
+
+		private static ArrayList<Genres> insertFromDBinGenreArray(Connection connection, int user_id)
+				throws SQLException {
+			String queryGetAllGenresLikedByUser = "select genre, count(*) from movies join users_movies on movies.id = users_movies.movie_id where user_id = "
+					+ user_id + " group by genre;";
+			PreparedStatement stmt = connection.prepareStatement(queryGetAllGenresLikedByUser);
+			ResultSet queryOutput = stmt.executeQuery();
+			ArrayList<Genres> genres = new ArrayList<>();
+			queryOutput.next();
+
+			try {
+				while (true != false) {
+					genres.add(new Genres(queryOutput.getString(1), queryOutput.getInt(2)));
+					queryOutput.next();
+				}
+			} catch (org.postgresql.util.PSQLException e) {
+				// no more movies liked by the user to read
+			}
+			Auxiliaries.sortGenresByLikes(genres);
+
+			Auxiliaries.addUnlikedGenresToGenreArray(connection, genres);
+
+			stmt.close();
+			return genres;
 		}
 
 		private static void sortMoviesByLikes(ArrayList<Genres> genres) {
@@ -198,147 +343,6 @@ public class Menus {
 			stmt.close();
 		}
 
-		private static boolean checkIfUserLikedTheMovieAlready(Connection connection, int user_id, int movie_id)
-				throws SQLException {
-			String querySearchIfUserLikedAMovie = "select count(*) from users_movies where user_id = " + user_id
-					+ " and movie_id = " + movie_id + ";";
-			PreparedStatement stmt = connection.prepareStatement(querySearchIfUserLikedAMovie);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-
-			if (queryOutput.getInt(1) == 1) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		private static void promptUserForLike(Connection connection, int user_id, int movie_id) throws SQLException {
-			PrintMenus.printIfUserWantsToLikeTheMovie();
-
-			String subOption = App.console.nextLine();
-			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
-					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
-				likeMovie(connection, user_id, movie_id);
-			}
-		}
-
-		private static void promptUserForDislike(Connection connection, int user_id, int movie_id) throws SQLException {
-			PrintMenus.printIfUserWantsToDislikeTheMovie();
-
-			String subOption = App.console.nextLine();
-			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
-					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
-				dislikeMovie(connection, user_id, movie_id);
-			}
-		}
-
-		private static int getMovieIdFromGivenName(Connection connection) throws SQLException {
-			System.out.println("search for the movie: ");
-			String movie_name = App.console.nextLine();
-			String queryCheckIfMovieExists = "select count(*) from movies where name = '" + movie_name + "';";
-			PreparedStatement stmt = connection.prepareStatement(queryCheckIfMovieExists);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-			if (queryOutput.getInt(1) == 0)
-				return -1;
-			// TODO: do search by regex
-			String querySearchIdOfMovie = "select id from movies where name = '" + movie_name + "';";
-			stmt = connection.prepareStatement(querySearchIdOfMovie);
-			queryOutput = stmt.executeQuery();
-			queryOutput.next();
-
-			stmt.close();
-			return queryOutput.getInt(1);
-		}
-
-		private static String searchMovieCredentialsById(Connection connection, int movie_id) throws SQLException {
-			String querySearchMovieCredentials = "select * from movies where id = " + movie_id + ";";
-			PreparedStatement stmt = connection.prepareStatement(querySearchMovieCredentials);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-
-			return queryOutput.getString(2) + " | " + queryOutput.getString(3) + " | "
-					+ queryOutput.getString(4)
-					+ " | " + queryOutput.getString(5);
-		}
-
-		private static void addUnlikedGenresToGenreArray(Connection connection, ArrayList<Genres> genres)
-				throws SQLException {
-			ArrayList<String> unlikedGenres = new ArrayList<String>();
-			String queryGetAllGenres = "select distinct genre from movies;";
-			PreparedStatement stmt = connection.prepareStatement(queryGetAllGenres);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-			try {
-				while (true != false) {
-					boolean genreExists = false;
-					for (Genres genre : genres) {
-						if (genre.getName().equals(queryOutput.getString(1))) {
-							genreExists = true;
-							break;
-						}
-					}
-					if (genreExists == false) {
-						unlikedGenres.add(queryOutput.getString(1));
-					}
-					queryOutput.next();
-				}
-			} catch (org.postgresql.util.PSQLException e) {
-				// no more movies to read
-				Collections.shuffle(unlikedGenres);
-				for (String newGenre : unlikedGenres) {
-					genres.add(new Genres(newGenre, 0));
-				}
-
-				addMoviesFromDbToGenres(connection, genres);
-			}
-		}
-
-		private static ArrayList<Genres> insertFromDBinGenreArray(Connection connection, int user_id)
-				throws SQLException {
-			String queryGetAllGenresLikedByUser = "select genre, count(*) from movies join users_movies on movies.id = users_movies.movie_id where user_id = "
-					+ user_id + " group by genre;";
-			PreparedStatement stmt = connection.prepareStatement(queryGetAllGenresLikedByUser);
-			ResultSet queryOutput = stmt.executeQuery();
-			ArrayList<Genres> genres = new ArrayList<>();
-			queryOutput.next();
-
-			try {
-				while (true != false) {
-					genres.add(new Genres(queryOutput.getString(1), queryOutput.getInt(2)));
-					queryOutput.next();
-				}
-			} catch (org.postgresql.util.PSQLException e) {
-				// no more movies liked by the user to read
-			}
-			sortGenresByLikes(genres);
-
-			addUnlikedGenresToGenreArray(connection, genres);
-
-			stmt.close();
-			return genres;
-		}
-
-		private static void addMoviesFromDbToGenres(Connection connection, ArrayList<Genres> genres)
-				throws SQLException {
-			for (Genres genre : genres) {
-				String queryGetAllMoviesFromGenre = "select * from movies where genre = '" + genre.getName() + "';";
-				PreparedStatement stmt = connection.prepareStatement(queryGetAllMoviesFromGenre);
-				ResultSet queryOutput = stmt.executeQuery();
-				queryOutput.next();
-
-				try {
-					while (true != false) {
-						genre.addMovie(new Genres.Movies(queryOutput.getString(2), queryOutput.getString(3),
-								queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
-						queryOutput.next();
-					}
-				} catch (org.postgresql.util.PSQLException e) {
-					// no more movies to read
-				}
-			}
-		}
 	}
 
 	public static void userMenu(Connection connection, int user_id) throws SQLException {
@@ -450,3 +454,6 @@ public class Menus {
 		System.out.println("logging out..");
 	}
 }
+
+// TODO: genres that are not liked shouldnt print movies as the genres would be randomized but the movies not. when 
+// printing the feed the movies are grouped by randomized genres, when they shouldnt be. or so i think, but it might make the code messier so idk

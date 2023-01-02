@@ -1,13 +1,13 @@
-package classes.mainclasses;
+package classes;
 
 // import com.stevensproject.App;
 // import classes.Inutils;
 
 import java.sql.SQLException;
 
-import classes.secondaryclasses.ConnectToDB;
-import classes.secondaryclasses.Inutils;
-import classes.secondaryclasses.RegisterAndLoginUser;
+import classes.auxiliaryclasses.ConnectToDB;
+import classes.auxiliaryclasses.Inutils;
+import classes.auxiliaryclasses.RegisterAndLoginUser;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
