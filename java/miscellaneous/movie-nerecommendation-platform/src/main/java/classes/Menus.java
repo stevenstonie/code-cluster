@@ -1,14 +1,13 @@
 package classes;
 
 import com.stevensproject.App;
+import classes.InsertIntoTables;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 class PrintMenus {
 	static void printUserMenuMenu2() {
@@ -17,8 +16,8 @@ class PrintMenus {
 
 	static void printUserMenuMenu3() {
 		System.out.println("how would you like to sort the feed?");
-		System.out.println("1: by release date");
-		System.out.println("2: by the numbers of likes");
+		System.out.println("1: by the numbers of likes");
+		System.out.println("2: by release date");
 	}
 
 	static void printUserMenuMenu() {
@@ -41,7 +40,6 @@ class PrintMenus {
 		System.out.println("press 0 to bring back this menu");
 		System.out.println("press 1 to add movies in the database");
 		System.out.println("press 2 to delete a movie from the database");
-		System.out.println("press 3 to update a movie from the database");
 		System.out.println("press anything else to logout");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
@@ -49,37 +47,38 @@ class PrintMenus {
 
 public class Menus {
 	class Funcs {
-		static class Movie {
-			private String name;
-			private String genre;
-			private String release_date;
-			private int likes;
-
-			public Movie(String name, String genre, String release_date, int likes) {
-				this.name = name;
-				this.genre = genre;
-				this.release_date = release_date;
-				this.likes = likes;
-			}
-
-			public String getName() {
-				return name;
-			}
-
-			public String getGenre() {
-				return genre;
-			}
-
-			public String getReleaseDate() {
-				return release_date;
-			}
-
-			public int getLikes() {
-				return likes;
-			}
-		}
 
 		static class Genre {
+			static class Movie {
+				private String name;
+				private String genre;
+				private String release_date;
+				private int likes;
+
+				public Movie(String name, String genre, String release_date, int likes) {
+					this.name = name;
+					this.genre = genre;
+					this.release_date = release_date;
+					this.likes = likes;
+				}
+
+				public String getName() {
+					return name;
+				}
+
+				public String getGenre() {
+					return genre;
+				}
+
+				public String getReleaseDate() {
+					return release_date;
+				}
+
+				public int getLikes() {
+					return likes;
+				}
+			}
+
 			private String name;
 			private int likesOfUser;
 			ArrayList<Movie> movies = new ArrayList<>();
@@ -87,6 +86,14 @@ public class Menus {
 			public Genre(String name, int likesOfUser) {
 				this.name = name;
 				this.likesOfUser = likesOfUser;
+			}
+
+			public void sortMoviesByReleaseDate() {
+				movies.sort((Movie m1, Movie m2) -> m2.getReleaseDate().compareTo(m1.getReleaseDate()));
+			}
+
+			public void sortMoviesByLikes() {
+				movies.sort((Movie m1, Movie m2) -> m2.getLikes() - m1.getLikes());
 			}
 
 			public String getName() {
@@ -103,6 +110,34 @@ public class Menus {
 
 			public ArrayList<Movie> getMovies() {
 				return movies;
+			}
+		}
+
+		private static void sortGenresByLikes(ArrayList<Genre> genres) {
+			genres.sort((Genre g1, Genre g2) -> g2.getLikesOfUser() - g1.getLikesOfUser());
+		}
+
+		private static void sortMoviesByLikes(ArrayList<Genre> genres) {
+			for (Genre genre : genres) {
+				if (genre.getLikesOfUser() > 0) // only those which have genres liked by the user
+					genre.sortMoviesByLikes();
+			}
+		}
+
+		private static void sortMoviesByReleaseDate(ArrayList<Genre> genres) {
+			for (Genre genre : genres) {
+				if (genre.getLikesOfUser() > 0) // only those which have genres liked by the user
+					genre.sortMoviesByReleaseDate();
+			}
+		}
+
+		private static void printFeed(ArrayList<Genre> genres) {
+			for (Genre genre : genres) {
+				for (Genre.Movie movie : genre.getMovies()) {
+					System.out
+							.println(movie.getName() + " | " + movie.getGenre() + " | " + movie.getReleaseDate() + " | "
+									+ movie.getLikes());
+				}
 			}
 		}
 
@@ -198,6 +233,8 @@ public class Menus {
 			} catch (org.postgresql.util.PSQLException e) {
 				// no more movies liked by the user to read
 			}
+			sortGenresByLikes(genres);
+
 			String queryGetAllGenres = "select distinct genre from movies;";
 			stmt = connection.prepareStatement(queryGetAllGenres);
 			queryOutput = stmt.executeQuery();
@@ -219,6 +256,7 @@ public class Menus {
 				}
 			} catch (org.postgresql.util.PSQLException e) {
 				// no morer movies to read
+				addMoviesFromDbToGenres(connection, genres);
 				return genres;
 			}
 		}
@@ -233,7 +271,7 @@ public class Menus {
 
 				try {
 					while (true != false) {
-						genre.addMovie(new Movie(queryOutput.getString(2), queryOutput.getString(3),
+						genre.addMovie(new Genre.Movie(queryOutput.getString(2), queryOutput.getString(3),
 								queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
 						queryOutput.next();
 					}
@@ -242,6 +280,7 @@ public class Menus {
 				}
 			}
 		}
+
 	}
 
 	public static void userMenu(Connection connection, int user_id) throws SQLException {
@@ -282,22 +321,12 @@ public class Menus {
 					if (subOption == 1 || subOption == 2) {
 						ArrayList<Funcs.Genre> genres = Funcs.insertFromDBinGenreArray(connection, user_id);
 
-						Funcs.addMoviesFromDbToGenres(connection, genres);
-
-						for (Funcs.Genre genre : genres) {
-							for (Funcs.Movie movie : genre.getMovies()) {
-								System.out.println(
-										movie.getName() + " | " + movie.getGenre() + " | " + movie.getReleaseDate()
-												+ " | " + movie.getLikes());
-							}
+						if (subOption == 1) {
+							Funcs.sortMoviesByLikes(genres);
+						} else {
+							Funcs.sortMoviesByReleaseDate(genres);
 						}
-
-						// (done) take the movies from the db and put them in an array of genres
-						// (done) each genre has an array of movies
-						// (done) when adding a new genre always check the users_movies table to add how many likes has the genre from the user
-						// (done) sort the array of genres based on those likes
-						// then based on the subOption sort the movies array of each genre based on release date or likes			
-
+						Funcs.printFeed(genres);
 					} else {
 						System.out.println("unfortunately that is not an available option..");
 					}
@@ -329,12 +358,38 @@ public class Menus {
 		do {
 			System.out.print(">");
 			option = Funcs.getIntFromUser();
+			switch (option) {
+				case 0: {
+					PrintMenus.printAdminMenuMenu();
+					break;
+				}
+
+				case 1: {
+					PrintMenus.printAdminMenuMenu2();
+					byte subOption = Funcs.getIntFromUser();
+					if (subOption == 1) {
+						InsertIntoTables.insertIntoTableMoviesByFile(connection);
+					} else if (subOption == 2) {
+						InsertIntoTables.insertIntoTableMoviesByConsole(connection);
+					} else {
+						System.out.println("unfortunately that is not an available option..");
+					}
+
+					break;
+				}
+
+				case 2: {
+					// function to delete movie from the database
+					break;
+				}
+
+				default: {
+					exit = true;
+					break;
+				}
+			}
 
 		} while (exit == false);
-		// if role is 'admin' => menu for admin
-		// // add movies in the database by file or console
-		// // maybe also delete from / update the database?
-		// // logout
 
 		System.out.println("logging out..");
 	}
