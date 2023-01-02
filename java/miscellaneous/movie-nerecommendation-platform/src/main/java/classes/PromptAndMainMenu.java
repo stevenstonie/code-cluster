@@ -8,22 +8,13 @@ import java.sql.SQLException;
 import classes.auxiliaryclasses.ConnectToDB;
 import classes.auxiliaryclasses.Inutils;
 import classes.auxiliaryclasses.RegisterAndLoginUser;
+import classes.auxiliaryclasses.PrintMenus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class PromptAndMainMenu {
-	private static void printPromptUserMenu() {
-		System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		System.out.println("to bring back this menu press 0");
-		System.out.println("if you are a new user press 1 to register");
-		System.out.println("if you want to register as an admin press 2");
-		System.out.println("if you are an existing user / admin press 3 to login");
-		System.out.println("if you wish to exit the login process press anything else");
-		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	}
-
 	private static String getRoleOfUser(Connection connection, int user_id) throws SQLException {
 		String queryFindRoleOfUser = "select role from users where id = " + Integer.toString(user_id) + ";";
 		PreparedStatement stmt = connection.prepareStatement(queryFindRoleOfUser);
@@ -40,14 +31,14 @@ public class PromptAndMainMenu {
 		boolean exit = false;
 		short option;
 
-		printPromptUserMenu();
+		PrintMenus.printPromptUserMenu();
 		do {
 			System.out.print(">");
 			option = Inutils.getSmallIntInputFromUser();
 
 			switch (option) {
 				case 0: {
-					printPromptUserMenu();
+					PrintMenus.printPromptUserMenu();
 					break;
 				}
 
