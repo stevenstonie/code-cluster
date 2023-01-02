@@ -1,4 +1,4 @@
-package classes;
+package classes.secondaryclasses;
 
 import java.sql.SQLException;
 

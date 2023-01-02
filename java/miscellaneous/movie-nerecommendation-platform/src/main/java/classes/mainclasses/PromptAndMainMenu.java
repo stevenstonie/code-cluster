@@ -1,8 +1,14 @@
-package classes;
+package classes.mainclasses;
 
-import com.stevensproject.App;
+// import com.stevensproject.App;
+// import classes.Inutils;
 
 import java.sql.SQLException;
+
+import classes.secondaryclasses.ConnectToDB;
+import classes.secondaryclasses.Inutils;
+import classes.secondaryclasses.RegisterAndLoginUser;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,27 +24,10 @@ public class PromptAndMainMenu {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 
-	public static byte getIntFromUser() {
-		String s_userInput = App.console.nextLine();
-
-		for (int i = 0; i < s_userInput.length(); i++)
-			if (!Character.isDigit(s_userInput.charAt(i)))
-				return -1;
-
-		int i_userInput = Integer.parseInt(s_userInput);
-		if (i_userInput > Byte.MAX_VALUE)
-			return -1;
-
-		return (byte) i_userInput;
-	}
-
 	private static String getRoleOfUser(Connection connection, int user_id) throws SQLException {
 		String queryFindRoleOfUser = "select role from users where id = " + Integer.toString(user_id) + ";";
-		PreparedStatement stmt = null;
-		ResultSet queryFindRoleOfUserOutput = null;
-
-		stmt = connection.prepareStatement(queryFindRoleOfUser);
-		queryFindRoleOfUserOutput = stmt.executeQuery();
+		PreparedStatement stmt = connection.prepareStatement(queryFindRoleOfUser);
+		ResultSet queryFindRoleOfUserOutput = stmt.executeQuery();
 		queryFindRoleOfUserOutput.next();
 
 		return queryFindRoleOfUserOutput.getString(1);
@@ -49,12 +38,12 @@ public class PromptAndMainMenu {
 		System.out.println("\n~~~~~~~~~~~ login window ~~~~~~~~~~~");
 		int user_id = -1;
 		boolean exit = false;
-		byte option;
+		short option;
 
 		printPromptUserMenu();
 		do {
 			System.out.print(">");
-			option = getIntFromUser();
+			option = Inutils.getSmallIntInputFromUser();
 
 			switch (option) {
 				case 0: {
@@ -121,5 +110,4 @@ public class PromptAndMainMenu {
 
 	// count(something) ignores set limit ??????????
 	//TODO: try to do the checking without count
-
 }

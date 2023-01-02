@@ -1,4 +1,4 @@
-package classes;
+package classes.secondaryclasses;
 
 import com.stevensproject.App;
 
@@ -16,7 +16,7 @@ public class InsertIntoTables {
 		PreparedStatement stmt = null;
 		ResultSet queryCheckForMovieExistenceOutput = null;
 		String queryInsertMovie = "insert into movies (name, genre, release_date, likes) values(?, ?, ?, ?);";
-		String queryCheckForMovieExistence = "select count(*) from movies where name = ?;"; // + "'movie_name';"
+		String queryCheckForMovieExistence = "select count(*) from movies where name = ?;";
 
 		try {
 			File movieList = new File("movie_list.in");
@@ -44,9 +44,13 @@ public class InsertIntoTables {
 				}
 			}
 
-			stmt.close();
-			queryCheckForMovieExistenceOutput.close();
 			fileReader.close();
+			try {
+				stmt.close();
+				queryCheckForMovieExistenceOutput.close();
+			} catch (java.lang.NullPointerException e2) {
+				// ignore exception in case the admin doesnt insert any records
+			}
 		} catch (FileNotFoundException e) {
 			System.out.println("The file could not be found...");
 			e.printStackTrace();
@@ -93,6 +97,7 @@ public class InsertIntoTables {
 					System.out.print("how many likes does the movie have? ");
 					textInput = App.console.nextLine();
 					queryInsertMovie += textInput + ");";
+					// couldnt use setString() as it places '' around the insertion which is wrong in this case;
 
 					stmt = connection.prepareStatement(queryInsertMovie);
 					stmt.executeUpdate();
@@ -106,8 +111,10 @@ public class InsertIntoTables {
 				stmt.close();
 				queryCheckForMovieExistenceOutput.close();
 			} catch (java.lang.NullPointerException e2) {
-				// ignore exception
+				// ignore exception in case the admin doesnt insert any records
 			}
+
+			System.out.println("Records created successfully");
 		} catch (SQLException e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 		}
