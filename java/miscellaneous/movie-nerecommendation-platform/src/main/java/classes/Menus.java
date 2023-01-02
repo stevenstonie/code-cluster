@@ -49,6 +49,63 @@ class PrintMenus {
 
 public class Menus {
 	class Funcs {
+		static class Movie {
+			private String name;
+			private String genre;
+			private String release_date;
+			private int likes;
+
+			public Movie(String name, String genre, String release_date, int likes) {
+				this.name = name;
+				this.genre = genre;
+				this.release_date = release_date;
+				this.likes = likes;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public String getGenre() {
+				return genre;
+			}
+
+			public String getReleaseDate() {
+				return release_date;
+			}
+
+			public int getLikes() {
+				return likes;
+			}
+		}
+
+		static class Genre {
+			private String name;
+			private int likesOfUser;
+			ArrayList<Movie> movies = new ArrayList<>();
+
+			public Genre(String name, int likesOfUser) {
+				this.name = name;
+				this.likesOfUser = likesOfUser;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public Integer getLikesOfUser() {
+				return likesOfUser;
+			}
+
+			public void addMovie(Movie movie) {
+				movies.add(movie);
+			}
+
+			public ArrayList<Movie> getMovies() {
+				return movies;
+			}
+		}
+
 		private static boolean checkIfUserLikedTheMovieAlready(Connection connection, int user_id, int movie_id)
 				throws SQLException {
 			String querySearchIfUserLikedAMovie = "select count(*) from users_movies where user_id = " + user_id
@@ -98,14 +155,6 @@ public class Menus {
 			return queryOutput.getInt(1);
 		}
 
-		private static String searchForMovieGenreById(Connection connection, String movie_id) throws SQLException {
-			String querySearchForMovieNameById = "select genre from movies where id = " + movie_id + " limit 1;";
-			PreparedStatement stmt = connection.prepareStatement(querySearchForMovieNameById);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-			return queryOutput.getString(1);
-		}
-
 		private static String searchMovieCredentialsById(Connection connection, int movie_id) throws SQLException {
 			String querySearchMovieCredentials = "select * from movies where id = " + movie_id + ";";
 			PreparedStatement stmt = connection.prepareStatement(querySearchMovieCredentials);
@@ -132,74 +181,64 @@ public class Menus {
 			return (byte) i_userInput;
 		}
 
-		private static ArrayList<ArrayList<String>> insertFromDBin2dArray(Connection connection) throws SQLException {
-			ArrayList<ArrayList<String>> allMovies = new ArrayList<ArrayList<String>>();
-			PreparedStatement stmt = null;
-			ResultSet queryOutput = null;
-			String querySelectAllMoviesFromDB = "select name, genre, release_date, likes from movies;";
+		private static ArrayList<Genre> insertFromDBinGenreArray(Connection connection, int user_id)
+				throws SQLException {
+			String queryGetAllGenresLikedByUser = "select genre, count(*) from movies join users_movies on movies.id = users_movies.movie_id where user_id = "
+					+ user_id + " group by genre;";
+			PreparedStatement stmt = connection.prepareStatement(queryGetAllGenresLikedByUser);
+			ResultSet queryOutput = stmt.executeQuery();
+			ArrayList<Genre> genres = new ArrayList<>();
+			queryOutput.next();
 
-			stmt = connection.prepareStatement(querySelectAllMoviesFromDB);
+			try {
+				while (true != false) {
+					genres.add(new Genre(queryOutput.getString(1), queryOutput.getInt(2)));
+					queryOutput.next();
+				}
+			} catch (org.postgresql.util.PSQLException e) {
+				// no more movies liked by the user to read
+			}
+			String queryGetAllGenres = "select distinct genre from movies;";
+			stmt = connection.prepareStatement(queryGetAllGenres);
 			queryOutput = stmt.executeQuery();
 			queryOutput.next();
 			try {
-				String[] movie = new String[4];
 				while (true != false) {
-					movie[0] = queryOutput.getString(1);
-					movie[1] = queryOutput.getString(2);
-					movie[2] = queryOutput.getString(3);
-					movie[3] = queryOutput.getString(4);
-
-					boolean exists = false;
-					for (int i = 0; i < allMovies.size(); i++) {
-						if (allMovies.get(i).get(0).equals(movie[1])) {
-							allMovies.get(i).add(movie[0] + " | " + movie[1] + " | " + movie[2] + " | " + movie[3]);
-							exists = true;
+					// use contains to check if the genre already exists in the array
+					boolean genreExists = false;
+					for (Genre genre : genres) {
+						if (genre.getName().equals(queryOutput.getString(1))) {
+							genreExists = true;
 							break;
 						}
 					}
-					if (!exists) {
-						allMovies.add(new ArrayList<String>());
-						allMovies.get(allMovies.size() - 1).add(movie[1]);
-						allMovies.get(allMovies.size() - 1).add("0");
-						allMovies.get(allMovies.size() - 1)
-								.add(movie[0] + " | " + movie[1] + " | " + movie[2] + " | " + movie[3]);
+					if (genreExists == false) {
+						genres.add(new Genre(queryOutput.getString(1), 0));
 					}
-
 					queryOutput.next();
 				}
 			} catch (org.postgresql.util.PSQLException e) {
-				// no more movies to read
+				// no morer movies to read
+				return genres;
 			}
-
-			return allMovies;
 		}
 
-		private static void addCurrentUserLikes(Connection connection, int user_id,
-				ArrayList<ArrayList<String>> allMovies) throws SQLException {
-			String queryGetCurrentUserLikedMoviesId = "select movie_id from users_movies where user_id = " + user_id
-					+ ";";
-			PreparedStatement stmt = connection.prepareStatement(queryGetCurrentUserLikedMoviesId);
-			ResultSet queryOutput = stmt.executeQuery();
-			queryOutput.next();
-			Map<String, Integer> genresAndLikes = new HashMap<String, Integer>();
-			try {
-				while (true != false) {
-					String currentMovieGenre = searchForMovieGenreById(connection, queryOutput.getString(1));
-					if (genresAndLikes.containsKey(currentMovieGenre)) {
-						genresAndLikes.put(currentMovieGenre, genresAndLikes.get(currentMovieGenre) + 1);
-					} else {
-						genresAndLikes.put(currentMovieGenre, 1);
+		private static void addMoviesFromDbToGenres(Connection connection, ArrayList<Genre> genres)
+				throws SQLException {
+			for (Genre genre : genres) {
+				String queryGetAllMoviesFromGenre = "select * from movies where genre = '" + genre.getName() + "';";
+				PreparedStatement stmt = connection.prepareStatement(queryGetAllMoviesFromGenre);
+				ResultSet queryOutput = stmt.executeQuery();
+				queryOutput.next();
+
+				try {
+					while (true != false) {
+						genre.addMovie(new Movie(queryOutput.getString(2), queryOutput.getString(3),
+								queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
+						queryOutput.next();
 					}
-					queryOutput.next();
-				}
-
-			} catch (org.postgresql.util.PSQLException e) {
-				// no more movies to read
-			}
-
-			for (int i = 0; i < allMovies.size(); i++) {
-				if (genresAndLikes.containsKey(allMovies.get(i).get(0))) {
-					allMovies.get(i).set(1, Integer.toString(genresAndLikes.get(allMovies.get(i).get(0))));
+				} catch (org.postgresql.util.PSQLException e) {
+					// no more movies to read
 				}
 			}
 		}
@@ -241,11 +280,23 @@ public class Menus {
 					PrintMenus.printUserMenuMenu3();
 					int subOption = Funcs.getIntFromUser();
 					if (subOption == 1 || subOption == 2) {
-						ArrayList<ArrayList<String>> allMovies = Funcs.insertFromDBin2dArray(connection);
-						Funcs.addCurrentUserLikes(connection, user_id, allMovies);
-						// Funcs.prioritizeLikedMovies();
-						// Funcs.sortMoviesByReleaseDate();
-						// Funcs.sortMoviesByLikes();
+						ArrayList<Funcs.Genre> genres = Funcs.insertFromDBinGenreArray(connection, user_id);
+
+						Funcs.addMoviesFromDbToGenres(connection, genres);
+
+						for (Funcs.Genre genre : genres) {
+							for (Funcs.Movie movie : genre.getMovies()) {
+								System.out.println(
+										movie.getName() + " | " + movie.getGenre() + " | " + movie.getReleaseDate()
+												+ " | " + movie.getLikes());
+							}
+						}
+
+						// (done) take the movies from the db and put them in an array of genres
+						// (done) each genre has an array of movies
+						// (done) when adding a new genre always check the users_movies table to add how many likes has the genre from the user
+						// (done) sort the array of genres based on those likes
+						// then based on the subOption sort the movies array of each genre based on release date or likes			
 
 					} else {
 						System.out.println("unfortunately that is not an available option..");
