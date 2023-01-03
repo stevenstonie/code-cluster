@@ -8,8 +8,74 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 public class MenusFuncs {
+	protected static class Genres {
+		protected static class Movies {
+			private String name;
+			private String genre;
+			private String release_date;
+			private int likes;
+
+			protected Movies(String name, String genre, String release_date, int likes) {
+				this.name = name;
+				this.genre = genre;
+				this.release_date = release_date;
+				this.likes = likes;
+			}
+
+			protected String getName() {
+				return name;
+			}
+
+			protected String getGenre() {
+				return genre;
+			}
+
+			protected String getReleaseDate() {
+				return release_date;
+			}
+
+			protected int getLikes() {
+				return likes;
+			}
+		}
+
+		private String name;
+		private int likesOfUser;
+		ArrayList<Movies> movies = new ArrayList<>();
+
+		protected Genres(String name, int likesOfUser) {
+			this.name = name;
+			this.likesOfUser = likesOfUser;
+		}
+
+		protected void sortMoviesByReleaseDate() {
+			movies.sort((Movies m1, Movies m2) -> m2.getReleaseDate().compareTo(m1.getReleaseDate()));
+		}
+
+		protected void sortMoviesByLikes() {
+			movies.sort((Movies m1, Movies m2) -> m2.getLikes() - m1.getLikes());
+		}
+
+		protected String getName() {
+			return name;
+		}
+
+		protected Integer getLikesOfUser() {
+			return likesOfUser;
+		}
+
+		protected void addMovie(Movies movie) {
+			movies.add(movie);
+		}
+
+		protected ArrayList<Movies> getMovies() {
+			return movies;
+		}
+	}
+
 	class Auxs {
 		private static boolean checkIfUserLikedTheMovieAlready(Connection connection, int user_id, int movie_id)
 				throws SQLException {
@@ -64,6 +130,7 @@ public class MenusFuncs {
 			PreparedStatement stmt = connection.prepareStatement(queryGetAllGenres);
 			ResultSet queryOutput = stmt.executeQuery();
 			queryOutput.next();
+
 			try {
 				while (true != false) {
 					boolean genreExists = false;
@@ -84,8 +151,6 @@ public class MenusFuncs {
 				for (String newGenre : unlikedGenres) {
 					genres.add(new Genres(newGenre, 0));
 				}
-
-				addMoviesFromDbToGenres(connection, genres);
 			}
 		}
 
@@ -101,6 +166,7 @@ public class MenusFuncs {
 					while (true != false) {
 						genre.addMovie(new Genres.Movies(queryOutput.getString(2), queryOutput.getString(3),
 								queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
+
 						queryOutput.next();
 					}
 				} catch (org.postgresql.util.PSQLException e) {
@@ -108,70 +174,11 @@ public class MenusFuncs {
 				}
 			}
 		}
-	}
 
-	public static class Genres {
-		public static class Movies {
-			private String name;
-			private String genre;
-			private String release_date;
-			private int likes;
-
-			public Movies(String name, String genre, String release_date, int likes) {
-				this.name = name;
-				this.genre = genre;
-				this.release_date = release_date;
-				this.likes = likes;
-			}
-
-			public String getName() {
-				return name;
-			}
-
-			public String getGenre() {
-				return genre;
-			}
-
-			public String getReleaseDate() {
-				return release_date;
-			}
-
-			public int getLikes() {
-				return likes;
-			}
-		}
-
-		private String name;
-		private int likesOfUser;
-		ArrayList<Movies> movies = new ArrayList<>();
-
-		public Genres(String name, int likesOfUser) {
-			this.name = name;
-			this.likesOfUser = likesOfUser;
-		}
-
-		public void sortMoviesByReleaseDate() {
-			movies.sort((Movies m1, Movies m2) -> m2.getReleaseDate().compareTo(m1.getReleaseDate()));
-		}
-
-		public void sortMoviesByLikes() {
-			movies.sort((Movies m1, Movies m2) -> m2.getLikes() - m1.getLikes());
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public Integer getLikesOfUser() {
-			return likesOfUser;
-		}
-
-		public void addMovie(Movies movie) {
-			movies.add(movie);
-		}
-
-		public ArrayList<Movies> getMovies() {
-			return movies;
+		private static String concatenateToString(String string, String add, int length) {
+			for (int i = 0; i < length; i++)
+				string += add;
+			return string;
 		}
 	}
 
@@ -231,8 +238,8 @@ public class MenusFuncs {
 				+ user_id + " group by genre;";
 		PreparedStatement stmt = connection.prepareStatement(queryGetAllGenresLikedByUser);
 		ResultSet queryOutput = stmt.executeQuery();
-		ArrayList<Genres> genres = new ArrayList<>();
 		queryOutput.next();
+		ArrayList<Genres> genres = new ArrayList<>();
 
 		try {
 			while (true != false) {
@@ -245,6 +252,8 @@ public class MenusFuncs {
 		Auxs.sortGenresByLikes(genres);
 
 		Auxs.addUnlikedGenresToGenreArray(connection, genres);
+
+		Auxs.addMoviesFromDbToGenres(connection, genres);
 
 		stmt.close();
 		return genres;
@@ -264,15 +273,47 @@ public class MenusFuncs {
 		}
 	}
 
-	protected static void printFeed(ArrayList<Genres> genres) {
+	protected static void printFeed(Connection connection, ArrayList<Genres> genres) throws SQLException {
+		MutableInt longestMovieName = new MutableInt();
+		MutableInt longestGenreName = new MutableInt();
+		getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
+
 		for (Genres genre : genres) {
 			for (Genres.Movies movie : genre.getMovies()) {
+				// add spaces to the movie name so that all the movies are aligned
+				String spacingOfMovieName = Auxs.concatenateToString("", " ",
+						longestMovieName.getValue() - movie.getName().length());
+				String spacingOfGenreName = Auxs.concatenateToString("", " ",
+						longestGenreName.getValue() - genre.getName().length());
+
 				System.out
-						.println(movie.getName() + " | " + movie.getGenre() + " | " + movie.getReleaseDate() + " | "
-								+ movie.getLikes());
+						.println(movie.getName() + spacingOfMovieName + " | " + movie.getGenre() + spacingOfGenreName
+								+ " | " + movie.getReleaseDate() + " | " + movie.getLikes());
 			}
 		}
 	}
+
+	protected static void getLongestMovieNameAndGenre(Connection connection, MutableInt longestMovieName,
+			MutableInt longestGenreName)
+			throws SQLException {
+		String getNameAndGenreOfAllMovies = "select name, genre from movies;";
+		PreparedStatement stmt = connection.prepareStatement(getNameAndGenreOfAllMovies);
+		ResultSet queryOutput = stmt.executeQuery();
+		queryOutput.next();
+
+		try {
+			while (true != false) {
+				if (queryOutput.getString(1).length() > longestMovieName.getValue())
+					longestMovieName.setValue(queryOutput.getString(1).length());
+				if (queryOutput.getString(2).length() > longestGenreName.getValue())
+					longestGenreName.setValue(queryOutput.getString(2).length());
+
+				queryOutput.next();
+			}
+		} catch (org.postgresql.util.PSQLException e) {
+			// no more movies to read
+		}
+	} // not as efficient as if 'longestMovieName' / 'longestGenreName' were calculated at movie inserting but it's more readable and another function also needed to get this value
 
 	protected static void printUserLikedMoviesList(Connection connection, int user_id) throws SQLException {
 		String queryGetMoviesLikedByUser = "select movies.name, movies.genre, movies.release_date, movies.likes from movies inner join "
@@ -280,10 +321,19 @@ public class MenusFuncs {
 		PreparedStatement stmt = connection.prepareStatement(queryGetMoviesLikedByUser);
 		ResultSet queryOutput = stmt.executeQuery();
 		queryOutput.next();
+		MutableInt longestMovieName = new MutableInt();
+		MutableInt longestGenreName = new MutableInt();
+		getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
 
 		try {
 			while (true != false) {
-				System.out.println(queryOutput.getString(1) + " | " + queryOutput.getString(2) + " | "
+				String spacingOfMovieName = Auxs.concatenateToString("", " ", longestMovieName.getValue()
+						- queryOutput.getString(1).length());
+				String spacingOfGenreName = Auxs.concatenateToString("", " ",
+						longestGenreName.getValue() - queryOutput.getString(2).length());
+
+				System.out.println(queryOutput.getString(1) + spacingOfMovieName + " | " + queryOutput.getString(2)
+						+ spacingOfGenreName + " | "
 						+ queryOutput.getString(3) + " | " + queryOutput.getString(4));
 
 				queryOutput.next();

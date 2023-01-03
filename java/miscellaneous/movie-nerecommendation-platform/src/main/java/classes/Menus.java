@@ -2,17 +2,10 @@ package classes;
 
 import classes.auxiliaryclasses.MenusFuncs;
 import classes.auxiliaryclasses.PrintMenus;
-// import com.stevensproject.App;
-// import classes.InsertIntoTables;
-// import classes.Inutils;
 
 import classes.auxiliaryclasses.InsertIntoTables;
 import classes.auxiliaryclasses.Inutils;
-
 import java.sql.Connection;
-// import java.sql.PreparedStatement;
-// import java.sql.ResultSet;
-// import java.util.Collections;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -51,8 +44,9 @@ public class Menus extends MenusFuncs {
 				}
 
 				case 2: {
-					PrintMenus.printUserMenuMenu3();
+					PrintMenus.printUserMenuMenu2();
 					short subOption = Inutils.getSmallIntInputFromUser();
+
 					if (subOption == 1 || subOption == 2) {
 						ArrayList<Genres> genres = insertFromDBinGenreArray(connection, user_id);
 
@@ -61,7 +55,8 @@ public class Menus extends MenusFuncs {
 						} else {
 							sortMoviesByReleaseDate(genres);
 						}
-						printFeed(genres);
+
+						printFeed(connection, genres);
 					} else {
 						System.out.println("unfortunately that is not an available option..");
 					}

@@ -19,7 +19,7 @@ public class PrintMenus {
 		System.out.println("do you want to dislike the selected movie?");
 	}
 
-	public static void printUserMenuMenu3() {
+	public static void printUserMenuMenu2() {
 		System.out.println("how would you like to sort the feed?");
 		System.out.println("1: by the number of likes");
 		System.out.println("2: by release date");

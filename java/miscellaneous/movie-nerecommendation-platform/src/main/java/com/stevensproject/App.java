@@ -23,10 +23,8 @@ public class App {
 
 		// add thread sleep to the loading bar
 		// populate database
-		// beautify the feed
-		// place those Menus functions in a separate class to tidy code
 		// solve messiness in code
-		// also increase the number of the likes if the users likes the movies? (or decrease if dislikes)
+		// also increment the number of likes of a certain movie if the user likes it? (or decrement if dislikes)
 		// and maybe make a password generator?
 		// and also a password censorer?
 		// gui if i have some free time
