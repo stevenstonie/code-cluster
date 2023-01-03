@@ -2,6 +2,9 @@ package classes.auxiliaryclasses;
 
 import com.stevensproject.App;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
+
 public class Inutils {
 	public static short getSmallIntInputFromUser() {
 		String s_userInput = App.console.nextLine();
@@ -15,5 +18,16 @@ public class Inutils {
 			return -1;
 
 		return (short) i_userInput;
+	}
+
+	public static void printLoadingDots() {
+		LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(500));
+		System.out.print(".");
+		LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(500));
+		System.out.print(".");
+		LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(500));
+		System.out.print(".");
+		LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(500));
+		System.out.println();
 	}
 }

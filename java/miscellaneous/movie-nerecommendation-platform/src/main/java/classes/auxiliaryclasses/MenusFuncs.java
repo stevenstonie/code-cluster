@@ -92,10 +92,10 @@ public class MenusFuncs {
 			}
 		}
 
-		private static void likeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
+		private static boolean likeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
 			if (checkIfUserLikedTheMovieAlready(connection, user_id, movie_id) == true) {
 				System.out.println("you already liked the movie before..");
-				return;
+				return false;
 			}
 
 			String queryAddUserAndMovieToUsersMovies = "insert into users_movies(user_id, movie_id) values("
@@ -103,7 +103,9 @@ public class MenusFuncs {
 					+ ", " + movie_id + ");";
 			PreparedStatement stmt = connection.prepareStatement(queryAddUserAndMovieToUsersMovies);
 			stmt.executeUpdate();
+
 			System.out.println("you have added the movie to your likes list");
+			return true;
 		}
 
 		private static void dislikeMovie(Connection connection, int user_id, int movie_id) throws SQLException {
@@ -117,6 +119,33 @@ public class MenusFuncs {
 			PreparedStatement stmt = connection.prepareStatement(queryDeleteUserAndMovieFromUsersMovies);
 			stmt.executeUpdate();
 			System.out.println("you have deleted the movie from your likes list");
+		}
+
+		private static boolean promptUserForLike(Connection connection, int user_id, int movie_id)
+				throws SQLException {
+			PrintMenus.printIfUserWantsToLikeTheMovie();
+
+			String subOption = App.console.nextLine();
+			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
+					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
+				if (likeMovie(connection, user_id, movie_id) == false)
+					return false;
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private static void promptUserForDislike(Connection connection, int user_id, int movie_id)
+				throws SQLException {
+			PrintMenus.printIfUserWantsToDislikeTheMovie();
+
+			String subOption = App.console.nextLine();
+			if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
+					|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
+				Auxs.dislikeMovie(connection, user_id, movie_id);
+			}
 		}
 
 		private static void sortGenresByLikes(ArrayList<Genres> genres) {
@@ -175,11 +204,34 @@ public class MenusFuncs {
 			}
 		}
 
+		private static void getLongestMovieNameAndGenre(Connection connection, MutableInt longestMovieName,
+				MutableInt longestGenreName)
+				throws SQLException {
+			String getNameAndGenreOfAllMovies = "select name, genre from movies;";
+			PreparedStatement stmt = connection.prepareStatement(getNameAndGenreOfAllMovies);
+			ResultSet queryOutput = stmt.executeQuery();
+			queryOutput.next();
+
+			try {
+				while (true != false) {
+					if (queryOutput.getString(1).length() > longestMovieName.getValue())
+						longestMovieName.setValue(queryOutput.getString(1).length());
+					if (queryOutput.getString(2).length() > longestGenreName.getValue())
+						longestGenreName.setValue(queryOutput.getString(2).length());
+
+					queryOutput.next();
+				}
+			} catch (org.postgresql.util.PSQLException e) {
+				// no more movies to read
+			}
+		} // not as efficient as if 'longestMovieName' / 'longestGenreName' were calculated at movie inserting but it's more readable and another function also needed to get this value
+
 		private static String concatenateToString(String string, String add, int length) {
 			for (int i = 0; i < length; i++)
 				string += add;
 			return string;
 		}
+
 	}
 
 	protected static int getMovieIdFromGivenName(Connection connection) throws SQLException {
@@ -197,7 +249,7 @@ public class MenusFuncs {
 		queryOutput = stmt.executeQuery();
 		queryOutput.next();
 
-		stmt.close();
+		// dont close stmt here
 		return queryOutput.getInt(1);
 	}
 
@@ -207,29 +259,17 @@ public class MenusFuncs {
 		ResultSet queryOutput = stmt.executeQuery();
 		queryOutput.next();
 
+		// dont close stmt here
 		return queryOutput.getString(2) + " | " + queryOutput.getString(3) + " | "
 				+ queryOutput.getString(4)
 				+ " | " + queryOutput.getString(5);
 	}
 
-	protected static void promptUserForLike(Connection connection, int user_id, int movie_id) throws SQLException {
-		PrintMenus.printIfUserWantsToLikeTheMovie();
-
-		String subOption = App.console.nextLine();
-		if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
-				|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
-			Auxs.likeMovie(connection, user_id, movie_id);
-		}
-	}
-
-	protected static void promptUserForDislike(Connection connection, int user_id, int movie_id) throws SQLException {
-		PrintMenus.printIfUserWantsToDislikeTheMovie();
-
-		String subOption = App.console.nextLine();
-		if (subOption.equals("y") || subOption.equals("yes") || subOption.equals("true")
-				|| subOption.equals("ye") || subOption.equals("1") || subOption.equals("ja")) {
-			Auxs.dislikeMovie(connection, user_id, movie_id);
-		}
+	protected static void promptUserForLikeAndDislike(Connection connection, int user_id, int movie_id)
+			throws SQLException {
+		boolean likedSuccessfully = Auxs.promptUserForLike(connection, user_id, movie_id);
+		if (likedSuccessfully == false) // theres no reason to dislike a movie the user just liked
+			Auxs.promptUserForDislike(connection, user_id, movie_id);
 	}
 
 	protected static ArrayList<Genres> insertFromDBinGenreArray(Connection connection, int user_id)
@@ -276,7 +316,7 @@ public class MenusFuncs {
 	protected static void printFeed(Connection connection, ArrayList<Genres> genres) throws SQLException {
 		MutableInt longestMovieName = new MutableInt();
 		MutableInt longestGenreName = new MutableInt();
-		getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
+		Auxs.getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
 
 		for (Genres genre : genres) {
 			for (Genres.Movies movie : genre.getMovies()) {
@@ -289,31 +329,12 @@ public class MenusFuncs {
 				System.out
 						.println(movie.getName() + spacingOfMovieName + " | " + movie.getGenre() + spacingOfGenreName
 								+ " | " + movie.getReleaseDate() + " | " + movie.getLikes());
+
+				// does spacing before the movie name look better??	what if the name is too long? hmmm
+				// System.out.println("--------------------------------------------------------------------------"); ??
 			}
 		}
 	}
-
-	protected static void getLongestMovieNameAndGenre(Connection connection, MutableInt longestMovieName,
-			MutableInt longestGenreName)
-			throws SQLException {
-		String getNameAndGenreOfAllMovies = "select name, genre from movies;";
-		PreparedStatement stmt = connection.prepareStatement(getNameAndGenreOfAllMovies);
-		ResultSet queryOutput = stmt.executeQuery();
-		queryOutput.next();
-
-		try {
-			while (true != false) {
-				if (queryOutput.getString(1).length() > longestMovieName.getValue())
-					longestMovieName.setValue(queryOutput.getString(1).length());
-				if (queryOutput.getString(2).length() > longestGenreName.getValue())
-					longestGenreName.setValue(queryOutput.getString(2).length());
-
-				queryOutput.next();
-			}
-		} catch (org.postgresql.util.PSQLException e) {
-			// no more movies to read
-		}
-	} // not as efficient as if 'longestMovieName' / 'longestGenreName' were calculated at movie inserting but it's more readable and another function also needed to get this value
 
 	protected static void printUserLikedMoviesList(Connection connection, int user_id) throws SQLException {
 		String queryGetMoviesLikedByUser = "select movies.name, movies.genre, movies.release_date, movies.likes from movies inner join "
@@ -323,7 +344,7 @@ public class MenusFuncs {
 		queryOutput.next();
 		MutableInt longestMovieName = new MutableInt();
 		MutableInt longestGenreName = new MutableInt();
-		getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
+		Auxs.getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
 
 		try {
 			while (true != false) {

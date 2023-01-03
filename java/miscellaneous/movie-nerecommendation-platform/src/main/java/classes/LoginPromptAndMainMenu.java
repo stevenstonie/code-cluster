@@ -14,7 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class PromptAndMainMenu {
+public class LoginPromptAndMainMenu {
 	private static String getRoleOfUser(Connection connection, int user_id) throws SQLException {
 		String queryFindRoleOfUser = "select role from users where id = " + Integer.toString(user_id) + ";";
 		PreparedStatement stmt = connection.prepareStatement(queryFindRoleOfUser);
@@ -27,6 +27,8 @@ public class PromptAndMainMenu {
 	// returns user_id. if id returned is -1 the user has not logged in
 	private static int promptUser(Connection connection) throws SQLException {
 		System.out.println("\n~~~~~~~~~~~ login window ~~~~~~~~~~~");
+		Inutils.printLoadingDots();
+
 		int user_id = -1;
 		boolean exit = false;
 		short option;
@@ -82,11 +84,13 @@ public class PromptAndMainMenu {
 	public static void mainMenu(Connection connection) throws SQLException {
 		int user_id = promptUser(connection);
 		if (user_id == -1) {
-			System.out.println("login unsuccessful. exiting program..");
+			System.out.print("login unsuccessful. exiting program");
+			Inutils.printLoadingDots();
 			return;
 		}
 
 		System.out.println("\n~~~~~~~~~~~ welcome to my movie recommendation platform! ~~~~~~~~~~~");
+		Inutils.printLoadingDots();
 
 		String user_role = getRoleOfUser(connection, user_id);
 

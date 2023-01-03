@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 
 public class CreateTables {
-	public static void createTableUsers(Connection connection) throws SQLException {
+	private static void createTableUsers(Connection connection) throws SQLException {
 		String queryCreateTable = "Select to_regclass('public.users');";
 		PreparedStatement stmt = connection.prepareStatement(queryCreateTable);
 		ResultSet queryOutput = stmt.executeQuery();
@@ -25,7 +25,7 @@ public class CreateTables {
 		stmt.close();
 	}
 
-	public static void createTableMovies(Connection connection) throws SQLException {
+	private static void createTableMovies(Connection connection) throws SQLException {
 		String queryCreateTable = "SELECT to_regclass('public.movies');";
 		PreparedStatement stmt = connection.prepareStatement(queryCreateTable);
 		ResultSet queryOutput = stmt.executeQuery();
@@ -43,7 +43,7 @@ public class CreateTables {
 		stmt.close();
 	}
 
-	public static void createTableUsersMovies(Connection connection) throws SQLException {
+	private static void createTableUsersMovies(Connection connection) throws SQLException {
 		String queryCreateTable = "select to_regclass('public.users_movies');";
 		PreparedStatement stmt = connection.prepareStatement(queryCreateTable);
 		ResultSet queryOutput = stmt.executeQuery();
@@ -93,5 +93,11 @@ public class CreateTables {
 		}
 
 		stmt.close();
+	}
+
+	public static void createAllTables(Connection connection) throws SQLException {
+		createTableUsers(connection);
+		createTableMovies(connection);
+		createTableUsersMovies(connection);
 	}
 }

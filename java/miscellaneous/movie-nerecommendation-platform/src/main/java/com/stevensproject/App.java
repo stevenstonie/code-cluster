@@ -1,6 +1,6 @@
 package com.stevensproject;
 
-import classes.PromptAndMainMenu;
+import classes.LoginPromptAndMainMenu;
 import classes.auxiliaryclasses.ConnectToDB;
 import classes.auxiliaryclasses.CreateTables;
 
@@ -15,16 +15,13 @@ public class App {
 		ConnectToDB app = new ConnectToDB();
 		Connection connection = app.connectToDatabase(false);
 
-		CreateTables.createTableUsers(connection);
-		CreateTables.createTableMovies(connection);
-		CreateTables.createTableUsersMovies(connection);
+		CreateTables.createAllTables(connection);
 
-		PromptAndMainMenu.mainMenu(connection);
+		LoginPromptAndMainMenu.mainMenu(connection);
 
-		// add thread sleep to the loading bar
 		// populate database
-		// solve messiness in code
-		// also increment the number of likes of a certain movie if the user likes it? (or decrement if dislikes)
+		// solve messiness in code -> literally impossible
+		// also increment the number of likes of a certain movie if the user likes it? (or decrement if dislikes) --> should be done only in case more users are connected to the same database
 		// and maybe make a password generator?
 		// and also a password censorer?
 		// gui if i have some free time

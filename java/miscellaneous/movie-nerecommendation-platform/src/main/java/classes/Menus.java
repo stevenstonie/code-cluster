@@ -32,11 +32,7 @@ public class Menus extends MenusFuncs {
 					if (movie_id != -1) {
 						System.out.println(searchMovieCredentialsById(connection, movie_id) + "\n");
 
-						// prompt user for like
-						promptUserForLike(connection, user_id, movie_id);
-
-						// prompt user for dislike
-						promptUserForDislike(connection, user_id, movie_id);
+						promptUserForLikeAndDislike(connection, user_id, movie_id);
 					} else {
 						System.out.println("the movie could not be found..\n");
 					}
@@ -75,7 +71,8 @@ public class Menus extends MenusFuncs {
 			}
 		} while (exit == false);
 
-		System.out.println("logging out..");
+		System.out.print("logging out");
+		Inutils.printLoadingDots();
 	}
 
 	public static void adminMenu(Connection connection) {
