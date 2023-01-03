@@ -12,3 +12,6 @@ the python folder currently consists of school homework as i am still learning t
 (TODO: add data science in here)
 
 the java folder consists of the same type of exercises as the cpp one
+
+``` noticeable projects
+exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
