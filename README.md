@@ -14,5 +14,6 @@ currently consists of school homework as i am still learning the language
 consists of the same type of exercises as the cpp one
 
 #### more noticeable projects:
-
 - ```exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
+
+- ```exercise-cluster/cpp/level4/grammar and automata/```
