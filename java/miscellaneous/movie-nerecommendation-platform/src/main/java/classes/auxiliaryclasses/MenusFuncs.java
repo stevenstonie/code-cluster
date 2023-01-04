@@ -8,21 +8,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 public class MenusFuncs {
 	protected static class Genres {
 		protected static class Movies {
+			private int id;
 			private String name;
 			private String genre;
 			private String release_date;
 			private int likes;
 
-			protected Movies(String name, String genre, String release_date, int likes) {
+			protected Movies(int id, String name, String genre, String release_date, int likes) {
+				this.id = id;
 				this.name = name;
 				this.genre = genre;
 				this.release_date = release_date;
 				this.likes = likes;
+			}
+
+			protected int getId() {
+				return id;
 			}
 
 			protected String getName() {
@@ -193,7 +203,8 @@ public class MenusFuncs {
 
 				try {
 					while (true != false) {
-						genre.addMovie(new Genres.Movies(queryOutput.getString(2), queryOutput.getString(3),
+						genre.addMovie(new Genres.Movies(Integer.parseInt(queryOutput.getString(1)),
+								queryOutput.getString(2), queryOutput.getString(3),
 								queryOutput.getString(4), Integer.parseInt(queryOutput.getString(5))));
 
 						queryOutput.next();
@@ -234,23 +245,29 @@ public class MenusFuncs {
 
 	}
 
-	protected static int getMovieIdFromGivenName(Connection connection) throws SQLException {
+	protected static Object[] findMovie(Connection connection, ArrayList<Genres> genres, MutableBoolean exists) {
 		System.out.println("search for the movie: ");
-		String movie_name = App.console.nextLine();
-		String queryCheckIfMovieExists = "select count(*) from movies where name = '" + movie_name + "';";
-		PreparedStatement stmt = connection.prepareStatement(queryCheckIfMovieExists);
-		ResultSet queryOutput = stmt.executeQuery();
-		queryOutput.next();
-		if (queryOutput.getInt(1) == 0)
-			return -1;
-		// TODO: do search by regex
-		String querySearchIdOfMovie = "select id from movies where name = '" + movie_name + "';";
-		stmt = connection.prepareStatement(querySearchIdOfMovie);
-		queryOutput = stmt.executeQuery();
-		queryOutput.next();
+		String movie_name_input = App.console.nextLine();
+		Object[] movieCredentials = new Object[5];
+		Pattern pattern = Pattern.compile(movie_name_input, Pattern.CASE_INSENSITIVE);
 
-		// dont close stmt here
-		return queryOutput.getInt(1);
+		for (Genres genre : genres) {
+			for (Genres.Movies movie : genre.getMovies()) {
+				Matcher matcher = pattern.matcher(movie.getName());
+				boolean matchFound = matcher.find();
+
+				if (matchFound == true) {
+					exists.setValue(true);
+					movieCredentials[0] = movie.getId();
+					movieCredentials[1] = movie.getName();
+					movieCredentials[2] = movie.getGenre();
+					movieCredentials[3] = movie.getReleaseDate();
+					movieCredentials[4] = movie.getLikes();
+					break;
+				}
+			}
+		}
+		return movieCredentials;
 	}
 
 	protected static String searchMovieCredentialsById(Connection connection, int movie_id) throws SQLException {

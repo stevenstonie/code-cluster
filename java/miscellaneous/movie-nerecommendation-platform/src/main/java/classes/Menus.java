@@ -8,6 +8,7 @@ import classes.auxiliaryclasses.Inutils;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.apache.commons.lang3.mutable.MutableBoolean;
 
 public class Menus extends MenusFuncs {
 
@@ -20,6 +21,8 @@ public class Menus extends MenusFuncs {
 			System.out.print(">");
 			option = Inutils.getSmallIntInputFromUser();
 
+			ArrayList<Genres> genres = insertFromDBinGenreArray(connection, user_id);
+
 			switch (option) {
 				case 0: {
 					PrintMenus.printUserMenuMenu();
@@ -27,11 +30,14 @@ public class Menus extends MenusFuncs {
 				}
 
 				case 1: {
-					int movie_id = getMovieIdFromGivenName(connection);
+					MutableBoolean exists = new MutableBoolean(false);
+					Object[] movieCredentials = findMovie(connection, genres, exists);
 
-					if (movie_id != -1) {
-						System.out.println(searchMovieCredentialsById(connection, movie_id) + "\n");
+					if (exists.booleanValue() == true) {
+						System.out.println(movieCredentials[1] + " | " + movieCredentials[2] + " | "
+								+ movieCredentials[3] + " | " + movieCredentials[4]);
 
+						int movie_id = (int) movieCredentials[0];
 						promptUserForLikeAndDislike(connection, user_id, movie_id);
 					} else {
 						System.out.println("the movie could not be found..\n");
@@ -44,7 +50,6 @@ public class Menus extends MenusFuncs {
 					short subOption = Inutils.getSmallIntInputFromUser();
 
 					if (subOption == 1 || subOption == 2) {
-						ArrayList<Genres> genres = insertFromDBinGenreArray(connection, user_id);
 
 						if (subOption == 1) {
 							sortMoviesByLikes(genres);
