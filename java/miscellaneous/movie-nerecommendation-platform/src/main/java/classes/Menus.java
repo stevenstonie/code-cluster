@@ -23,6 +23,12 @@ public class Menus extends MenusFuncs {
 
 			ArrayList<Genres> genres = insertFromDBinGenreArray(connection, user_id);
 
+			if (genres.size() == 0) {
+				System.out
+						.println("the database is empty. please contact the admin to add new movies to the platform..");
+				option = -1;
+			}
+
 			switch (option) {
 				case 0: {
 					PrintMenus.printUserMenuMenu();
@@ -108,10 +114,7 @@ public class Menus extends MenusFuncs {
 					break;
 				}
 
-				case 2: {
-					// function to delete movie from the database
-					break;
-				}
+				// if i were to make a function to delete a movie from the database i would also have to meddle with the users_movies table hmmmm..
 
 				default: {
 					exit = true;
@@ -124,6 +127,3 @@ public class Menus extends MenusFuncs {
 		System.out.println("logging out..");
 	}
 }
-
-// TODO: genres that are not liked shouldnt print movies as the genres would be randomized but the movies not. when 
-// printing the feed the movies are grouped by randomized genres, when they shouldnt be. or so i think, but it might make the code messier so idk

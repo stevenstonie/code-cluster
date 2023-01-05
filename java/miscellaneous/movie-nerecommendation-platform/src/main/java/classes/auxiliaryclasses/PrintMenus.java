@@ -45,7 +45,7 @@ public class PrintMenus {
 		System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("press 0 to bring back this menu");
 		System.out.println("press 1 to add movies in the database");
-		System.out.println("press 2 to delete a movie from the database");
+		System.out.println("press 2 to delete a movie from the database (currently under work)");
 		System.out.println("press anything else to logout");
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}

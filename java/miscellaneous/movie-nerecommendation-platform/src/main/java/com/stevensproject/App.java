@@ -21,8 +21,7 @@ public class App {
 
 		// solve messiness in code -> literally impossible
 		// also increment the number of likes of a certain movie if the user likes it? (or decrement if dislikes) --> should be done only in case more users are connected to the same database
-		// and maybe make a password generator?
-		// and also a password censorer?
+		// maybe make a password generator?
 		// gui if i have some free time
 
 		console.close();

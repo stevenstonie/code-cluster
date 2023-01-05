@@ -29,5 +29,6 @@ public class Inutils {
 		System.out.print(".");
 		LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(500));
 		System.out.println();
+		// this is waaaaay better than thread.sleep()
 	}
 }

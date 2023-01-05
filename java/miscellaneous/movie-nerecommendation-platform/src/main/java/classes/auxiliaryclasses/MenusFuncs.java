@@ -186,7 +186,6 @@ public class MenusFuncs {
 				}
 			} catch (org.postgresql.util.PSQLException e) {
 				// no more movies to read
-				Collections.shuffle(unlikedGenres);
 				for (String newGenre : unlikedGenres) {
 					genres.add(new Genres(newGenre, 0));
 				}
@@ -255,7 +254,7 @@ public class MenusFuncs {
 			for (Genres.Movies movie : genre.getMovies()) {
 				Matcher matcher = pattern.matcher(movie.getName());
 				boolean matchFound = matcher.find();
-
+				// TODO: improve pattern matching maybe
 				if (matchFound == true) {
 					exists.setValue(true);
 					movieCredentials[0] = movie.getId();
@@ -268,18 +267,6 @@ public class MenusFuncs {
 			}
 		}
 		return movieCredentials;
-	}
-
-	protected static String searchMovieCredentialsById(Connection connection, int movie_id) throws SQLException {
-		String querySearchMovieCredentials = "select * from movies where id = " + movie_id + ";";
-		PreparedStatement stmt = connection.prepareStatement(querySearchMovieCredentials);
-		ResultSet queryOutput = stmt.executeQuery();
-		queryOutput.next();
-
-		// dont close stmt here
-		return queryOutput.getString(2) + " | " + queryOutput.getString(3) + " | "
-				+ queryOutput.getString(4)
-				+ " | " + queryOutput.getString(5);
 	}
 
 	protected static void promptUserForLikeAndDislike(Connection connection, int user_id, int movie_id)
@@ -335,13 +322,19 @@ public class MenusFuncs {
 		MutableInt longestGenreName = new MutableInt();
 		Auxs.getLongestMovieNameAndGenre(connection, longestMovieName, longestGenreName);
 
-		for (Genres genre : genres) {
-			for (Genres.Movies movie : genre.getMovies()) {
-				// add spaces to the movie name so that all the movies are aligned
+		int i = 0;
+		boolean reachedUnlikedGenres = false;
+		for (i = 0; i < genres.size() && reachedUnlikedGenres == false; i++) {
+			for (Genres.Movies movie : genres.get(i).getMovies()) {
+				if (genres.get(i).likesOfUser == 0) {
+					reachedUnlikedGenres = true;
+					break;
+				}
+				// added spaces to the movie name so that all the movies are aligned
 				String spacingOfMovieName = Auxs.concatenateToString("", " ",
 						longestMovieName.getValue() - movie.getName().length());
 				String spacingOfGenreName = Auxs.concatenateToString("", " ",
-						longestGenreName.getValue() - genre.getName().length());
+						longestGenreName.getValue() - genres.get(i).getName().length());
 
 				System.out
 						.println(movie.getName() + spacingOfMovieName + " | " + movie.getGenre() + spacingOfGenreName
@@ -349,6 +342,30 @@ public class MenusFuncs {
 
 				// does spacing before the movie name look better??	what if the name is too long? hmmm
 				// System.out.println("--------------------------------------------------------------------------"); ??
+			}
+		}
+
+		// movies that had genres not liked by the user were shuffled but printed in groups so i placed them in an array and shuffled them here
+		if (reachedUnlikedGenres == true) {
+			ArrayList<String> unlikedGenres = new ArrayList<>();
+			for (; i < genres.size(); i++) {
+				for (Genres.Movies movie : genres.get(i).getMovies()) {
+					// add spaces to the movie name so that all the movies are aligned
+					String spacingOfMovieName = Auxs.concatenateToString("", " ",
+							longestMovieName.getValue() - movie.getName().length());
+					String spacingOfGenreName = Auxs.concatenateToString("", " ",
+							longestGenreName.getValue() - genres.get(i).getName().length());
+
+					unlikedGenres
+							.add(movie.getName() + spacingOfMovieName + " | " + movie.getGenre() + spacingOfGenreName
+									+ " | " + movie.getReleaseDate() + " | " + movie.getLikes());
+				}
+			}
+
+			Collections.shuffle(unlikedGenres);
+
+			for (String movie : unlikedGenres) {
+				System.out.println(movie);
 			}
 		}
 	}
