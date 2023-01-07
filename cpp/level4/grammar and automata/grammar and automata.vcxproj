@@ -131,6 +131,7 @@
     <ClCompile Include="includes\FiniteAutomaton.cpp" />
     <ClCompile Include="includes\Grammar.cpp" />
     <ClCompile Include="includes\GrammarToAutomaton.cpp" />
+    <ClCompile Include="Inutils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\FiniteAutomaton.h" />

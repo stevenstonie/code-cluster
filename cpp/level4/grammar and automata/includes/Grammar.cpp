@@ -56,7 +56,7 @@ bool Grammar::VerifyGrammar(){
 	return true;
 }
 
-// a grammar is regular if A->xB or A->Bx or A->x (general notation: u->v). a grammar is also generative if only A->xB or A->x
+// a grammar is regular if A->xB or A->x (general notation: u->v). a grammar is also generative if only A->xB or A->x
 bool Grammar::IsRegular(){
 	// for every u_v pair of P
 	for(auto& u_v : P){
@@ -65,7 +65,7 @@ bool Grammar::IsRegular(){
 			return false;
 
 		// check if u is part of Vn
-		auto uInVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);    // if at least one elem of u is part of Vn then i believe this shouldnt be checked here
+		auto uInVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);
 		if(uInVn == Vn.end())
 			return false;
 
@@ -83,30 +83,6 @@ bool Grammar::IsRegular(){
 			if(chrInVt == Vt.end() || chrInVn == Vn.end())
 				return false;
 		}
-
-		/* solution for a grammar that is regular but not necessarily generative
-		// else if v's size is two then one elem has to be from Vt and the other one from Vn
-		if(u_v.second.size() == 2){
-			// search v's first elem in Vt
-			auto chrInVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
-			// if it is not in Vt then check if it is in Vn and if the other element is from Vt
-			if(chrInVt == Vt.end()){
-				auto chrInVn = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
-				if(chrInVn == Vn.end())
-					return false;
-				else{
-					auto chrInVt = std::find(Vt.begin(), Vt.end(), u_v.second[1]);
-					if(chrInVt == Vt.end())
-						return false;
-				}
-			}
-			//if it is in Vt check if the other one is Vn
-			else{
-				auto chrInVn = std::find(Vn.begin(), Vn.end(), u_v.second[1]);
-				if(chrInVn == Vn.end())
-					return false;
-			}
-		}*/
 	}
 	return true;
 }

@@ -1,7 +1,7 @@
 #include <iostream>
-#include <Windows.h>
 #include <fstream>
 
+#include "Inutils.cpp"
 #include "includes/Grammar.h"
 #include "includes/FiniteAutomaton.h"
 #include "includes/GrammarToAutomaton.h"
@@ -32,32 +32,20 @@ void Menu(Grammar& grammar){
 	FiniteAutomaton finaut(GrammarToFiniteAutomaton(grammar));
 	bool exit = false;
 	while(true){
-		Sleep(700);
-		std::cout << ".";
-		Sleep(700);
-		std::cout << ".";
-		Sleep(700);
-		std::cout << ".";
-		Sleep(700);
+		printThreeDots();
 		std::cout << "\n\n";
-		std::cout << "the currently accepted inputs are: \n";
-		std::cout << "a) print the grammar \n";
-		std::cout << "b) generate \"n words\" using the grammar \n";
-		std::cout << "c) print the automaton resulted from the grammar \n";
-		std::cout << "d) verify if a word is either accepted by the automaton or not \n";
-		std::cout << "e) generate a word in grammar and verify if it is accepted by the automaton \n";
-		std::cout << "anything else to exit the menu \n";
+		printMainMenu();
 		char letter;
 		std::cin >> letter;
 		std::cin.ignore(256, '\n');
 		std::cout << "\n";
 		switch(letter){
-			case 'a':{
+			case '1':{
 				grammar.PrintGrammar();
 				break;
 			}
 
-			case 'b':{
+			case '2':{
 				int n;
 				std::cout << "insert how many words you want to be generated: ";
 				std::cin >> n;
@@ -69,12 +57,12 @@ void Menu(Grammar& grammar){
 				break;
 			}
 
-			case 'c':{
+			case '3':{
 				std::cout << finaut << std::endl;
 				break;
 			}
 
-			case 'd':{
+			case '4':{
 				std::string word;
 				std::cout << "enter the word \n";
 				std::cin >> word;
@@ -85,7 +73,7 @@ void Menu(Grammar& grammar){
 				break;
 			}
 
-			case 'e':{
+			case '5':{
 				std::string generatedWord = grammar.GenerateWord();
 				if(finaut.CheckWord(generatedWord))
 					std::cout << "the generated word \"" << generatedWord << "\" is accepted by the automaton. \n";
@@ -103,13 +91,7 @@ void Menu(Grammar& grammar){
 			break;
 	}
 	std::cout << "exiting the menu";
-	Sleep(700);
-	std::cout << ".";
-	Sleep(700);
-	std::cout << ".";
-	Sleep(700);
-	std::cout << ".";
-	Sleep(700);
+	printThreeDots();
 }
 
 int main(){
