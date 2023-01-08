@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4e5e2231-ea43-4520-b63a-71f387509ca7}</ProjectGuid>
-    <RootNamespace>grammarandautomata</RootNamespace>
+    <ProjectGuid>{e5cd379f-3d20-492a-b963-c0305d1aa665}</ProjectGuid>
+    <RootNamespace>fromregulargrammartoautomaton</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="grammar and automata.cpp" />
+    <ClCompile Include="from_regular_grammar_to_automaton.cpp" />
     <ClCompile Include="includes\FiniteAutomaton.cpp" />
     <ClCompile Include="includes\Grammar.cpp" />
     <ClCompile Include="includes\GrammarToAutomaton.cpp" />

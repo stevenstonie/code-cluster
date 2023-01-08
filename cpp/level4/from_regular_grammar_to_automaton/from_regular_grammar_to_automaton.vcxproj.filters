@@ -15,13 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="grammar and automata.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="includes\Grammar.cpp">
+    <ClCompile Include="from_regular_grammar_to_automaton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\FiniteAutomaton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\Grammar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="includes\GrammarToAutomaton.cpp">
@@ -32,10 +32,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\Grammar.h">
+    <ClInclude Include="includes\FiniteAutomaton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\FiniteAutomaton.h">
+    <ClInclude Include="includes\Grammar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\GrammarToAutomaton.h">
