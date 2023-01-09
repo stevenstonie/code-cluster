@@ -17,6 +17,9 @@ public:
 
 	void transformToGreibachNormalForm();
 
+	void simplifyGrammar();
+// implement!!
+
 	std::string GenerateWord();
 
 	void PrintGrammar();

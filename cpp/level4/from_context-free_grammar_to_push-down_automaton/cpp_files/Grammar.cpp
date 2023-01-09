@@ -110,11 +110,10 @@ bool Grammar::canTransformToGreibachNormalForm(){
 }
 
 void Grammar::transformToGreibachNormalForm(){
-    if(canTransformToGreibachNormalForm == false){
+    if(canTransformToGreibachNormalForm() == false){
         std::cout << "the given grammar is not in greibach normal form...";
         return;
     }
-
 
 }
 
