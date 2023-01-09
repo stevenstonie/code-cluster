@@ -11,7 +11,10 @@ public:
 
 	bool VerifyGrammar();
 
-	bool IsRegular();
+	bool isContextFree();
+
+	void simplifyGrammar();
+// implement!!
 
 	std::string GenerateWord();
 

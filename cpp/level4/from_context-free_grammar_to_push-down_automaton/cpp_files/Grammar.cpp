@@ -56,35 +56,64 @@ bool Grammar::VerifyGrammar() {
     return true;
 }
 
-// a grammar is regular if A->xB or A->x (general notation: u->v). a grammar is also generative if only A->xB or A->x
-bool Grammar::IsRegular() {
-    // for every u_v pair of P
-    for (auto& u_v : P) {
-        // check if u is longer than 1 elem or if v is longer than 2 elements
-        if (u_v.first.size() > 1 || u_v.second.size() > 2)
+// a grammar is context-free when it is of form A->w where A is a non-terminal and w is a set of terminals and/or non-terminals (at least one)
+bool Grammar::isContextFree(){
+    for(const auto& u_v : P){
+        // each u has to be of size 1
+        if(u_v.first.size() != 1)
             return false;
 
-        // check if u is part of Vn
-        auto uInVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);
-        if (uInVn == Vn.end())
+        // each u has to be from Vn
+        auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);
+        if(findUinVn == Vn.end())
             return false;
 
-        // if v's size is one it has to be part of Vt
-        if (u_v.second.size() == 1) {
-            auto vInVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
-            if (vInVt == Vt.end())
-                return false;
+        // each v has to be of size at least 1
+        if(u_v.second.size() < 1)
+            return false;
+
+        // check if each element of v is either part of Vn or Vt
+        auto findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
+        for(const auto& elemOfV : u_v.second){
+            findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), elemOfV);
+            if(findElemsOfVinVnAndVt == Vn.end()){
+                findElemsOfVinVnAndVt = std::find(Vt.begin(), Vt.end(), elemOfV);
+                if(findElemsOfVinVnAndVt == Vt.end())
+                    return false;
+            }
         }
+    }
+    return true;
+}
 
-        // else if v's size is two then the first elem has to be from Vt and the other one from Vn
-        if (u_v.second.size() == 2) {
-            auto chrInVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
-            auto chrInVn = std::find(Vn.begin(), Vn.end(), u_v.second[1]);
-            if (chrInVt == Vt.end() || chrInVn == Vn.end())
+// a grammar is in greibach normal form if productions satisfy the followings:
+bool Grammar::canTransformToGreibachNormalForm(){
+    for(const auto& u_v : P){
+        // only S can transform to null
+        if(u_v.first[0] != S && u_v.second == "~")    //!!!!! but isContextFree() says if a right side is null it is not context free...
+            return false;
+
+        // an A can transform to a terminal only
+        auto findFirstElemOfVinVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
+        if(findFirstElemOfVinVt == Vt.end())
+            return false;
+
+        // an A can transform to a terminal and many other non-terminals
+        auto findElemsOfVinVn = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
+        for(int i = 1; i < u_v.second.size(); i++){
+            findElemsOfVinVn = std::find(Vn.begin(), Vn.end(), u_v.second[i]);
+            if(findElemsOfVinVn == Vn.end())
                 return false;
         }
     }
     return true;
+}
+
+void Grammar::transformToGreibachNormalForm(){
+    if(canTransformToGreibachNormalForm == false){
+        std::cout << "the given grammar is not in greibach normal form...";
+        return;
+    }
 }
 
 // start with S and work your way up to the final word
