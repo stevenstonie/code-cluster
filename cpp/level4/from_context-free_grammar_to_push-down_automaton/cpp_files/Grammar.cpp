@@ -108,6 +108,7 @@ bool Grammar::canTransformToGreibachNormalForm(){
     }
     return true;
 }
+//!!!!!!
 
 void Grammar::transformToGreibachNormalForm(){
     if(canTransformToGreibachNormalForm() == false){
@@ -115,6 +116,12 @@ void Grammar::transformToGreibachNormalForm(){
         return;
     }
 
+    // convert grammar to cnf
+    //!!!! how in the hell can i convert from context-free to chomsky if chomsky asks for the rule A->BC, where the said rule cannot convert the grammar to greibach...
+
+    // eliminate left recursion from grammar if it exists
+
+    // convert the production rules into gnf form
 }
 
 // start with S and work your way up to the final word
