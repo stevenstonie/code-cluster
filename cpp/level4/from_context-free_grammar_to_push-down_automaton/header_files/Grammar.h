@@ -11,7 +11,11 @@ public:
 
 	bool VerifyGrammar();
 
-	bool IsRegular();
+	bool isContextFree();
+
+	bool canTransformToGreibachNormalForm();
+
+	void transformToGreibachNormalForm();
 
 	std::string GenerateWord();
 
