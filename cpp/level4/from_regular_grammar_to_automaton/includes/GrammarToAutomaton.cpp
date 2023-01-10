@@ -14,14 +14,14 @@ FiniteAutomaton GrammarToFiniteAutomaton(const Grammar& grammar){
 	std::vector<std::string> final;
 
 	// make a transition from the non-terminals to states + add an additional final state 
-	for(auto& non_terminal : grammar.GetVn()){
+	for(const auto& non_terminal : grammar.getVn()){
 		std::string str_non_terminal(1, non_terminal);
 		Q.push_back(str_non_terminal);
 	}
 	Q.push_back("Z");
 
 	// make a transition from the terminals to symbols
-	for(auto& terminal : grammar.GetVt()){
+	for(const auto& terminal : grammar.getVt()){
 		std::string str_terminal(1, terminal);
 		sigma.push_back(str_terminal);
 	}
@@ -31,15 +31,17 @@ FiniteAutomaton GrammarToFiniteAutomaton(const Grammar& grammar){
 	// when found, if the non-terminal results in only a terminal then translate it into delta as {u, v, finalState}
 	// else if it results in a terminal and also in a non-terminal then translate it into delta as {u, v0, v1}
 	std::string finalState = Q.back();
-	for(auto& non_terminal : grammar.GetVn()){
-		for(auto& production : grammar.GetP()){
-			if(production.first[0] == non_terminal){
-				std::string str_v_0(1, production.second[0]);
-				if(production.second.size() == 1)
-					delta.push_back({production.first, str_v_0, finalState});
-				else{
-					std::string str_v_1(1, production.second[1]);
-					delta.push_back({production.first, str_v_0, str_v_1});
+	for(const auto& non_terminal : grammar.getVn()){
+		for(const auto& production : grammar.getP()){
+			if(production.getLeft()[0] == non_terminal){
+				for(const auto& v : production.getRight()){
+					std::string str_v_0(1, v[0]);
+					if(v.size() == 1)
+						delta.push_back({production.getLeft(), str_v_0, finalState});
+					else{
+						std::string str_v_1(1, v[1]);
+						delta.push_back({production.getLeft(), str_v_0, str_v_1});
+					}
 				}
 			}
 		}

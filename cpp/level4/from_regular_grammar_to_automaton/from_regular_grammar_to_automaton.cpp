@@ -17,7 +17,7 @@ Grammar CreateGrammar(){
 		char insertOrExit;
 		std::cin >> insertOrExit;
 		if(insertOrExit == '0')
-			grammar.ReadGrammar();
+			grammar.readGrammar();
 		// else continue, close the file and skip the menu
 	}
 	else
@@ -41,7 +41,7 @@ void Menu(Grammar& grammar){
 		std::cout << "\n";
 		switch(letter){
 			case '1':{
-				grammar.PrintGrammar();
+				grammar.printGrammar();
 				break;
 			}
 
@@ -51,7 +51,7 @@ void Menu(Grammar& grammar){
 				std::cin >> n;
 				std::cout << "the words generated are as follows: \n\n";
 				for(int i = 0; i < n; i++){
-					std::string generatedWord = grammar.GenerateWord();
+					std::string generatedWord = grammar.generateWord();
 					std::cout << "the generated word " << i + 1 << " is: " << generatedWord << "\n\n";
 				}
 				break;
@@ -74,7 +74,7 @@ void Menu(Grammar& grammar){
 			}
 
 			case '5':{
-				std::string generatedWord = grammar.GenerateWord();
+				std::string generatedWord = grammar.generateWord();
 				if(finaut.CheckWord(generatedWord))
 					std::cout << "the generated word \"" << generatedWord << "\" is accepted by the automaton. \n";
 				else
@@ -97,6 +97,6 @@ void Menu(Grammar& grammar){
 int main(){
 	Grammar grammar = CreateGrammar();
 
-	if(grammar.VerifyGrammar() == true and grammar.IsRegular() == true)
+	if(grammar.verifyGrammar() == true and grammar.isRegular() == true)
 		Menu(grammar);
 }

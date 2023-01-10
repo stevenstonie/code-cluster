@@ -13,7 +13,7 @@ bool FiniteAutomaton::VerifyAutomaton(){
 		return false;
 
 	//Q not equal to sigma
-	for(auto& qElem : Q){
+	for(const auto& qElem : Q){
 		auto qElemInSigma = std::find(sigma.begin(), sigma.end(), qElem);
 		if(qElemInSigma != sigma.end())
 			return false;
@@ -27,14 +27,14 @@ bool FiniteAutomaton::VerifyAutomaton(){
 			return false;
 
 		// the final state/states have to be part of 
-		for(auto& finalState : final){
+		for(const auto& finalState : final){
 			auto finalStateInQ = std::find(Q.begin(), Q.end(), finalState);
 			if(finalStateInQ == Q.end())
 				return false;
 		}
 
 		// the delta function of form `````q x a -> p````` needs to have q and p as part of Q and a as part of sigma
-		for(auto& q_a_p : delta){
+		for(const auto& q_a_p : delta){
 			auto qInQ = std::find(Q.begin(), Q.end(), std::get<0>(q_a_p));
 			auto aInSigma = std::find(sigma.begin(), sigma.end(), std::get<1>(q_a_p));
 			auto pInQ = std::find(Q.begin(), Q.end(), std::get<2>(q_a_p));
@@ -60,8 +60,8 @@ bool FiniteAutomaton::CheckWord(std::string givenWord){
 	for(char letter : givenWord){
 		std::string str_letter(1, letter);
 		std::vector<std::string> nextCurrentStates;
-		for(auto& state : currentStates)
-			for(auto& q_a_p : delta)
+		for(const auto& state : currentStates)
+			for(const auto& q_a_p : delta)
 				if(std::get<0>(q_a_p) == state && std::get<1>(q_a_p) == str_letter)
 					nextCurrentStates.push_back(std::get<2>(q_a_p));
 		currentStates = nextCurrentStates;
@@ -69,7 +69,7 @@ bool FiniteAutomaton::CheckWord(std::string givenWord){
 
 	// go through the final states and see if there is one occurence of it in 
 	// the current states. if yes then it means the word is accepted by the automaton
-	for(auto& finalState : final){
+	for(const auto& finalState : final){
 		auto finalStateInCurrentStates = std::find(currentStates.begin(), currentStates.end(), finalState);
 		if(finalStateInCurrentStates != currentStates.end())
 			return true;

@@ -7,25 +7,59 @@
 
 class Grammar{
 public:
+	class Production {
+	public:
+		Production() = default;
+		Production(std::string left, std::string right)
+			: left(left){
+			this->right.push_back(right);
+		}
+		Production(std::string left, std::vector<std::string> right)
+			: left(left), right(right) {}
+
+		std::string getLeft() const {
+			return left;
+		}
+		std::vector<std::string> getRight() const {
+			return right;
+		}
+		void setLeft(std::string left) {
+			this->left = left;
+		}
+		void setRight(std::vector<std::string> right) {
+			this->right = right;
+		}
+		void addRight(std::string v){
+			this->right.push_back(v);
+		}
+
+		friend std::ostream& operator<<(std::ostream& output, const Production& production);
+		friend std::istream& operator>>(std::istream& input, Production& production);
+
+	private:
+		std::string left;
+		std::vector<std::string> right;
+	};
+
 	Grammar() = default;
 
-	bool VerifyGrammar();
+	bool verifyGrammar();
 
-	bool IsRegular();
+	bool isRegular();
 
-	std::string GenerateWord();
+	std::string generateWord();
 
-	void PrintGrammar();
+	void printGrammar();
 
-	void ReadGrammar();
+	void readGrammar();
 
-	std::vector<char> GetVn() const;
+	std::vector<char> getVn() const;
 
-	std::vector<char> GetVt() const;
+	std::vector<char> getVt() const;
 
-	char GetS() const;
+	char getS() const;
 
-	std::vector<std::pair<std::string, std::string>> GetP() const;
+	std::vector<Production> getP() const;
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
@@ -34,7 +68,7 @@ public:
 private:
 	std::vector<char> Vn, Vt;
 	char S;
-	std::vector<std::pair<std::string, std::string>> P;
+	std::vector<Production> P;
 
 private:
 	int randomIntFrom0untilN(int n);
