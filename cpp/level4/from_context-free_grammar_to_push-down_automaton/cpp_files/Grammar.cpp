@@ -1,266 +1,372 @@
 #include "../header_files/Grammar.h"
 
+#include <iostream>
+
 bool Grammar::verifyGrammar() {
-    // each element has to be NOT null
-    if(Vn.empty() || Vt.empty() || S == 0 || P.empty())
-        return false;
+	// each element has to be NOT null
+	if (Vn.empty() || Vt.empty() || S == 0)
+		return false;
+	for (const auto& u_v : P) {
+		if (u_v.getLeft() == "" || u_v.getRight().empty())
+			return false;
+	}
 
-    // Vt should not share elements with Vn
-    for(auto& vt_elem : Vt) {
-        auto findIfElemIsShared = std::find(Vn.begin(), Vn.end(), vt_elem);
-        if(findIfElemIsShared != Vn.end())
-            return false;
-    }
+	// Vt should not share elements with Vn
+	for (const auto& vt_elem : Vt) {
+		auto findIfElemIsShared = std::find(Vn.begin(), Vn.end(), vt_elem);
+		if (findIfElemIsShared != Vn.end())
+			return false;
+	}
 
-    // S has to be an element from Vn
-    {
-        auto find_if_S_is_in_Vn = std::find(Vn.begin(), Vn.end(), S);
-        if(find_if_S_is_in_Vn == Vn.end())
-            return false;
-    }
+	// S has to be an element from Vn
+	{
+		auto find_if_S_is_in_Vn = std::find(Vn.begin(), Vn.end(), S);
+		if (find_if_S_is_in_Vn == Vn.end())
+			return false;
+	}
 
-    // every u of P has at least an element from Vn
-    for(auto& u_v : P) {
-        bool atLeastOneChrOfuFoundInVn = false;
-        for(auto& chrOfu : u_v.first) {
-            auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfu);
-            if(findChrInVn != Vn.end()) {
-                atLeastOneChrOfuFoundInVn = true;
-                break;
-            }
-        }
-        if(atLeastOneChrOfuFoundInVn != true)
-            return false;
-    }
+	// every u of P has at least an element from Vn
+	for (const auto& u_v : P) {
+		bool atLeastOneChrOfuFoundInVn = false;
+		for (const auto& chrOfu : u_v.getLeft()) {
+			auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfu);
+			if (findChrInVn != Vn.end()) {
+				atLeastOneChrOfuFoundInVn = true;
+				break;
+			}
+		}
+		if (atLeastOneChrOfuFoundInVn != true)
+			return false;
+	}
 
-    // u and v need to have all elements from Vn OR Vt
-    for(auto& u_v : P) {
-        // for every pair u and v of P check if every element of them is found in either Vn or Vt.
-        for(auto& chrOfu : u_v.first) {
-            auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfu);
-            if(findChrInVn == Vn.end()) {
-                auto findChrInVt = std::find(Vt.begin(), Vt.end(), chrOfu);
-                if(findChrInVt == Vt.end())
-                    return false;
-            }
-        }
-        for(auto& chrOfv : u_v.second) {
-            auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfv);
-            if(findChrInVn == Vn.end()) {
-                auto findChrInVt = std::find(Vt.begin(), Vt.end(), chrOfv);
-                if(findChrInVt == Vt.end())
-                    return false;
-            }
-        }
-    }
-    return true;
+	// u and v need to have all elements from Vn OR Vt
+	for (const auto& u_v : P) {
+		// for every pair u and v of P check if every element of them is found in either Vn or Vt.
+		for (const auto& chrOfu : u_v.getLeft()) {
+			auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfu);
+			if (findChrInVn == Vn.end()) {
+				auto findChrInVt = std::find(Vt.begin(), Vt.end(), chrOfu);
+				if (findChrInVt == Vt.end())
+					return false;
+			}
+		}
+		for (const auto& v : u_v.getRight()) {
+			for (const auto& chrOfv : v) {
+				auto findChrInVn = std::find(Vn.begin(), Vn.end(), chrOfv);
+				if (findChrInVn == Vn.end()) {
+					auto findChrInVt = std::find(Vt.begin(), Vt.end(), chrOfv);
+					if (findChrInVt == Vt.end())
+						return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
 // a grammar with productions (u->v) is context-free when it is of form A->w where A is a non-terminal and w is a set of terminals and/or non-terminals (at least one)
-bool Grammar::isContextFree(){
-    // for every u and v
-    for(const auto& u_v : P){
-        // u has to be of size 1
-        if(u_v.first.size() != 1)
-            return false;
+bool Grammar::isContextFree() {
+	// for every u and v's
+	for (const auto& u_v : P) {
+		// u has to be of size 1
+		if (u_v.getLeft().size() != 1)
+			return false;
 
-        // u has to be from Vn
-        auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);
-        if(findUinVn == Vn.end())
-            return false;
+		// u has to be from Vn
+		auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft()[0]);
+		if (findUinVn == Vn.end())
+			return false;
 
-        // v has to be of size at least 1
-        if(u_v.second.size() < 1)
-            return false;
+		// v has to be of size at least 1
+		for (const auto& v : u_v.getRight()) {
+			if (v.size() < 1)
+				return false;
+		}
 
-        // check if each element of v is either part of Vn or Vt (also found in verifyGrammar())
-        auto findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
-        for(const auto& elemOfV : u_v.second){
-            findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), elemOfV);
-            if(findElemsOfVinVnAndVt == Vn.end()){
-                findElemsOfVinVnAndVt = std::find(Vt.begin(), Vt.end(), elemOfV);
-                if(findElemsOfVinVnAndVt == Vt.end())
-                    return false;
-            }
-        }
-    }
-    return true;
+		// check if each element of v is either part of Vn or Vt (also found in verifyGrammar())
+		auto findElemsOfVinVnAndVt = std::find(Vn.begin(), Vt.begin(), u_v.getRight()[0][0]);
+		for (const auto& v : u_v.getRight()) {
+			for (const auto& elemOfV : v) {
+				findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), elemOfV);
+				if (findElemsOfVinVnAndVt == Vn.end()) {
+					findElemsOfVinVnAndVt = std::find(Vt.begin(), Vt.end(), elemOfV);
+					if (findElemsOfVinVnAndVt == Vt.end())
+						return false;
+				}
+			}
+		}
+	}
+	return true;
 }
 
-// a grammar is in chomsky normal form when 
-bool Grammar::checkIfCanTransformToChomskyNormalForm(){
-    
+// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
+bool Grammar::checkIfCanTransformToChomskyNormalForm() {
+	// for every u and v's
+	for (const auto& u_v : P) {
+		// u is of size 1
+		if (u_v.getLeft().size() != 1)
+			return false;
+
+		// u has to be part of Vn
+		{
+			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft()[0]);
+			if (findUinVn == Vn.end())
+				return false;
+		}
+
+		// only start symbol can transform to null (lambda (epsilon))
+		for (const auto& v : u_v.getRight())
+			if (v == "" && u_v.getLeft()[0] != S)
+				return false;
+
+		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
+		for (const auto& v : u_v.getRight()) {
+			if (v.size() == 1) {
+				auto findVinVt = std::find(Vt.begin(), Vt.end(), v[0]);
+				if (findVinVt == Vt.end())
+					return false;
+			} else if (v.size() == 2) {
+				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), v[0]);
+				if (find2ElemsOfVinVn == Vn.end())
+					return false;
+				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), v[1]);
+				if (find2ElemsOfVinVn == Vn.end())
+					return false;
+			} else
+				return false;
+		}
+	}
+
+	return true;
 }
 
-bool Grammar::transformToChomskyNormalForm(){
-    // check if the cfg can transform to cnf
-
-    // // if yes transform to cnf
-
-    // // else print statement and return false;
+void Grammar::eliminateNullProductions() {
+	
 }
 
-void Grammar::transformToGreibachNormalForm(){
-    // check if function to transform to cnf returned true
+void Grammar::eliminateUselessProductionsInCFG() {
+	// eliminate null productions
+	eliminateNullProductions();
 
-    // if not print statement and return;
+	// eliminate unit productions
+}
 
-    // else check if the cnf can transform to gnf
+bool Grammar::transformToChomskyNormalForm() {
+	if (checkIfCanTransformToChomskyNormalForm() == false) {
+		std::cout << "the context-free grammar is not in chomsky normal form..";
+		return false;
+	}
 
-    // // if yes transform to gnf
+	// if S appears on the rhs of any production create a new start symbol
+	Production newStartSymbol;
+	newStartSymbol.setLeft("$");
+	newStartSymbol.setRight({std::string{S}});
+	P.push_back(newStartSymbol);
+	// std::swap(P.front(), P.back());
 
-    // // else print statement and return;
+	// eliminate null, unit and useless productions
+	eliminateUselessProductionsInCFG();
+
+	// decompose productions of form X->xY to X->ZY, Z->x
+
+	// decompose productions of form X->XYZ to X->PZ, P->XY
+
+	return true;
+}
+
+void Grammar::transformToGreibachNormalForm() {
+	// check if function to transform to cnf returned true
+
+	// if not print statement and return;
+
+	// else check if the cnf can transform to gnf
+
+	// // if yes transform to gnf
+
+	// // else print statement and return;
 }
 
 // start with S and work your way up to the final word
-std::string Grammar::GenerateWord() {
-    // 'allCombinationsOfPMade' holds the combination of all transitions of P that will be made
-    // 'PPoolOfCurrentPossibleTransitions' holds the current possible transitions for every instance of the currentWord
-    std::vector<std::pair<std::string, std::string>> allCombinationsOfPMade, PPoolOfCurrentPossibleTransitions;
-    std::string currentWord(1, this->S);  // to_string() makes it 83 instead of 'S'. why does to_string() look at the ascii number and not its representation
-    int limitOfTransitions = 100;         // limit the transitions in case the operation runs forever
-    while(--limitOfTransitions) {
-        PPoolOfCurrentPossibleTransitions.clear();
-        // check all u's of P if they are in the currentWord. if yes add the pair to the PPool
-        for(auto& u_v : P) {
-            auto uInCurrentWord = std::find(currentWord.begin(), currentWord.end(), u_v.first[0]);
-            if(uInCurrentWord != currentWord.end())
-                PPoolOfCurrentPossibleTransitions.push_back(u_v);
-        }
-        // if PPool is empty then another transition on currentWord is not possible -> break;
-        if(PPoolOfCurrentPossibleTransitions.empty())
-            break;
-        // else choose randomly between the available transitions and save the one used
-        else {
-            std::pair<std::string, std::string> u_v_chosen;
-            u_v_chosen = PPoolOfCurrentPossibleTransitions[randomIntFrom0untilN(PPoolOfCurrentPossibleTransitions.size())];
-            int indexWhereToChange = currentWord.find(u_v_chosen.first[0]);
-            currentWord.replace(indexWhereToChange, 1, u_v_chosen.second);
-            allCombinationsOfPMade.push_back(u_v_chosen);
-        }
-    }
-    std::cout << "for the transitions: \n";
-    for(auto& u_v : allCombinationsOfPMade)
-        std::cout << u_v.first << " -> " << u_v.second << " \n";
-    return currentWord;
+std::string Grammar::generateWord() {
+	// 'allCombinationsOfPMade' holds the combination of all transitions of P that will be made
+	// 'PPoolOfCurrentPossibleTransitions' holds the current possible transitions for every instance of the currentWord
+	std::vector<std::pair<std::string, std::string>> allCombinationsOfPMade, PPoolOfCurrentPossibleTransitions;
+	std::string currentWord(1, this->S);  // to_string() makes it 83 instead of 'S'. why does to_string() look at the ascii number and not its representation
+	int limitOfTransitions = 100;         // limit the transitions in case the operation runs forever
+	while(--limitOfTransitions) {
+		PPoolOfCurrentPossibleTransitions.clear();
+		// check all u's of P if they are in the currentWord. if yes add the pair to the PPool
+		for(const auto& u_v : P) {
+			for(const auto& v : u_v.getRight()) {
+				auto uInCurrentWord = std::find(currentWord.begin(), currentWord.end(), u_v.getLeft()[0]);
+				if(uInCurrentWord != currentWord.end())
+					PPoolOfCurrentPossibleTransitions.push_back({u_v.getLeft(), v});
+			}
+		}
+		// if PPool is empty then another transition on currentWord is not possible -> break;
+		if(PPoolOfCurrentPossibleTransitions.empty())
+			break;
+		// else choose randomly between the available transitions and save the one used
+		else {
+			std::pair<std::string, std::string> u_v_chosen;
+			u_v_chosen = PPoolOfCurrentPossibleTransitions[randomIntFrom0untilN(PPoolOfCurrentPossibleTransitions.size())];
+			int indexWhereToChange = currentWord.find(u_v_chosen.first[0]);
+			currentWord.replace(indexWhereToChange, 1, u_v_chosen.second);
+			allCombinationsOfPMade.push_back(u_v_chosen);
+		}
+	}
+	std::cout << "for the transitions: \n";
+	for(const auto& u_v : allCombinationsOfPMade)
+		std::cout << u_v.first << " -> " << u_v.second << " \n";
+	return currentWord;
 }
 
-void Grammar::PrintGrammar() {
-    std::cout << *this;
+void Grammar::printGrammar() {
+	std::cout << *this;
 }
 
-void Grammar::ReadGrammar() {
-    int VnSize = 0;
-    std::cout << "Vn.size(): ";
-    std::cin >> VnSize;
-    for(int i = 0; i < VnSize; i++) {
-        char chr;
-        std::cout << "Vn[" << i << "]: ";
-        std::cin >> chr;
-        this->Vn.push_back(chr);
-    }
+void Grammar::readGrammar() {
+	int VnSize = 0;
+	std::cout << "Vn.size(): ";
+	std::cin >> VnSize;
+	for(int i = 0; i < VnSize; i++) {
+		char chr;
+		std::cout << "Vn[" << i << "]: ";
+		std::cin >> chr;
+		this->Vn.push_back(chr);
+	}
 
-    std::cout << "Vt.size(): ";
-    int VtSize = 0;
-    std::cin >> VtSize;
-    for(int i = 0; i < VtSize; i++) {
-        char chr;
-        std::cout << "Vt[" << i << "]: ";
-        std::cin >> chr;
-        this->Vt.push_back(chr);
-    }
+	std::cout << "Vt.size(): ";
+	int VtSize = 0;
+	std::cin >> VtSize;
+	for(int i = 0; i < VtSize; i++) {
+		char chr;
+		std::cout << "Vt[" << i << "]: ";
+		std::cin >> chr;
+		this->Vt.push_back(chr);
+	}
 
-    std::cout << "S: ";
-    std::cin >> this->S;
+	std::cout << "S: ";
+	std::cin >> this->S;
 
-    std::cout << "P.size(): ";
-    int PSize = 0;
-    std::cin >> PSize;
-    for(int i = 0; i < PSize; i++) {
-        std::string u = "", v = "";
-        std::cout << "P[" << i << "]'s u: ";
-        std::cin >> u;
-        std::cout << "P[" << i << "]'s v: ";
-        std::cin >> v;
-        this->P.push_back({u, v});
-    }
+	std::cout << "P.size(): ";
+	int PSize = 0;
+	std::cin >> PSize;
+	for(int i = 0; i < PSize; i++) {
+		std::string u = "", v = "";
+		std::cout << "P[" << i << "]'s u: ";
+		std::cin >> u;
+		std::cout << "P[" << i << "]'s v: ";
+		std::cin >> v;
+
+		bool foundU = false;
+		for(auto& production : this->P) {
+			if(production.getLeft() == u) {
+				foundU = true;
+				production.getRight().push_back(v);
+				break;
+			}
+		}
+
+		if(foundU == false) {
+			Production p(u, v);
+			this->P.push_back(p);
+		}
+	}
 }
 
 std::ostream& operator<<(std::ostream& output, const Grammar& grammar) {
-    output << "Vn: ";
-    for(int i = 0; i < grammar.Vn.size() - 1; i++)
-        output << grammar.Vn[i] << ", ";
-    output << grammar.Vn[grammar.Vn.size() - 1] << " \n";
+	output << "Vn: ";
+	for(int i = 0; i < grammar.Vn.size() - 1; i++)
+		output << grammar.Vn[i] << ", ";
+	output << grammar.Vn[grammar.Vn.size() - 1] << " \n";
 
-    output << "Vt: ";
-    for(int i = 0; i < grammar.Vt.size() - 1; i++)
-        output << grammar.Vt[i] << ", ";
-    output << grammar.Vt[grammar.Vt.size() - 1] << " \n";
+	output << "Vt: ";
+	for(int i = 0; i < grammar.Vt.size() - 1; i++)
+		output << grammar.Vt[i] << ", ";
+	output << grammar.Vt[grammar.Vt.size() - 1] << " \n";
 
-    output << "S: " << grammar.S << " \n";
+	output << "S: " << grammar.S << " \n";
 
-    output << "P: \n";
-    for(auto& u_v : grammar.P)
-        output << u_v.first << " -> " << u_v.second << " \n";
+	output << "P: \n";
+	for(const auto& u_v : grammar.P) {
+		output << u_v.getLeft() << " ->";
+		for(const auto& v : u_v.getRight())
+			output << " | " << v;
+		std::cout << "\n";
+	}
 
-    return output;
+	return output;
 }
 
 std::istream& operator>>(std::istream& input, Grammar& grammar) {
-    try {
-        std::string input_str;
+	try {
+		std::string input_str;
 
-        input >> input_str;
-        int VnSize = std::stoi(input_str);
-        for(int i = 0; i < VnSize; i++) {
-            input >> input_str;
-            grammar.Vn.push_back(input_str[0]);
-        }
+		input >> input_str;
+		int VnSize = std::stoi(input_str);
+		for(int i = 0; i < VnSize; i++) {
+			input >> input_str;
+			grammar.Vn.push_back(input_str[0]);
+		}
 
-        input >> input_str;
-        int VtSize = std::stoi(input_str);
-        for(int i = 0; i < VtSize; i++) {
-            input >> input_str;
-            grammar.Vt.push_back(input_str[0]);
-        }
+		input >> input_str;
+		int VtSize = std::stoi(input_str);
+		for(int i = 0; i < VtSize; i++) {
+			input >> input_str;
+			grammar.Vt.push_back(input_str[0]);
+		}
 
-        input >> input_str;
-        grammar.S = input_str[0];
+		input >> input_str;
+		grammar.S = input_str[0];
 
-        input >> input_str;
-        int PSize = std::stoi(input_str);
-        for(int i = 0; i < PSize; i++) {
-            std::string u, v;
-            input >> u >> v;
-            grammar.P.push_back({u, v});
-        }
-    }
-    catch(std::invalid_argument) {
-        std::cerr << "the file is either empty or doesnt contain the right data..";
-        exit(1);
-    }
-    return input;
+		input >> input_str;
+		int PSize = std::stoi(input_str);
+		for(int i = 0; i < PSize; i++) {
+			std::string u, v;
+			input >> u >> v;
+
+			bool foundU = false;
+			for(auto& production : grammar.P) {
+				if(production.getLeft() == u) {
+					foundU = true;
+					production.addRight(v);
+					break;
+				}
+			}
+
+			if(foundU == false) {
+				Grammar::Production p(u, v);
+				grammar.P.push_back(p);
+			}
+		}
+	}
+	catch(std::invalid_argument) {
+		std::cerr << "the file is either empty or doesnt contain the right data..";
+		exit(1);
+	}
+	return input;
 }
 
-std::vector<char> Grammar::GetVn() const {
-    return Vn;
+std::vector<char> Grammar::getVn() const {
+	return Vn;
 }
 
-std::vector<char> Grammar::GetVt() const {
-    return Vt;
+std::vector<char> Grammar::getVt() const {
+	return Vt;
 }
 
-char Grammar::GetS() const {
-    return S;
+char Grammar::getS() const {
+	return S;
 }
 
-std::vector<std::pair<std::string, std::string>> Grammar::GetP() const {
-    return P;
+std::vector<Grammar::Production> Grammar::getP() const {
+	return P;
 }
 
 int Grammar::randomIntFrom0untilN(int n) {
-    std::random_device random;
-    std::default_random_engine randomer{random()};
-    std::uniform_int_distribution<int> range(0, n - 1);
-    return range(randomer);
+	std::random_device random;
+	std::default_random_engine randomer{random()};
+	std::uniform_int_distribution<int> range(0, n - 1);
+	return range(randomer);
 }
