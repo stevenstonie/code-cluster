@@ -9,11 +9,9 @@ class Grammar{
 public:
 	Grammar() = default;
 
-	bool VerifyGrammar();
+	bool verifyGrammar();
 
 	bool isContextFree();
-
-	bool canTransformToGreibachNormalForm();
 
 	void transformToGreibachNormalForm();
 
@@ -45,5 +43,9 @@ private:
 
 private:
 	int randomIntFrom0untilN(int n);
+
+	bool checkIfCanTransformToChomskyNormalForm();
+
+	bool transformToChomskyNormalForm();
 };
 

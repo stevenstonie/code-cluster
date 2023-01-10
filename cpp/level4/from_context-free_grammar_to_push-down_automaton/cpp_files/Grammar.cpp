@@ -1,14 +1,14 @@
 #include "../header_files/Grammar.h"
 
-bool Grammar::VerifyGrammar() {
+bool Grammar::verifyGrammar() {
     // each element has to be NOT null
     if(Vn.empty() || Vt.empty() || S == 0 || P.empty())
         return false;
 
-    // Vn should not share elements with Vt
-    for(auto& vn_elem : Vn) {
-        auto findIfElemIsShared = std::find(Vt.begin(), Vt.end(), vn_elem);
-        if(findIfElemIsShared != Vt.end())
+    // Vt should not share elements with Vn
+    for(auto& vt_elem : Vt) {
+        auto findIfElemIsShared = std::find(Vn.begin(), Vn.end(), vt_elem);
+        if(findIfElemIsShared != Vn.end())
             return false;
     }
 
@@ -56,23 +56,24 @@ bool Grammar::VerifyGrammar() {
     return true;
 }
 
-// a grammar is context-free when it is of form A->w where A is a non-terminal and w is a set of terminals and/or non-terminals (at least one)
+// a grammar with productions (u->v) is context-free when it is of form A->w where A is a non-terminal and w is a set of terminals and/or non-terminals (at least one)
 bool Grammar::isContextFree(){
+    // for every u and v
     for(const auto& u_v : P){
-        // each u has to be of size 1
+        // u has to be of size 1
         if(u_v.first.size() != 1)
             return false;
 
-        // each u has to be from Vn
+        // u has to be from Vn
         auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.first[0]);
         if(findUinVn == Vn.end())
             return false;
 
-        // each v has to be of size at least 1
+        // v has to be of size at least 1
         if(u_v.second.size() < 1)
             return false;
 
-        // check if each element of v is either part of Vn or Vt
+        // check if each element of v is either part of Vn or Vt (also found in verifyGrammar())
         auto findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
         for(const auto& elemOfV : u_v.second){
             findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), elemOfV);
@@ -86,42 +87,29 @@ bool Grammar::isContextFree(){
     return true;
 }
 
-// a grammar is in greibach normal form if productions satisfy the followings:
-bool Grammar::canTransformToGreibachNormalForm(){
-    for(const auto& u_v : P){
-        // only S can transform to null
-        if(u_v.first[0] != S && u_v.second == "~")    //!!!!! but isContextFree() says if a right side is null it is not context free...
-            return false;
-
-        // an A can transform to a terminal only
-        auto findFirstElemOfVinVt = std::find(Vt.begin(), Vt.end(), u_v.second[0]);
-        if(findFirstElemOfVinVt == Vt.end())
-            return false;
-
-        // an A can transform to a terminal and many other non-terminals
-        auto findElemsOfVinVn = std::find(Vn.begin(), Vn.end(), u_v.second[0]);
-        for(int i = 1; i < u_v.second.size(); i++){
-            findElemsOfVinVn = std::find(Vn.begin(), Vn.end(), u_v.second[i]);
-            if(findElemsOfVinVn == Vn.end())
-                return false;
-        }
-    }
-    return true;
+// a grammar is in chomsky normal form when 
+bool Grammar::checkIfCanTransformToChomskyNormalForm(){
+    
 }
-//!!!!!!
+
+bool Grammar::transformToChomskyNormalForm(){
+    // check if the cfg can transform to cnf
+
+    // // if yes transform to cnf
+
+    // // else print statement and return false;
+}
 
 void Grammar::transformToGreibachNormalForm(){
-    if(canTransformToGreibachNormalForm() == false){
-        std::cout << "the given grammar is not in greibach normal form...";
-        return;
-    }
+    // check if function to transform to cnf returned true
 
-    // convert grammar to cnf
-    //!!!! how in the hell can i convert from context-free to chomsky if chomsky asks for the rule A->BC, where the said rule cannot convert the grammar to greibach...
+    // if not print statement and return;
 
-    // eliminate left recursion from grammar if it exists
+    // else check if the cnf can transform to gnf
 
-    // convert the production rules into gnf form
+    // // if yes transform to gnf
+
+    // // else print statement and return;
 }
 
 // start with S and work your way up to the final word
