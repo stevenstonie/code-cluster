@@ -133,6 +133,9 @@
   <ItemGroup>
     <ClInclude Include="header_files\Grammar.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="text_files\readGrammar.in" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

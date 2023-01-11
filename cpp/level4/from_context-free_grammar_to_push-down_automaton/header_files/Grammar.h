@@ -6,8 +6,8 @@
 #include <vector>
 
 class Grammar {
-   public:
-	   class Production {
+public:
+	class Production {
 	   public:
 		   Production() = default;
 		   Production(std::string left, std::string right)
@@ -33,8 +33,8 @@ class Grammar {
 			   this->right.push_back(v);
 		   }
 
-		   friend std::ostream& operator<<(std::ostream& output, const Production& production);
-		   friend std::istream& operator>>(std::istream& input, Production& production);
+		   //friend std::ostream& operator<<(std::ostream& output, const Production& production);
+		   //friend std::istream& operator>>(std::istream& input, Production& production);
 
 	   private:
 		   std::string left;
@@ -42,48 +42,46 @@ class Grammar {
 	   };
 
 	Grammar() = default;
-
+	
 	bool verifyGrammar();
-
+	
 	bool isContextFree();
-
+	 
 	void transformToGreibachNormalForm();
-
+	
 	void simplifyGrammar();
 	// implement!!
-
+	
 	std::string generateWord();
 
 	void printGrammar();
 
 	void readGrammar();
 
-	std::vector<char> getVn() const;
-
-	std::vector<char> getVt() const;
-
-	char getS() const;
-
+	std::vector<std::string> getVn() const;
+	std::vector<std::string> getVt() const;
+	std::string getS() const;
 	std::vector<Production> getP() const;
+
+	void addToVn(std::string nonTerminal);
+	void addToVt(std::string terminal);
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
 	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
-   private:
+private:
 	int randomIntFrom0untilN(int n);
 
 	bool checkIfCanTransformToChomskyNormalForm();
 
 	bool transformToChomskyNormalForm();
 
-	void eliminateUselessProductionsInCFG();
+	// void eliminateUselessProductionsInCFG();
+	// void eliminateNullProductions();
+	// void Combi(std::vector<int>& indexesOfVLetter, std::string& word, std::vector<std::string>& allCombinations, int reqLen, int s, int currLen, std::vector<bool> check);
 
-	void eliminateNullProductions();
-
-   private:
-	std::vector<char> Vn, Vt;
-	char S;
+private:
+	std::vector<std::string> Vn, Vt;
+	std::string S;
 	std::vector<Production> P;
 };
-/// !!!!!! Every elem is exactly 1 char long so there will be no elements
-/// such as S0 or A1, A2 etc. S0 is $ whereas A1, A2, A3 will be 1, 2, 3, etc.

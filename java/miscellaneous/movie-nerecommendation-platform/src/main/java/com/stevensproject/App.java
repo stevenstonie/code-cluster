@@ -28,3 +28,15 @@ public class App {
 		connection.close();
 	}
 }
+
+// connect to database
+
+// login prompt
+
+// 0 register
+// 1 login
+// exit
+
+// id role
+
+// 0 

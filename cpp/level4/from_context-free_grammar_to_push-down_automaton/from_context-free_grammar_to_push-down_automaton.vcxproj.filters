@@ -27,4 +27,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="text_files\readGrammar.in" />
+  </ItemGroup>
 </Project>
