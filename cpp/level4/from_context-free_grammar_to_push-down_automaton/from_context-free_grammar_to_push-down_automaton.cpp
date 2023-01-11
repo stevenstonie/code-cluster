@@ -29,6 +29,4 @@ int main(){
 	g.printGrammar();
 	std::cout << "\n\n";
 
-	g.transformToGreibachNormalForm();
-	g.printGrammar();
 }
