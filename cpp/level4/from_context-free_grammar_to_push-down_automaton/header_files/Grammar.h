@@ -8,50 +8,51 @@
 class Grammar {
 public:
 	class Production {
-	   public:
-		   Production() = default;
-		   Production(std::string left, std::string right)
-			   : left(left){
-			   this->right.push_back(right);
-		   }
-		   Production(std::string left, std::vector<std::string> right)
-			   : left(left), right(right) {}
+	public:
+		Production() = default;
+		Production(std::string left, std::string right)
+			: left(left){
+			this->right.push_back(right);
+		}
+		Production(std::string left, std::vector<std::string> right)
+			: left(left), right(right) {}
 
-		   std::string getLeft() const {
-			   return left;
-		   }
-		   std::vector<std::string> getRight() const {
-			   return right;
-		   }
-		   void setLeft(std::string left) {
-			   this->left = left;
-		   }
-		   void setRight(std::vector<std::string> right) {
-			   this->right = right;
-		   }
-		   void addRight(std::string v){
-			   this->right.push_back(v);
-		   }
+		std::string getLeft() const {
+			return left;
+		}
+		std::vector<std::string> getRight() const {
+			return right;
+		}
+		void setLeft(std::string left) {
+			this->left = left;
+		}
+		void setRight(std::vector<std::string> right) {
+			this->right = right;
+		}
+		void addRight(std::string v){
+			this->right.push_back(v);
+		}
 
-		   //friend std::ostream& operator<<(std::ostream& output, const Production& production);
-		   //friend std::istream& operator>>(std::istream& input, Production& production);
+		//friend std::ostream& operator<<(std::ostream& output, const Production& production);
+		//friend std::istream& operator>>(std::istream& input, Production& production);
 
-	   private:
-		   std::string left;
-		   std::vector<std::string> right;
-	   };
+	private:
+		std::string left;
+		std::vector<std::string> right;
+		// change this^ and you'll have some trouble with bugs
+	};
 
 	Grammar() = default;
-	
+
 	bool verifyGrammar();
-	
+
 	bool isContextFree();
-	 
+
 	void transformToGreibachNormalForm();
-	
+
 	void simplifyGrammar();
 	// implement!!
-	
+
 	std::string generateWord();
 
 	void printGrammar();
@@ -65,16 +66,19 @@ public:
 
 	void addToVn(std::string nonTerminal);
 	void addToVt(std::string terminal);
+	void setS(std::string S);
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
 	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
 private:
-	int randomIntFrom0untilN(int n);
-
 	bool checkIfCanTransformToChomskyNormalForm();
 
-	bool transformToChomskyNormalForm();
+	void removeAllUnreachableProductionsAndAllRenamings();
+
+	void transformToChomskyNormalForm();
+
+	int randomIntFrom0untilN(int n);
 
 	// void eliminateUselessProductionsInCFG();
 	// void eliminateNullProductions();

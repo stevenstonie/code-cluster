@@ -26,5 +26,9 @@ Grammar createGrammar(){
 
 int main(){
 	Grammar g = createGrammar();
-	std::cout << g;
+	g.printGrammar();
+	std::cout << "\n\n";
+
+	g.transformToGreibachNormalForm();
+	g.printGrammar();
 }

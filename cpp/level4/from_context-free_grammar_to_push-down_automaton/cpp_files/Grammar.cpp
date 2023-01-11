@@ -4,58 +4,58 @@
 
 bool Grammar::verifyGrammar() {
 	// each element has to be NOT null
-	if (Vn.empty() || Vt.empty() || S == "")
+	if(Vn.empty() || Vt.empty() || S == "")
 		return false;
-	for (const auto& u_v : P) {
-		if (u_v.getLeft() == "" || u_v.getRight().empty())
+	for(const auto& u_v : P) {
+		if(u_v.getLeft() == "" || u_v.getRight().empty())
 			return false;
 	}
 
 	// Vt should not share elements with Vn
-	for (const auto& vt_elem : Vt) {
+	for(const auto& vt_elem : Vt) {
 		auto findIfElemIsShared = std::find(Vn.begin(), Vn.end(), vt_elem);
-		if (findIfElemIsShared != Vn.end())
+		if(findIfElemIsShared != Vn.end())
 			return false;
 	}
 
 	// S has to be an element from Vn
 	{
 		auto find_if_S_is_in_Vn = std::find(Vn.begin(), Vn.end(), S);
-		if (find_if_S_is_in_Vn == Vn.end())
+		if(find_if_S_is_in_Vn == Vn.end())
 			return false;
 	}
 
 	// every u of P has at least an element from Vn
-	for (const auto& u_v : P) {
+	for(const auto& u_v : P) {
 		bool atLeastOneChrOfuFoundInVn = false;
-		for (const auto& chrOfu : u_v.getLeft()) {
+		for(const auto& chrOfu : u_v.getLeft()) {
 			auto findChrInVn = std::find(Vn.begin(), Vn.end(), std::to_string(chrOfu));
-			if (findChrInVn != Vn.end()) {
+			if(findChrInVn != Vn.end()) {
 				atLeastOneChrOfuFoundInVn = true;
 				break;
 			}
 		}
-		if (atLeastOneChrOfuFoundInVn != true)
+		if(atLeastOneChrOfuFoundInVn != true)
 			return false;
 	}
-	
+
 	// u and v need to have all elements from Vn OR Vt
-	for (const auto& u_v : P) {
+	for(const auto& u_v : P) {
 		// for every pair u and v of P check if every element of them is found in either Vn or Vt.
-		for (const auto& chrOfu : u_v.getLeft()) {
+		for(const auto& chrOfu : u_v.getLeft()) {
 			auto findChrInVn = std::find(Vn.begin(), Vn.end(), std::to_string(chrOfu));
-			if (findChrInVn == Vn.end()) {
+			if(findChrInVn == Vn.end()) {
 				auto findChrInVt = std::find(Vt.begin(), Vt.end(), std::to_string(chrOfu));
-				if (findChrInVt == Vt.end())
+				if(findChrInVt == Vt.end())
 					return false;
 			}
 		}
-		for (const auto& v : u_v.getRight()) {
-			for (const auto& chrOfv : v) {
+		for(const auto& v : u_v.getRight()) {
+			for(const auto& chrOfv : v) {
 				auto findChrInVn = std::find(Vn.begin(), Vn.end(), std::to_string(chrOfv));
-				if (findChrInVn == Vn.end()) {
+				if(findChrInVn == Vn.end()) {
 					auto findChrInVt = std::find(Vt.begin(), Vt.end(), std::to_string(chrOfv));
-					if (findChrInVt == Vt.end())
+					if(findChrInVt == Vt.end())
 						return false;
 				}
 			}
@@ -67,30 +67,30 @@ bool Grammar::verifyGrammar() {
 // a grammar with productions (u->v) is context-free when it is of form A->w where A is a non-terminal and w is a set of terminals and/or non-terminals (at least one)
 bool Grammar::isContextFree() {
 	// for every u and v's
-	for (const auto& u_v : P) {
+	for(const auto& u_v : P) {
 		// u has to be of size 1
-		if (u_v.getLeft().size() != 1)
+		if(u_v.getLeft().size() != 1)
 			return false;
 
 		// u has to be from Vn
 		auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
-		if (findUinVn == Vn.end())
+		if(findUinVn == Vn.end())
 			return false;
 
 		// v has to be of size at least 1
-		for (const auto& v : u_v.getRight()) {
-			if (v.size() < 1)
+		for(const auto& v : u_v.getRight()) {
+			if(v.size() < 1)
 				return false;
 		}
 
 		// check if each element of v is either part of Vn or Vt (also found in verifyGrammar())
 		auto findElemsOfVinVnAndVt = std::find(Vn.begin(), Vt.begin(), u_v.getRight()[0]);
-		for (const auto& v : u_v.getRight()) {
-			for (const auto& elemOfV : v) {
+		for(const auto& v : u_v.getRight()) {
+			for(const auto& elemOfV : v) {
 				findElemsOfVinVnAndVt = std::find(Vn.begin(), Vn.end(), std::to_string(elemOfV));
-				if (findElemsOfVinVnAndVt == Vn.end()) {
+				if(findElemsOfVinVnAndVt == Vn.end()) {
 					findElemsOfVinVnAndVt = std::find(Vt.begin(), Vt.end(), std::to_string(elemOfV));
-					if (findElemsOfVinVnAndVt == Vt.end())
+					if(findElemsOfVinVnAndVt == Vt.end())
 						return false;
 				}
 			}
@@ -99,72 +99,11 @@ bool Grammar::isContextFree() {
 	return true;
 }
 
-// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
-bool Grammar::checkIfCanTransformToChomskyNormalForm() {
-	// for every u and v's
-	for (const auto& u_v : P) {
-		// u is of size 1 (also found in isContextFree())
-		if (u_v.getLeft().size() != 1)
-			return false;
-
-		// u has to be part of Vn (also found in isContextFree())
-		{
-			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
-			if (findUinVn == Vn.end())
-				return false;
-		}
-
-		// only start symbol can transform to null (lambda (epsilon (empty (etc. etc.))
-		for (const auto& v : u_v.getRight())
-			if (v == "" && u_v.getLeft() != S)
-				return false;
-
-		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
-		for (const auto& v : u_v.getRight()) {
-			if (v.size() == 1) {
-				auto findVinVt = std::find(Vt.begin(), Vt.end(), v);
-				if (findVinVt == Vt.end())
-					return false;
-			} else if (v.size() == 2) {
-				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[0]));
-				if (find2ElemsOfVinVn == Vn.end())
-					return false;
-				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[1]));
-				if (find2ElemsOfVinVn == Vn.end())
-					return false;
-			} else
-				return false;
-		}
-	}
-
-	return true;
-}
-
-bool Grammar::transformToChomskyNormalForm() {
-	// so... this check is useless? 
-	//if (checkIfCanTransformToChomskyNormalForm() == false) {
-	//	std::cout << "the context-free grammar is not in chomsky normal form..";
-	//	return false;
-	//}
-	return true;
-
-	// step 1: remove all renamings and unreachable symbols
-
-	// step 2: for all productions where v is longer than or equal to 2 and contains a terminal, replace it with a new non-terminal and add a new production that transforms to the changed terminal
-
-	// step 3: for all productions where v is longer than 2, (to complete)
-}
-
 void Grammar::transformToGreibachNormalForm() {
-	// check if function to transform to cnf returned true
+	// transform to chomsky
+	transformToChomskyNormalForm();
 
-	// if not print statement and return;
-
-	// else check if the cnf can transform to gnf
-
-	// // if yes transform to gnf
-
-	// // else print statement and return;
+	// continue here
 }
 
 // start with S and work your way up to the final word
@@ -211,20 +150,20 @@ void Grammar::readGrammar() {
 	std::cout << "Vn.size(): ";
 	std::cin >> VnSize;
 	for(int i = 0; i < VnSize; i++) {
-		std::string chr;
+		std::string input_str;
 		std::cout << "Vn[" << i << "]: ";
-		std::cin >> chr;
-		Vn.push_back(chr);
+		std::cin >> input_str;
+		Vn.push_back(input_str);
 	}
 
 	std::cout << "Vt.size(): ";
 	int VtSize = 0;
 	std::cin >> VtSize;
 	for(int i = 0; i < VtSize; i++) {
-		std::string chr;
+		std::string input_str;
 		std::cout << "Vt[" << i << "]: ";
-		std::cin >> chr;
-		Vt.push_back(chr);
+		std::cin >> input_str;
+		Vt.push_back(input_str);
 	}
 
 	std::cout << "S: ";
@@ -244,7 +183,7 @@ void Grammar::readGrammar() {
 		for(auto& production : P) {
 			if(production.getLeft() == u) {
 				foundU = true;
-				production.getRight().push_back(v);
+				production.addRight(v);
 				break;
 			}
 		}
@@ -259,15 +198,12 @@ void Grammar::readGrammar() {
 std::vector<std::string> Grammar::getVn() const {
 	return Vn;
 }
-
 std::vector<std::string> Grammar::getVt() const {
 	return Vt;
 }
-
 std::string Grammar::getS() const {
 	return S;
 }
-
 std::vector<Grammar::Production> Grammar::getP() const {
 	return P;
 }
@@ -275,12 +211,19 @@ std::vector<Grammar::Production> Grammar::getP() const {
 void Grammar::addToVn(std::string nonTerminal){
 	this->Vn.push_back(nonTerminal);
 }
-
 void Grammar::addToVt(std::string terminal){
 	this->Vt.push_back(terminal);
 }
+void Grammar::setS(std::string S){
+	this->S = S;
+}
 
 std::ostream& operator<<(std::ostream& output, const Grammar& grammar) {
+	if(grammar.getVn().empty() || grammar.getVt().empty() || grammar.getS() == "" || grammar.getP().empty()){
+		std::cout << "parts of the grammar are empty. verify the input and try again..";
+		exit(1);
+	}
+
 	output << "Vn: ";
 	for(int i = 0; i < grammar.getVn().size() - 1; i++)
 		output << grammar.getVn()[i] << ", ";
@@ -323,7 +266,7 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 		}
 
 		input >> input_str;
-		grammar.S = input_str[0];
+		grammar.setS(input_str);
 
 		input >> input_str;
 		int PSize = std::stoi(input_str);
@@ -332,7 +275,7 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 			input >> u >> v;
 			if(v == "~")  // null reading. (just in case)
 				v = "";
-			
+
 			bool foundU = false;
 			for(auto& production : grammar.P) {
 				if(production.getLeft() == u) {
@@ -353,6 +296,104 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 		exit(1);
 	}
 	return input;
+}
+
+///////////////////////////
+/////////////////////////// private
+///////////////////////////
+
+// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
+bool Grammar::checkIfCanTransformToChomskyNormalForm() {
+	// for every u and v's
+	for(const auto& u_v : P) {
+		// u is of size 1 (also found in isContextFree())
+		if(u_v.getLeft().size() != 1)
+			return false;
+
+		// u has to be part of Vn (also found in isContextFree())
+		{
+			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
+			if(findUinVn == Vn.end())
+				return false;
+		}
+
+		// only start symbol can transform to null (lambda (epsilon (empty (etc. etc.))
+		for(const auto& v : u_v.getRight())
+			if(v == "" && u_v.getLeft() != S)
+				return false;
+
+		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
+		for(const auto& v : u_v.getRight()) {
+			if(v.size() == 1) {
+				auto findVinVt = std::find(Vt.begin(), Vt.end(), v);
+				if(findVinVt == Vt.end())
+					return false;
+			}
+			else if(v.size() == 2) {
+				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[0]));
+				if(find2ElemsOfVinVn == Vn.end())
+					return false;
+				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[1]));
+				if(find2ElemsOfVinVn == Vn.end())
+					return false;
+			}
+			else
+				return false;
+		}
+	}
+
+	return true;
+}
+
+void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
+	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
+	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getP().size(), false);
+
+	for(int i = 0; i < getVn().size(); i++){
+		for(const auto& u_v : getP()){
+			for(const auto& v : u_v.getRight()){
+				if(v.find(getVn()[i][0]) != std::string::npos){
+					foundNonTermOnRhs[i] = true;
+					break;
+				}
+			}
+			if(foundNonTermOnRhs[i] == true)
+				break;
+		}
+	}
+
+	// delete all productions that are unreachable
+	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
+		if(foundNonTermOnRhs[i] == false){
+			// delete the object in P at the index i 
+			std::swap(P[i], P[P.size() - 1]);
+			P.pop_back();
+
+			foundNonTermOnRhs[i] = foundNonTermOnRhs[foundNonTermOnRhs.size() - 1];
+			foundNonTermOnRhs.pop_back();
+
+			i--;
+		}
+	}
+
+	// now its time for the renamings
+	// for each production A->B called renaming set A->B1 and create a B1->B
+	
+}
+
+void Grammar::transformToChomskyNormalForm() {
+	// so... this check is useless? 
+	//if (checkIfCanTransformToChomskyNormalForm() == false) {
+	//	std::cout << "the context-free grammar is not in chomsky normal form..";
+	//	return false;
+	//}
+
+	// step 1: remove all renamings and unreachable symbols
+	removeAllUnreachableProductionsAndAllRenamings();
+
+	// step 2: for all productions where v is longer than or equal to 2 and contains a terminal, replace it with a new non-terminal and add a new production that transforms to the changed terminal
+
+	// step 3: for all productions where v is longer than 2, (to complete)
 }
 
 int Grammar::randomIntFrom0untilN(int n) {
