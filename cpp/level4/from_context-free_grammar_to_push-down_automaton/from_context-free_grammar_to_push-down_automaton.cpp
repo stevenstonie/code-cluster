@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "header_files/Grammar.h"
+#include "header_files/Grammar.hpp"
 
 Grammar createGrammar(){
 	Grammar grammar;
@@ -29,4 +29,6 @@ int main(){
 	g.printGrammar();
 	std::cout << "\n\n";
 
+	g.transformToGreibachNormalForm();
+	g.printGrammar();
 }

@@ -5,25 +5,30 @@
 #include <string>
 #include <vector>
 
+#include "Inutils.hpp"
+
 class Grammar {
 public:
 	class U_VS {
 	public:
 		class V {
 		public:
-			V(std::vector<std::string> vSymbol)
-				: vSymbol(vSymbol) {}
+			V(std::vector<std::string> v)
+				: v(v) {}
 
 			std::vector<std::string> getV() const {
-				return vSymbol;
+				return v;
+			}
+			std::vector<std::string> getChangeableV(){
+				return v;
 			}
 
-			void setV(std::vector<std::string> vSymbol) {
-				this->vSymbol = vSymbol;
+			void setVSymbol(int index, std::string vSymbol){
+				this->v[index] = vSymbol;
 			}
 
 		private:
-			std::vector<std::string> vSymbol;
+			std::vector<std::string> v;
 		};
 
 		U_VS() = default;
@@ -33,20 +38,35 @@ public:
 		U_VS(std::string u, std::vector<std::string> v)
 			:u(u), vs({V(v)})
 		{}
+		U_VS(std::string u)
+			:u(u)
+		{}
 
 		std::string getU() const {
+			return u;
+		}
+		std::string getChangeableU(){
 			return u;
 		}
 		std::vector<V> getVS() const{
 			return vs;
 		}
+		std::vector<V> getChangeableVS(){
+			return vs;
+		}
+		// no const because when going through the productions, if i want to change one well.. i cant.
 
 		// setU?
-		
+
 		void addV(std::vector<std::string> v) {
 			vs.push_back(V(v));
 		}
-
+		void setV(int index, std::vector<std::string> v){
+			vs[index] = V(v);
+		}
+		void setVSymbol(int index, int index2, std::string vSymbol){
+			vs[index].setVSymbol(index2, vSymbol);
+		}
 	private:
 		std::string u;
 		std::vector<V> vs;
@@ -58,7 +78,7 @@ public:
 
 	bool isContextFree();
 
-	//void transformToGreibachNormalForm();
+	void transformToGreibachNormalForm();
 
 	void printGrammar();
 
@@ -67,7 +87,7 @@ public:
 	std::vector<std::string> getVn() const;
 	std::vector<std::string> getVt() const;
 	std::string getS() const;
-	std::vector<U_VS> getU_VS() const;
+	std::vector<U_VS> getUS_VS() const;
 
 	void addToVn(std::string nonTerminal);
 	void addToVt(std::string terminal);
@@ -76,40 +96,43 @@ public:
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
 	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
-private:
-	/*bool checkIfCanTransformToChomskyNormalForm();
 
+private:
 	void removeAllUnreachableProductionsAndAllRenamings();
+
+	void swapTerminalsOnRightOfVsWithNonTerms();
 
 	void transformToChomskyNormalForm();
 
-	int randomIntFrom0untilN(int n);
-	*/
-	std::vector<std::string> convertStringToVectorOfStrings(std::string string);
+	void searchAndAddTerminalOnRhsOfSwappingSymbol(U_VS& swappingSymbol, std::string v);
 
+	bool foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const;
+
+	bool isNonTerminal(std::string vSymbol) const;
 	// void eliminateUselessProductionsInCFG();
 	// void eliminateNullProductions();
 	// void Combi(std::vector<int>& indexesOfVLetter, std::string& word, std::vector<std::string>& allCombinations, int reqLen, int s, int currLen, std::vector<bool> check);
 
 	// std::string generateWord();
+	// bool checkIfCanTransformToChomskyNormalForm();
 
 private:
 	std::vector<std::string> Vn, Vt; // Vn = [S, A, B, C]. Vt = [a, b, c, d]
+	//^^no need for a vector of vectors of strings for Vn as the rule will always have only one element on the left hand side
 	std::string S;
-	// i dont need a separate class for u. it will be only one.
-	std::vector<U_VS> us_and_productions;
-	// U_VS = S -> aA | BCD | cC
-	// VS = aA | BCD | cC
+	// U_VS = S -> aA1 | BCD | cC
 	// V = a, A1
+	// vSymbol = a
+	std::vector<U_VS> us_and_productions;
 };
 /*
-	for(const auto& u_vs : us_and_productions){
-		for(const auto& v : u_vs.getVS()){
-			for(const auto& vSymbol : v.getV()){
+for(const auto& u_vs : us_and_productions){
+	for(const auto& v : u_vs.getVS()){
+		for(const auto& vSymbol : v.getV()){
 
-			}
 		}
 	}
+}
 */
 
 /*

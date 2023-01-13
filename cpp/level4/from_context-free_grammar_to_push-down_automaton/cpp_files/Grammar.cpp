@@ -1,4 +1,4 @@
-#include "../header_files/Grammar.h"
+#include "../header_files/Grammar.hpp"
 
 #include <iostream>
 
@@ -99,18 +99,16 @@ bool Grammar::isContextFree() {
 				}
 			}
 		}
-
-		return true;
 	}
+	return true;
 }
 
+void Grammar::transformToGreibachNormalForm(){
+	// transform to chomsky
+	transformToChomskyNormalForm();
 
-//void Grammar::transformToGreibachNormalForm(){
-//	// transform to chomsky
-//	transformToChomskyNormalForm();
-//
-//	//continue to transform to greibach here
-//}
+	//continue to transform to greibach here
+}
 
 void Grammar::printGrammar() {
 	std::cout << *this;
@@ -175,7 +173,7 @@ std::vector<std::string> Grammar::getVt() const {
 std::string Grammar::getS() const {
 	return S;
 }
-std::vector<Grammar::U_VS> Grammar::getU_VS() const {
+std::vector<Grammar::U_VS> Grammar::getUS_VS() const {
 	return us_and_productions;
 }
 
@@ -255,13 +253,13 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 			for(auto& u_vs : grammar.us_and_productions){
 				if(u_vs.getU() == u){
 					foundU = true;
-					u_vs.addV(grammar.convertStringToVectorOfStrings(v));
+					u_vs.addV(convertStringToVectorOfStrings(v));
 					break;
 				}
 			}
-			
+
 			if(foundU == false){
-				Grammar::U_VS u_v(u, grammar.convertStringToVectorOfStrings((v)));
+				Grammar::U_VS u_v(u, convertStringToVectorOfStrings((v)));
 				grammar.us_and_productions.push_back(u_v);
 			}
 		}
@@ -277,113 +275,151 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 /////////////////////////// private
 ///////////////////////////
 
-// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
-//bool Grammar::checkIfCanTransformToChomskyNormalForm() {
-//	// for every u and v's
-//	for(const auto& u_v : P) {
-//		// u is of size 1 (also found in isContextFree())
-//		if(u_v.getLeft().size() != 1)
-//			return false;
-//
-//		// u has to be part of Vn (also found in isContextFree())
-//		{
-//			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
-//			if(findUinVn == Vn.end())
-//				return false;
-//		}
-//
-//		// only start symbol can transform to null (lambda (epsilon (empty (etc. etc.))
-//		for(const auto& v : u_v.getRight())
-//			if(v == "" && u_v.getLeft() != S)
-//				return false;
-//
-//		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
-//		for(const auto& v : u_v.getRight()) {
-//			if(v.size() == 1) {
-//				auto findVinVt = std::find(Vt.begin(), Vt.end(), v);
-//				if(findVinVt == Vt.end())
-//					return false;
-//			}
-//			else if(v.size() == 2) {
-//				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[0]));
-//				if(find2ElemsOfVinVn == Vn.end())
-//					return false;
-//				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[1]));
-//				if(find2ElemsOfVinVn == Vn.end())
-//					return false;
-//			}
-//			else
-//				return false;
-//		}
-//	}
-//
-//	return true;
-//}
-//
-//void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
-//	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
-//	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getP().size(), false);
-//
-//	for(int i = 0; i < getVn().size(); i++){
-//		for(const auto& u_v : getP()){
-//			for(const auto& v : u_v.getRight()){
-//				if(v.find(getVn()[i][0]) != std::string::npos){
-//					foundNonTermOnRhs[i] = true;
-//					break;
-//				}
-//			}
-//			if(foundNonTermOnRhs[i] == true)
-//				break;
-//		}
-//	}
-//
-//	// delete all productions that are unreachable
-//	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
-//		if(foundNonTermOnRhs[i] == false){
-//			// delete the object in P at the index i 
-//			std::swap(P[i], P[P.size() - 1]);
-//			P.pop_back();
-//
-//			foundNonTermOnRhs[i] = foundNonTermOnRhs[foundNonTermOnRhs.size() - 1];
-//			foundNonTermOnRhs.pop_back();
-//
-//			i--;
-//		}
-//	}
-//
-//	// now its time for the renamings
-//	// for each production A->B called renaming set A->B1 and create a B1->B
-//
-//}
-//
-//void Grammar::transformToChomskyNormalForm() {
-//	// so... this check is useless? 
-//	//if (checkIfCanTransformToChomskyNormalForm() == false) {
-//	//	std::cout << "the context-free grammar is not in chomsky normal form..";
-//	//	return false;
-//	//}
-//
-//	// step 1: remove all renamings and unreachable symbols
-//	removeAllUnreachableProductionsAndAllRenamings();
-//
-//	// step 2: for all productions where v is longer than or equal to 2 and contains a terminal, replace it with a new non-terminal and add a new production that transforms to the changed terminal
-//
-//	// step 3: for all productions where v is longer than 2, (to complete)
-//}
-//
-//int Grammar::randomIntFrom0untilN(int n) {
-//	std::random_device random;
-//	std::default_random_engine randomer{random()};
-//	std::uniform_int_distribution<int> range(0, n - 1);
-//	return range(randomer);
-//}
+void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
+	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
+	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getVn().size(), false);
 
-std::vector<std::string> Grammar::convertStringToVectorOfStrings(std::string string){
-	std::vector<std::string> vectorOfStrings;
-	for(const auto& chr : string)
-		vectorOfStrings.push_back(std::string(1, chr));
+	for(int i = 0; i < getVn().size(); i++){
+		for(const auto& u_vs : us_and_productions){
+			for(const auto& v : u_vs.getVS()){
+				for(const auto& vSymbol : v.getV()){
+					if(vSymbol.find(getVn()[i]) != std::string::npos){
+						foundNonTermOnRhs[i] = true;
+						break;
+					}
+				}
+				if(foundNonTermOnRhs[i] == true) break;
+			}
+			if(foundNonTermOnRhs[i] == true) break;
+		}
+	}
 
-	return vectorOfStrings;
+	// delete all productions that are unreachable
+	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
+		if(foundNonTermOnRhs[i] == false){
+			// delete the object in P at the index i 
+			std::swap(us_and_productions[i], us_and_productions[us_and_productions.size() - 1]);
+			us_and_productions.pop_back();
+
+			foundNonTermOnRhs[i] = foundNonTermOnRhs[foundNonTermOnRhs.size() - 1];
+			foundNonTermOnRhs.pop_back();
+
+			i--;
+		}
+	}
+
+	// now its time for the renamings
+	// go through all productions. for a production that is of the form A -> B, make it A -> Ba, check if A -> a is already in P. if not add it
+	for(auto& u_vs : us_and_productions){
+		int i_v = 0;
+		for(auto& v : u_vs.getChangeableVS()){
+			if(v.getV().size() == 1 && isNonTerminal(v.getV()[0])){
+				// add first terminal to the v
+				auto newV = v.getChangeableV();
+				newV.push_back(getVt()[0]);
+				u_vs.setV(i_v, newV);
+
+
+				// check if the current u transforms to the first terminal. if not add it
+				bool found = false;
+				for(const auto& v : u_vs.getVS()){
+					if(v.getV() == std::vector<std::string>{getVt()[0]}){
+						found = true;
+						break;
+					}
+				}
+				if(not found){
+					u_vs.addV(std::vector<std::string>{getVt()[0]});
+				}
+			}
+			i_v++;
+		}
+	}
+}
+
+void Grammar::swapTerminalsOnRightOfVsWithNonTerms(){
+	// find a letter thats not in Vn and use it to swap terminals with it
+	// if not found make a new one A1
+	bool oneLetterNotFound = false;
+	for(char i = 90; i >= 65; i--){
+		std::string letter = std::string{i};
+		if(not foundStringInVector(getVn(), letter)){
+			oneLetterNotFound = true;
+			addToVn(letter);
+			break;
+		}
+	}
+	if(not oneLetterNotFound)
+		addToVn("A1");
+
+	U_VS newU_VS(getVn()[getVn().size() - 1]);
+	us_and_productions.push_back(newU_VS);
+
+	// go through all productions and swap all terminals with the swappingSymbol non-terminal
+	int i_u = 0;
+	for(auto& u_vs : us_and_productions){
+		int i_v = 0;
+		for(auto& v : u_vs.getChangeableVS()){
+			if(v.getChangeableV().size() > 1){
+				for(int i_vSymbol = 1; i_vSymbol < v.getChangeableV().size(); i_vSymbol++){
+					if(isNonTerminal(v.getChangeableV()[i_vSymbol]) == false){
+						// add all unique terminals that get swapped to the swappingSymbol's right hand side
+						auto& swappingSymbol = us_and_productions[us_and_productions.size() - 1];
+						searchAndAddTerminalOnRhsOfSwappingSymbol(swappingSymbol, v.getV()[i_vSymbol]);
+
+						// v.getChangeableV()[i] = swappingSymbol.getChangeableU();
+						// v.setVSymbol(i_vSymbol, swappingSymbol.getU());
+						// us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, swappingSymbol.getU());
+						u_vs.setVSymbol(i_v, i_vSymbol, swappingSymbol.getU());
+					}
+				}
+			}
+			i_v++;
+		}
+		i_u++;
+	}
+}
+
+void Grammar::transformToChomskyNormalForm() {
+	// step 1: remove all renamings and unreachable symbols
+	removeAllUnreachableProductionsAndAllRenamings();
+
+	// shouldnt i also delete the productions that go on indefinitely?
+
+	// step 2: for all productions where v is longer than or equal to 2 and contains a terminal, replace it with a new non-terminal and add a new production that transforms to the changed terminal
+	swapTerminalsOnRightOfVsWithNonTerms();
+
+	// step 3: for all productions where v is longer than 2, shorten them and add new productions that transform to the discarded symbols
+}
+
+void Grammar::searchAndAddTerminalOnRhsOfSwappingSymbol(U_VS& swappingSymbol, std::string v){
+	if(swappingSymbol.getVS().empty())
+		swappingSymbol.addV(std::vector<std::string>{v});
+	else{
+		bool foundVinSwappingSymbolVs = false;
+		for(auto& vOfSwappingSymbol : swappingSymbol.getVS()){
+			if(vOfSwappingSymbol.getV() == std::vector<std::string>{v}){
+				foundVinSwappingSymbolVs = true;
+				break;
+			}
+		}
+		if(not foundVinSwappingSymbolVs)
+			swappingSymbol.addV(std::vector<std::string>{v});
+	}
+}
+
+bool Grammar::foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const{
+	for(const auto& str : vector)
+		if(string == str)
+			return true;
+	return false;
+}
+
+bool Grammar::isNonTerminal(std::string vSymbol) const {
+	for(const auto& nonTerminal : getVn())
+		if(nonTerminal == vSymbol)
+			return true;
+	return false;
 }
 
 /*
@@ -515,4 +551,50 @@ std::string Grammar::generateWord() {
 		std::cout << u_v.first << " -> " << u_v.second << " \n";
 	return currentWord;
 }
+*/
+
+/*
+// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
+bool Grammar::checkIfCanTransformToChomskyNormalForm() {
+	// for every u and v's
+	for(const auto& u_v : P) {
+		// u is of size 1 (also found in isContextFree())
+		if(u_v.getLeft().size() != 1)
+			return false;
+
+		// u has to be part of Vn (also found in isContextFree())
+		{
+			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
+			if(findUinVn == Vn.end())
+				return false;
+		}
+
+		// only start symbol can transform to null (lambda (epsilon (empty (etc. etc.))
+		for(const auto& v : u_v.getRight())
+			if(v == "" && u_v.getLeft() != S)
+				return false;
+
+		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
+		for(const auto& v : u_v.getRight()) {
+			if(v.size() == 1) {
+				auto findVinVt = std::find(Vt.begin(), Vt.end(), v);
+				if(findVinVt == Vt.end())
+					return false;
+			}
+			else if(v.size() == 2) {
+				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[0]));
+				if(find2ElemsOfVinVn == Vn.end())
+					return false;
+				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[1]));
+				if(find2ElemsOfVinVn == Vn.end())
+					return false;
+			}
+			else
+				return false;
+		}
+	}
+
+	return true;
+}
+
 */

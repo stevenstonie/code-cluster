@@ -128,13 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cpp_files\Grammar.cpp" />
+    <ClCompile Include="cpp_files\Inutils.cpp" />
     <ClCompile Include="from_context-free_grammar_to_push-down_automaton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="text_files\readGrammar.in" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="header_files\Grammar.h" />
+    <ClInclude Include="header_files\Grammar.hpp" />
+    <ClInclude Include="header_files\Inutils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

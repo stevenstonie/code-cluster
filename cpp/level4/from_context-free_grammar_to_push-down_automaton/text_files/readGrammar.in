@@ -1,15 +1,15 @@
-4
-S A B C
+3
+S A B
 
-4
-a b c d
+2
+a b
 
 S
 
 6
-S abS
-S abA
-S abB
-A cd
-B aB
-C dc
+S AB
+S A
+A Aa
+A a
+B SBa
+B b
