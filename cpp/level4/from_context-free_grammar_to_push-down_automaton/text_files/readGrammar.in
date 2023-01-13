@@ -1,5 +1,5 @@
-3
-S A B
+6
+S A B C D E
 
 2
 a b
@@ -7,7 +7,7 @@ a b
 S
 
 6
-S AB
+S ABCBDE
 S A
 A Aa
 A a

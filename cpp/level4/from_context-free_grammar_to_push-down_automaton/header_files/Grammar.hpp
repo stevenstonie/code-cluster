@@ -19,7 +19,7 @@ public:
 			std::vector<std::string> getV() const {
 				return v;
 			}
-			std::vector<std::string> getChangeableV(){
+			std::vector<std::string>& getChangeableV(){
 				return v;
 			}
 
@@ -45,18 +45,15 @@ public:
 		std::string getU() const {
 			return u;
 		}
-		std::string getChangeableU(){
+		std::string& getChangeableU(){
 			return u;
 		}
 		std::vector<V> getVS() const{
 			return vs;
 		}
-		std::vector<V> getChangeableVS(){
+		std::vector<V>& getChangeableVS(){
 			return vs;
 		}
-		// no const because when going through the productions, if i want to change one well.. i cant.
-
-		// setU?
 
 		void addV(std::vector<std::string> v) {
 			vs.push_back(V(v));
@@ -92,6 +89,7 @@ public:
 	void addToVn(std::string nonTerminal);
 	void addToVt(std::string terminal);
 	void setS(std::string S);
+	void addU(std::string u);
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
@@ -100,11 +98,15 @@ public:
 private:
 	void removeAllUnreachableProductionsAndAllRenamings();
 
-	void swapTerminalsOnRightOfVsWithNonTerms();
+	void replaceTerminalsOnRightOfVsWithNonTerms();
+
+	void shortenProductionsAndAddNewOnes();
 
 	void transformToChomskyNormalForm();
 
-	void searchAndAddTerminalOnRhsOfSwappingSymbol(U_VS& swappingSymbol, std::string v);
+	std::string createNewUSymbolByIncrementing(std::string uSymbol);
+
+	void searchAndAddTerminalOnRhsOfReplacingSymbol(U_VS& replacingSymbol, std::string v);
 
 	bool foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const;
 

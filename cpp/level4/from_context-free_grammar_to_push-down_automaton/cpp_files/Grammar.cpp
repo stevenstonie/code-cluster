@@ -186,6 +186,10 @@ void Grammar::addToVt(std::string terminal){
 void Grammar::setS(std::string S){
 	this->S = S;
 }
+void Grammar::addU(std::string u){
+	U_VS newU(u);
+	us_and_productions.push_back(newU);
+}
 
 std::ostream& operator<<(std::ostream& output, const Grammar& grammar) {
 	if(grammar.getVn().empty() || grammar.getVt().empty() || grammar.getS() == "" || grammar.us_and_productions.empty()){
@@ -337,9 +341,9 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 	}
 }
 
-void Grammar::swapTerminalsOnRightOfVsWithNonTerms(){
+void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
 	// find a letter thats not in Vn and use it to swap terminals with it
-	// if not found make a new one A1
+	// if not found make a new one Z1
 	bool oneLetterNotFound = false;
 	for(char i = 90; i >= 65; i--){
 		std::string letter = std::string{i};
@@ -350,33 +354,62 @@ void Grammar::swapTerminalsOnRightOfVsWithNonTerms(){
 		}
 	}
 	if(not oneLetterNotFound)
-		addToVn("A1");
+		addToVn("Z1");
 
 	U_VS newU_VS(getVn()[getVn().size() - 1]);
 	us_and_productions.push_back(newU_VS);
 
-	// go through all productions and swap all terminals with the swappingSymbol non-terminal
-	int i_u = 0;
+	// go through all productions and swap all terminals with the replacingSymbol non-terminal
+	// int i_u = 0;
 	for(auto& u_vs : us_and_productions){
-		int i_v = 0;
+		// int i_v = 0;
 		for(auto& v : u_vs.getChangeableVS()){
 			if(v.getChangeableV().size() > 1){
 				for(int i_vSymbol = 1; i_vSymbol < v.getChangeableV().size(); i_vSymbol++){
 					if(isNonTerminal(v.getChangeableV()[i_vSymbol]) == false){
-						// add all unique terminals that get swapped to the swappingSymbol's right hand side
-						auto& swappingSymbol = us_and_productions[us_and_productions.size() - 1];
-						searchAndAddTerminalOnRhsOfSwappingSymbol(swappingSymbol, v.getV()[i_vSymbol]);
+						// add all unique terminals that get swapped to the replacingSymbol's right hand side
+						auto& replacingSymbol = us_and_productions[us_and_productions.size() - 1];
+						searchAndAddTerminalOnRhsOfReplacingSymbol(replacingSymbol, v.getV()[i_vSymbol]);
 
-						// v.getChangeableV()[i] = swappingSymbol.getChangeableU();
-						// v.setVSymbol(i_vSymbol, swappingSymbol.getU());
-						// us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, swappingSymbol.getU());
-						u_vs.setVSymbol(i_v, i_vSymbol, swappingSymbol.getU());
+						v.setVSymbol(i_vSymbol, replacingSymbol.getU());
+						// v.getChangeableV()[i_vSymbol] = replacingSymbol.getChangeableU();
+						// us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, replacingSymbol.getU());
+						// u_vs.setVSymbol(i_v, i_vSymbol, replacingSymbol.getU());
 					}
 				}
 			}
-			i_v++;
+			// i_v++;
 		}
-		i_u++;
+		// i_u++;
+	}
+}
+//!!!!!! check if one u is enough or if i have to add new u's for every new terminal that needs to be replaced
+
+void Grammar::shortenProductionsAndAddNewOnes(){
+	// create a non-terminal and every time a new pair of non-terminals needs to be replaced add a new non-terminal
+	std::string lastCreatedUSymbol = "A0";
+
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
+			if(us_and_productions[i_u].getVS()[i_v].getV().size() > 2){
+				// create new u symbol
+				lastCreatedUSymbol = createNewUSymbolByIncrementing(lastCreatedUSymbol);
+
+				// add it to Vn and make it a new production
+				addToVn(lastCreatedUSymbol);
+				addU(lastCreatedUSymbol);
+
+				// make its production result the current v without the first vSymbol
+				std::vector<std::string> currVwithoutFirstSymbol = us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV();
+				for(int i = 0; i < currVwithoutFirstSymbol.size() - 1; i++)
+					currVwithoutFirstSymbol[i] = currVwithoutFirstSymbol[i + 1];
+				currVwithoutFirstSymbol.pop_back();
+				us_and_productions.back().addV(currVwithoutFirstSymbol);
+
+				// replace all the vSymbols from the right of the first vSymbol with last created u
+				us_and_productions[i_u].setV(i_v, {us_and_productions[i_u].getVS()[i_v].getV().front(), lastCreatedUSymbol});
+			}
+		}
 	}
 }
 
@@ -387,24 +420,41 @@ void Grammar::transformToChomskyNormalForm() {
 	// shouldnt i also delete the productions that go on indefinitely?
 
 	// step 2: for all productions where v is longer than or equal to 2 and contains a terminal, replace it with a new non-terminal and add a new production that transforms to the changed terminal
-	swapTerminalsOnRightOfVsWithNonTerms();
+	replaceTerminalsOnRightOfVsWithNonTerms();
 
 	// step 3: for all productions where v is longer than 2, shorten them and add new productions that transform to the discarded symbols
+	shortenProductionsAndAddNewOnes();
 }
 
-void Grammar::searchAndAddTerminalOnRhsOfSwappingSymbol(U_VS& swappingSymbol, std::string v){
-	if(swappingSymbol.getVS().empty())
-		swappingSymbol.addV(std::vector<std::string>{v});
+std::string Grammar::createNewUSymbolByIncrementing(std::string uSymbol) {
+	if(uSymbol.size() < 2)
+		return uSymbol + '1';
+
+	if(uSymbol.back() == '9') {
+		// make the first char of uSymbol be next in ascii
+		char nextLetter = (char) (uSymbol.front() + 1);
+		uSymbol.front() = nextLetter;
+		uSymbol.back() = '1';
+		return uSymbol;
+	}
+
+	uSymbol.back() = uSymbol.back() + 1;
+	return uSymbol;
+}
+
+void Grammar::searchAndAddTerminalOnRhsOfReplacingSymbol(U_VS& replacingSymbol, std::string v){
+	if(replacingSymbol.getVS().empty())
+		replacingSymbol.addV(std::vector<std::string>{v});
 	else{
-		bool foundVinSwappingSymbolVs = false;
-		for(auto& vOfSwappingSymbol : swappingSymbol.getVS()){
-			if(vOfSwappingSymbol.getV() == std::vector<std::string>{v}){
-				foundVinSwappingSymbolVs = true;
+		bool foundVinreplacingSymbolVs = false;
+		for(auto& vOfreplacingSymbol : replacingSymbol.getVS()){
+			if(vOfreplacingSymbol.getV() == std::vector<std::string>{v}){
+				foundVinreplacingSymbolVs = true;
 				break;
 			}
 		}
-		if(not foundVinSwappingSymbolVs)
-			swappingSymbol.addV(std::vector<std::string>{v});
+		if(not foundVinreplacingSymbolVs)
+			replacingSymbol.addV(std::vector<std::string>{v});
 	}
 }
 
