@@ -106,6 +106,8 @@ private:
 
 	std::string createNewUSymbolByIncrementing(std::string uSymbol);
 
+	std::string createNewUSymbolByDecrementing(std::string uSymbol);
+
 	void searchAndAddTerminalOnRhsOfReplacingSymbol(U_VS& replacingSymbol, std::string v);
 
 	bool foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const;

@@ -275,9 +275,11 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 	return input;
 }
 
-///////////////////////////
-/////////////////////////// private
-///////////////////////////
+//////////////////////////////////
+
+/////////////private////////////// 
+
+//////////////////////////////////
 
 void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
@@ -298,9 +300,9 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 		}
 	}
 
-	// delete all productions that are unreachable
+	// delete all productions that are unreachable excluding the start symbol
 	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
-		if(foundNonTermOnRhs[i] == false){
+		if(foundNonTermOnRhs[i] == false && us_and_productions[i].getU() != S){
 			// delete the object in P at the index i 
 			std::swap(us_and_productions[i], us_and_productions[us_and_productions.size() - 1]);
 			us_and_productions.pop_back();
@@ -342,48 +344,30 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 }
 
 void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
-	// find a letter thats not in Vn and use it to swap terminals with it
-	// if not found make a new one Z1
-	bool oneLetterNotFound = false;
-	for(char i = 90; i >= 65; i--){
-		std::string letter = std::string{i};
-		if(not foundStringInVector(getVn(), letter)){
-			oneLetterNotFound = true;
-			addToVn(letter);
-			break;
-		}
-	}
-	if(not oneLetterNotFound)
-		addToVn("Z1");
+	// create a new non-terminal Z1 and every time a terminal needs to be replaced create a Z2 and so on
+	std::string lastNonTerminalCreated = "Z";
 
-	U_VS newU_VS(getVn()[getVn().size() - 1]);
-	us_and_productions.push_back(newU_VS);
+	// go through all productions and swap all terminals with the last non-terminal created
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
+			if(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size() > 1){
+				for(int i_vSymbol = 0; i_vSymbol < us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size(); i_vSymbol++){
+					if(isNonTerminal(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]) == false){
+						lastNonTerminalCreated = createNewUSymbolByDecrementing(lastNonTerminalCreated);
+						U_VS newU(lastNonTerminalCreated, {us_and_productions[i_u].getChangeableVS()[i_v].getV()[i_vSymbol]});
+						us_and_productions.push_back(newU);
 
-	// go through all productions and swap all terminals with the replacingSymbol non-terminal
-	// int i_u = 0;
-	for(auto& u_vs : us_and_productions){
-		// int i_v = 0;
-		for(auto& v : u_vs.getChangeableVS()){
-			if(v.getChangeableV().size() > 1){
-				for(int i_vSymbol = 1; i_vSymbol < v.getChangeableV().size(); i_vSymbol++){
-					if(isNonTerminal(v.getChangeableV()[i_vSymbol]) == false){
-						// add all unique terminals that get swapped to the replacingSymbol's right hand side
-						auto& replacingSymbol = us_and_productions[us_and_productions.size() - 1];
-						searchAndAddTerminalOnRhsOfReplacingSymbol(replacingSymbol, v.getV()[i_vSymbol]);
-
-						v.setVSymbol(i_vSymbol, replacingSymbol.getU());
+						us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, lastNonTerminalCreated);
 						// v.getChangeableV()[i_vSymbol] = replacingSymbol.getChangeableU();
 						// us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, replacingSymbol.getU());
 						// u_vs.setVSymbol(i_v, i_vSymbol, replacingSymbol.getU());
 					}
 				}
 			}
-			// i_v++;
 		}
-		// i_u++;
 	}
 }
-//!!!!!! check if one u is enough or if i have to add new u's for every new terminal that needs to be replaced
+//!!!!!!! maybe make a minimizing algorithm to search for productions that have the same result???
 
 void Grammar::shortenProductionsAndAddNewOnes(){
 	// create a non-terminal and every time a new pair of non-terminals needs to be replaced add a new non-terminal
@@ -442,20 +426,20 @@ std::string Grammar::createNewUSymbolByIncrementing(std::string uSymbol) {
 	return uSymbol;
 }
 
-void Grammar::searchAndAddTerminalOnRhsOfReplacingSymbol(U_VS& replacingSymbol, std::string v){
-	if(replacingSymbol.getVS().empty())
-		replacingSymbol.addV(std::vector<std::string>{v});
-	else{
-		bool foundVinreplacingSymbolVs = false;
-		for(auto& vOfreplacingSymbol : replacingSymbol.getVS()){
-			if(vOfreplacingSymbol.getV() == std::vector<std::string>{v}){
-				foundVinreplacingSymbolVs = true;
-				break;
-			}
-		}
-		if(not foundVinreplacingSymbolVs)
-			replacingSymbol.addV(std::vector<std::string>{v});
+std::string Grammar::createNewUSymbolByDecrementing(std::string uSymbol) {
+	if(uSymbol.size() < 2)
+		return uSymbol + '1';
+
+	if(uSymbol.back() == '9') {
+		// make the first char of uSymbol be next in ascii
+		char nextLetter = (char) (uSymbol.front() - 1);
+		uSymbol.front() = nextLetter;
+		uSymbol.back() = '1';
+		return uSymbol;
 	}
+
+	uSymbol.back() = uSymbol.back() + 1;
+	return uSymbol;
 }
 
 bool Grammar::foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const{
