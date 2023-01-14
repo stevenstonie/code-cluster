@@ -277,7 +277,7 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 
 //////////////////////////////////
 
-/////////////private////////////// 
+/////////////private//////////////
 
 //////////////////////////////////
 
@@ -379,11 +379,9 @@ void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
 		}
 	}
 
-	for(const auto& new_u_vs : newUsAndProductions){
+	for(const auto& new_u_vs : newUsAndProductions)
 		us_and_productions.push_back(new_u_vs);
-	}
 }
-//!!!!!!! maybe make a minimizing algorithm to search for productions that have the same result???
 
 void Grammar::shortenProductionsAndAddNewOnes(){
 	// create a non-terminal and every time a new pair of non-terminals needs to be replaced add a new non-terminal
@@ -648,3 +646,5 @@ bool Grammar::checkIfCanTransformToChomskyNormalForm() {
 }
 
 */
+
+///!!!!!!!!!!!! greibach not yet done

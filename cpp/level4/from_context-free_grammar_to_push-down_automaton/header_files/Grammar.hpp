@@ -113,12 +113,6 @@ private:
 	bool foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const;
 
 	bool isNonTerminal(std::string vSymbol) const;
-	// void eliminateUselessProductionsInCFG();
-	// void eliminateNullProductions();
-	// void Combi(std::vector<int>& indexesOfVLetter, std::string& word, std::vector<std::string>& allCombinations, int reqLen, int s, int currLen, std::vector<bool> check);
-
-	// std::string generateWord();
-	// bool checkIfCanTransformToChomskyNormalForm();
 
 private:
 	std::vector<std::string> Vn, Vt; // Vn = [S, A, B, C]. Vt = [a, b, c, d]

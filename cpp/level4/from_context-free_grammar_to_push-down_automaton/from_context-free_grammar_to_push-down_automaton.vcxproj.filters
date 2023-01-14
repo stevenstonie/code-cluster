@@ -24,6 +24,9 @@
     <ClCompile Include="cpp_files\Inutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cpp_files\PushDownAutomaton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="text_files\readGrammar.in" />
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header_files\Inutils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header_files\PushDownAutomaton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
