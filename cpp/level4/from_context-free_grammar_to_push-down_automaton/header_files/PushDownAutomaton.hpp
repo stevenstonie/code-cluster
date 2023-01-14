@@ -1,4 +1,8 @@
+#define twice once
+#pragma twice
+
 #include <vector>
+#include <iostream>
 
 #include "Inutils.hpp"
 
@@ -6,18 +10,28 @@ class PushDownAutomaton{
 public:
 	class Delta{
 	public:
-		std::string getState() const;
-		std::string getInput() const;
-		std::string getStackTop() const;
-		std::string getNewState() const;
-		std::vector<std::string> getNewStackTop() const;
+		std::string getState() const{
+			return state;
+		}
+		std::string getInput() const{
+			return input;
+		}
+		std::string getStackTop() const{
+			return stackTop;
+		}
+		std::string getNextState() const{
+			return nextState;
+		}
+		std::vector<std::string> getStackPush() const{
+			return stackPush;
+		}
 
 		// changeable getters
 
 	private:
 		std::string state;
 		std::string input;
-		std::string stackHead;
+		std::string stackTop;
 		std::string nextState;
 		std::vector<std::string> stackPush;
 		// lambda == '~'
@@ -34,7 +48,7 @@ public:
 	std::vector<std::string> getQ() const;
 	std::vector<std::string> getSigma() const;
 	std::vector<std::string> getGamma() const;
-	std::vector<std::string> getDelta() const;
+	std::vector<Delta> getDelta() const;
 	std::string getq0() const;
 	std::string getZ0() const;
 	std::vector<std::string> getF() const;
@@ -43,8 +57,8 @@ public:
 
 private:
 	std::vector<std::string> Q;  // states set
-	std::vector<std::string> Sigma;  // alphabet of input symbols
-	std::vector<std::string> Gamma;  // alphabet of stack symbols
+	std::vector<std::string> sigma;  // alphabet of input symbols
+	std::vector<std::string> gamma;  // alphabet of stack symbols
 	std::vector<Delta> delta; // transitions set
 	std::string q0;  // initial state symbol
 	std::string Z0;  // initial stack symbol
