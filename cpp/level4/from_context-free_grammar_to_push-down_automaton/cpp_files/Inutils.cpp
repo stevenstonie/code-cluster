@@ -14,3 +14,20 @@ std::vector<std::string> convertStringToVectorOfStrings(std::string string){
 
 	return vectorOfStrings;
 }
+
+int getIndexOfStringInVector(const std::string& string, const  std::vector<std::string>& vector){
+	for(int i = 0; i < vector.size(); i++){
+		if(vector[i] == string)
+			return i;
+	}
+	return -1;
+}
+
+bool checkIfFirstStringIsSmallerThanSecond(const std::string& string1, const std::string& string2){
+	if(string1[0] == string2[0]){
+		return string1[1] < string2[1];
+	}
+	else{
+		return string1[0] < string2[0];
+	}
+}

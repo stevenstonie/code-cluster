@@ -10,6 +10,19 @@ class PushDownAutomaton{
 public:
 	class Delta{
 	public:
+		class Production{
+		public:
+			std::string getNextState() const{
+				return nextState;
+			}
+			std::vector<std::string> getStackPush() const{
+				return stackPush;
+			}
+		private:
+			std::string nextState;
+			std::vector<std::string> stackPush;
+		};
+
 		std::string getState() const{
 			return state;
 		}
@@ -19,11 +32,8 @@ public:
 		std::string getStackTop() const{
 			return stackTop;
 		}
-		std::string getNextState() const{
-			return nextState;
-		}
-		std::vector<std::string> getStackPush() const{
-			return stackPush;
+		std::vector<Production> getProductions() const{
+			return productions;
 		}
 
 		// changeable getters
@@ -32,8 +42,7 @@ public:
 		std::string state;
 		std::string input;
 		std::string stackTop;
-		std::string nextState;
-		std::vector<std::string> stackPush;
+		std::vector<Production> productions;
 		// lambda == '~'
 	};
 

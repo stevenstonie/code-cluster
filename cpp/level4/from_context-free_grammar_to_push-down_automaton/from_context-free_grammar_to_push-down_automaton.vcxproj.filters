@@ -27,7 +27,7 @@
     <ClCompile Include="cpp_files\PushDownAutomaton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cpp_files\TransformCFGintoPDA.cpp">
+    <ClCompile Include="cpp_files\TransformGNFintoPDA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClInclude Include="header_files\PushDownAutomaton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="header_files\TransformCFGintoPDA.hpp">
+    <ClInclude Include="header_files\TransformGNFintoPDA.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

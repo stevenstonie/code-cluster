@@ -66,6 +66,9 @@ public:
 		void setVSymbol(int index, int index2, std::string vSymbol){
 			vs[index].setVSymbol(index2, vSymbol);
 		}
+		void setU(std::string newU){
+			u = newU;
+		}
 	private:
 		std::string u;
 		std::vector<V> vs;
@@ -90,9 +93,13 @@ public:
 	std::string getS() const;
 	std::vector<U_VS> getUS_VS() const;
 
+	std::string& getChangeableS();
+	std::vector<std::string>& getChangeableVn();
+
 	void addToVn(std::string nonTerminal);
 	void addToVt(std::string terminal);
 	void setS(std::string S);
+	void setVn(const std::vector<std::string>& newVn);
 	void addU(std::string u);
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
@@ -100,6 +107,10 @@ public:
 	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
 
 private:
+	void changeProductionsToSatisfyAscendingOrder();
+
+	void renameNonTerminalsInAscendingOrder();
+
 	void removeAllUnreachableProductionsAndAllRenamings();
 
 	void replaceTerminalsOnRightOfVsWithNonTerms();

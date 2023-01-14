@@ -1,7 +1,5 @@
 #include "../header_files/Grammar.hpp"
 
-#include <iostream>
-
 Grammar Grammar::createGrammar(){
 	Grammar grammar;
 
@@ -128,7 +126,10 @@ void Grammar::transformToGreibachNormalForm(){
 	// transform to chomsky
 	transformToChomskyNormalForm();
 
-	//continue to transform to greibach here
+	// rename all non-terminals to be of form A1, A2, A3, ...
+	renameNonTerminalsInAscendingOrder();
+
+	changeProductionsToSatisfyAscendingOrder();
 }
 
 void Grammar::printGrammar() {
@@ -198,6 +199,13 @@ std::vector<Grammar::U_VS> Grammar::getUS_VS() const {
 	return us_and_productions;
 }
 
+std::string& Grammar::getChangeableS(){
+	return S;
+}
+std::vector<std::string>& Grammar::getChangeableVn(){
+	return Vn;
+}
+
 void Grammar::addToVn(std::string nonTerminal){
 	this->Vn.push_back(nonTerminal);
 }
@@ -206,6 +214,9 @@ void Grammar::addToVt(std::string terminal){
 }
 void Grammar::setS(std::string S){
 	this->S = S;
+}
+void Grammar::setVn(const std::vector<std::string>& newVn){
+	Vn = newVn;
 }
 void Grammar::addU(std::string u){
 	U_VS newU(u);
@@ -302,6 +313,64 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 
 //////////////////////////////////
 
+void Grammar::changeProductionsToSatisfyAscendingOrder(){
+	// while no more productions are of form Ax -> AyAz where x >=y
+	// // for i_u
+	// // for i_v
+	// // if i_v[0] is terminal
+	// // // continue
+	// // else 
+	// // // check if i_u is lower than i_v[0]
+	// // // if not then
+	// // // // find i_v[0] as i_u and rewrite the i_v[0] as all productions of i_u
+}
+
+void Grammar::renameNonTerminalsInAscendingOrder(){
+	// change start symbol.
+	getChangeableS() = "A1";
+	std::string lastChangedNonTerminal = "A";
+	// original non-terminals
+	std::vector<std::string> replacedNonTerminals;
+	// and their new version. two separate vectors with same indexes for each pair of old/new
+	std::vector<std::string> newTerminals;
+	std::vector<std::string> newVn;
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+		// for each u check if it hasnt been replaced yet. if not replace the next: lastChangedNonTerminal, new/old non-terminal vectors, non-terminal in us_and_productions and add new non-terminal to Vn
+		int indexWhereNewAliasOfNonTerminalIs = getIndexOfStringInVector(us_and_productions[i_u].getU(), replacedNonTerminals);
+		if(indexWhereNewAliasOfNonTerminalIs == -1){
+			lastChangedNonTerminal = createNewUSymbolByIncrementing(lastChangedNonTerminal);
+			replacedNonTerminals.push_back(us_and_productions[i_u].getU());
+			newTerminals.push_back(lastChangedNonTerminal);
+			us_and_productions[i_u].setU(lastChangedNonTerminal);
+			newVn.push_back(lastChangedNonTerminal);
+		}
+		else{    // ik it will never be called. i think...
+			us_and_productions[i_u].setU(newTerminals[indexWhereNewAliasOfNonTerminalIs]);
+		}
+
+		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
+			for(int i_vSymbol = 0; i_vSymbol < us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size(); i_vSymbol++){
+				// same for each u but check if it is a non-terminal
+				if(isNonTerminal(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol])){
+					indexWhereNewAliasOfNonTerminalIs = getIndexOfStringInVector(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol], replacedNonTerminals);
+					if(indexWhereNewAliasOfNonTerminalIs == -1){
+						lastChangedNonTerminal = createNewUSymbolByIncrementing(lastChangedNonTerminal);
+						replacedNonTerminals.push_back(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]);
+						newTerminals.push_back(lastChangedNonTerminal);
+						us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, lastChangedNonTerminal);
+						newVn.push_back(lastChangedNonTerminal);
+					}
+					else{
+						us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, newTerminals[indexWhereNewAliasOfNonTerminalIs]);
+					}
+				}
+			}
+		}
+	}
+	setVn(newVn);
+	//change the rest
+}
+
 void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
 	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getVn().size(), false);
@@ -391,6 +460,7 @@ void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
 							lastNonTerminalCreated = createNewUSymbolByDecrementing(lastNonTerminalCreated);
 							newUsAndProductions.push_back(U_VS(lastNonTerminalCreated, std::vector<std::string>{us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]}));
 							us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, newUsAndProductions[newUsAndProductions.size() - 1].getU());
+							addToVn(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]);
 						}
 
 						// on (1) its safe to do it without indexes as i know that these new productions have only one terminal on rhs
@@ -406,7 +476,7 @@ void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
 
 void Grammar::shortenProductionsAndAddNewOnes(){
 	// create a non-terminal and every time a new pair of non-terminals needs to be replaced add a new non-terminal
-	std::string lastCreatedUSymbol = "A0";
+	std::string lastCreatedUSymbol = "C";
 
 	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
 		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
@@ -667,5 +737,3 @@ bool Grammar::checkIfCanTransformToChomskyNormalForm() {
 }
 
 */
-
-///!!!!!!!!!!!! greibach not yet done

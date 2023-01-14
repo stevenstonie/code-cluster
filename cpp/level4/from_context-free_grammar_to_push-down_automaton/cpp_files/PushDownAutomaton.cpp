@@ -33,12 +33,24 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 	for(int i = 0; i < pushDownAutomaton.getDelta().size(); i++){
 		output << "d(";
 		output << pushDownAutomaton.getDelta()[i].getState() << ", ";
+
 		output << pushDownAutomaton.getDelta()[i].getInput() << ", ";
+
 		output << pushDownAutomaton.getDelta()[i].getStackTop() << " ) = {(";
-		output << pushDownAutomaton.getDelta()[i].getNextState() << ", ";
-		for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDelta()[i].getStackPush().size() - 1; i_stackSymbol++)
-			output << pushDownAutomaton.getDelta()[i].getStackPush()[i_stackSymbol] << ", ";
-		output << pushDownAutomaton.getDelta()[i].getStackPush().back() << ")}" << std::endl;
+
+		for(int i_prod = 0; i_prod < pushDownAutomaton.getDelta()[i].getProductions().size() - 1; i_prod++){
+			output << pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getNextState() << ", ";
+
+			for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getStackPush().size(); i_stackSymbol++)
+				output << pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getStackPush()[i_stackSymbol];
+			output << "), (";
+		}
+
+		output << pushDownAutomaton.getDelta()[i].getProductions().back().getNextState() << ", ";
+
+		for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDelta()[i].getProductions().back().getStackPush().size(); i_stackSymbol++)
+			output << pushDownAutomaton.getDelta()[i].getProductions().back().getStackPush()[i_stackSymbol];
+		output << ")}" << std::endl;
 	}
 
 	return output;
