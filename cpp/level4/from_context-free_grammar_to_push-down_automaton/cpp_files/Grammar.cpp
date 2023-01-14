@@ -344,27 +344,43 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 }
 
 void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){
-	// create a new non-terminal Z1 and every time a terminal needs to be replaced create a Z2 and so on
+	// create a new non-terminal Z1 and every time a new terminal needs to be replaced create a Z2 and so on
 	std::string lastNonTerminalCreated = "Z";
+	std::vector<U_VS> newUsAndProductions;
 
 	// go through all productions and swap all terminals with the last non-terminal created
 	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
 		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
-			if(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size() > 1){
-				for(int i_vSymbol = 0; i_vSymbol < us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size(); i_vSymbol++){
-					if(isNonTerminal(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]) == false){
-						lastNonTerminalCreated = createNewUSymbolByDecrementing(lastNonTerminalCreated);
-						U_VS newU(lastNonTerminalCreated, {us_and_productions[i_u].getChangeableVS()[i_v].getV()[i_vSymbol]});
-						us_and_productions.push_back(newU);
+			if(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size() > 1){    // size > 1
+				for(int i_vSymbol = 0; i_vSymbol < us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV().size(); i_vSymbol++){    // each symbol
+					if(isNonTerminal(us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]) == false){    // current symbol contains terminal
+						bool terminalFound = false;
+						for(auto& u : newUsAndProductions){    // check if the terminal already got replaced before
+							for(auto& v : u.getChangeableVS()){    // (1)
+								// if yes just replace the terminal with the non-terminal that holds it
+								if(v.getV() == std::vector<std::string>{us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]}){
+									us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, u.getU());
+									terminalFound = true;
+								}
+							}
+						}
 
-						us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, lastNonTerminalCreated);
-						// v.getChangeableV()[i_vSymbol] = replacingSymbol.getChangeableU();
-						// us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, replacingSymbol.getU());
-						// u_vs.setVSymbol(i_v, i_vSymbol, replacingSymbol.getU());
+						// else create a new non-terminal, make it hold the terminal and replace it with the new non-terminal made
+						if(not terminalFound){
+							lastNonTerminalCreated = createNewUSymbolByDecrementing(lastNonTerminalCreated);
+							newUsAndProductions.push_back(U_VS(lastNonTerminalCreated, std::vector<std::string>{us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV()[i_vSymbol]}));
+							us_and_productions[i_u].getChangeableVS()[i_v].setVSymbol(i_vSymbol, newUsAndProductions[newUsAndProductions.size() - 1].getU());
+						}
+
+						// on (1) its safe to do it without indexes as i know that these new productions have only one terminal on rhs
 					}
 				}
 			}
 		}
+	}
+
+	for(const auto& new_u_vs : newUsAndProductions){
+		us_and_productions.push_back(new_u_vs);
 	}
 }
 //!!!!!!! maybe make a minimizing algorithm to search for productions that have the same result???
