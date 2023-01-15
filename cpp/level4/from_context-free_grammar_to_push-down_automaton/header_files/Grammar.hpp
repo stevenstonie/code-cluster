@@ -1,4 +1,4 @@
-#pragma once
+#pragma twice
 
 #include <algorithm>
 #include <iostream>

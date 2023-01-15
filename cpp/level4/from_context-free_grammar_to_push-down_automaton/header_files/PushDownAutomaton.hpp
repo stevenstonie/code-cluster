@@ -1,4 +1,3 @@
-#define twice once
 #pragma twice
 
 #include <vector>
@@ -45,6 +44,8 @@ public:
 		std::vector<Production> productions;
 		// lambda == '~'
 	};
+
+	PushDownAutomaton() = default;
 
 	void printAutomaton();
 

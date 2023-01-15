@@ -254,6 +254,7 @@ std::ostream& operator<<(std::ostream& output, const Grammar& grammar) {
 		}
 		output << "\n";
 	}
+	output << std::endl;
 
 	return output;
 }
@@ -316,8 +317,8 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 //////////////////////////////////
 
 void Grammar::eliminateLeftRecursion(){
-	///!!!!
 }
+///!!!!
 
 void Grammar::U_VS::insertVatIndex(std::vector<std::string>& vector, int index){
 	vs.insert(vs.begin() + index, vector);

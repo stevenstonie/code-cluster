@@ -5,6 +5,14 @@ void PushDownAutomaton::printAutomaton(){
 }
 
 std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDownAutomaton){
+	if(pushDownAutomaton.getQ().size() == 0 || pushDownAutomaton.getSigma().size() == 0
+		|| pushDownAutomaton.getGamma().size() == 0 || pushDownAutomaton.getDelta().size() == 0
+		|| pushDownAutomaton.getq0().size() == 0 || pushDownAutomaton.getZ0().size()
+		|| pushDownAutomaton.getF().size() == 0){
+		std::cout << "the automaton contains an empty field.. ";
+		exit(1);
+	}
+
 	output << "Q: ";
 	for(int i = 0; i < pushDownAutomaton.getQ().size() - 1; i++)
 		output << pushDownAutomaton.getQ()[i] << ", ";
@@ -52,6 +60,7 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 			output << pushDownAutomaton.getDelta()[i].getProductions().back().getStackPush()[i_stackSymbol];
 		output << ")}" << std::endl;
 	}
+	output << std::endl;
 
 	return output;
 }
