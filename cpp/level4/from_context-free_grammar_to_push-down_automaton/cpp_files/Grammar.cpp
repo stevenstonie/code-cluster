@@ -207,6 +207,9 @@ std::string& Grammar::getChangeableS(){
 std::vector<std::string>& Grammar::getChangeableVn(){
 	return Vn;
 }
+std::vector<std::string>& Grammar::getChangeableVt(){
+	return Vt;
+}
 
 void Grammar::addToVn(std::string nonTerminal){
 	this->Vn.push_back(nonTerminal);

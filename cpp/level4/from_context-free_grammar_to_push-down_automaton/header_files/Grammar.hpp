@@ -96,6 +96,7 @@ public:
 
 	std::string& getChangeableS();
 	std::vector<std::string>& getChangeableVn();
+	std::vector<std::string>& getChangeableVt();
 
 	void addToVn(std::string nonTerminal);
 	void addToVt(std::string terminal);

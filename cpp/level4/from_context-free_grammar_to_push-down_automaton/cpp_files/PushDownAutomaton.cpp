@@ -42,7 +42,7 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 		output << "d(";
 		output << pushDownAutomaton.getDelta()[i].getState() << ", ";
 
-		output << pushDownAutomaton.getDelta()[i].getInput() << ", ";
+		output << pushDownAutomaton.getDelta()[i].getLetter() << ", ";
 
 		output << pushDownAutomaton.getDelta()[i].getStackTop() << " ) = {(";
 
@@ -63,6 +63,28 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 	output << std::endl;
 
 	return output;
+}
+
+void PushDownAutomaton::setQ(std::vector<std::string>& Q){
+	this->Q = Q;
+}
+void PushDownAutomaton::setSigma(std::vector<std::string>& sigma){
+	this->sigma = sigma;
+}
+void PushDownAutomaton::setGamma(std::vector<std::string>& gamma){
+	this->gamma = gamma;
+}
+void PushDownAutomaton::setDelta(std::vector<Delta>& delta){
+	this->delta = delta;
+}
+void PushDownAutomaton::setq0(std::string& q0){
+	this->q0 = q0;
+}
+void PushDownAutomaton::setZ0(std::string& Z0){
+	this->Z0 = Z0;
+}
+void PushDownAutomaton::setF(std::vector<std::string>& F){
+	this->F = F;
 }
 
 std::vector<std::string> PushDownAutomaton::getQ() const{
