@@ -130,6 +130,8 @@ void Grammar::transformToGreibachNormalForm(){
 	renameNonTerminalsInAscendingOrder();
 
 	changeProductionsToSatisfyAscendingOrder();
+
+	eliminateLeftRecursion();
 }
 
 void Grammar::printGrammar() {
@@ -313,7 +315,73 @@ std::istream& operator>>(std::istream& input, Grammar& grammar) {
 
 //////////////////////////////////
 
+void Grammar::eliminateLeftRecursion(){
+	///!!!!
+}
+
+void Grammar::U_VS::insertVatIndex(std::vector<std::string>& vector, int index){
+	vs.insert(vs.begin() + index, vector);
+}
+
+int Grammar::getUindex(const std::string& u) const{
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++)
+		if(us_and_productions[i_u].getU() == u)
+			return i_u;
+	return -1;
+}
+
 void Grammar::changeProductionsToSatisfyAscendingOrder(){
+	bool atLeastOneReplacement = true;
+	while(atLeastOneReplacement == true){
+		atLeastOneReplacement = false;
+
+		for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+			for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
+				std::string currU = us_and_productions[i_u].getChangeableU();
+				std::vector<std::string> currV = us_and_productions[i_u].getChangeableVS()[i_v].getChangeableV();
+				if(isNonTerminal(currV[0])){
+					/// if(checkIfFirstStringIsSmallerThanSecond(currU, currV[0]) == false){
+						// exclude left recursion. this will be dealt with later
+					if(currU != currV[0]){
+
+						// create new Vs to replace the faulty v with its productions
+						std::vector<Grammar::U_VS::V> newVs;
+						std::vector<std::string> vWithoutFirstElem = currV;
+						vWithoutFirstElem.erase(vWithoutFirstElem.begin());
+
+						// search if the faulty v exists as an u
+						int i_u2 = 0;
+						for(i_u2; i_u2 < us_and_productions.size(); i_u2++){
+							if(currV[0] == us_and_productions[i_u2].getU())
+								break;
+						}
+						if(i_u2 < us_and_productions.size()){
+							atLeastOneReplacement = true;
+							// if found go through its productions and add vWithoutFirstElem after all of them
+							newVs = us_and_productions[i_u2].getChangeableVS();
+							for(int i_newV = 0; i_newV < newVs.size(); i_newV++){
+								// check to not infinitely replace an AB with an AC
+								if(newVs[i_newV].getChangeableV()[0] == us_and_productions[i_u2].getU()){
+									newVs.erase(newVs.begin() + i_newV);
+									i_newV--;
+									continue;
+								}
+								/// is it the right way though^^^????????????????
+								newVs[i_newV].getChangeableV().insert(newVs[i_newV].getChangeableV().end(), vWithoutFirstElem.begin(), vWithoutFirstElem.end());
+							}
+
+							// delete the current v and insert the newVs in its place
+							us_and_productions[i_u].getChangeableVS().erase(us_and_productions[i_u].getChangeableVS().begin() + i_v);
+							// maybe check if i_v needs a decrementation?^^^
+							for(int i_newV = newVs.size() - 1; i_newV >= 0; i_newV--)
+								us_and_productions[i_u].getChangeableVS().insert(us_and_productions[i_u].getChangeableVS().begin() + i_v, newVs[i_newV]);
+						}
+						/// }
+					}
+				}
+			}
+		}
+	}
 	// while no more productions are of form Ax -> AyAz where x >=y
 	// // for i_u
 	// // for i_v
@@ -479,6 +547,7 @@ void Grammar::shortenProductionsAndAddNewOnes(){
 	std::string lastCreatedUSymbol = "C";
 
 	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+
 		for(int i_v = 0; i_v < us_and_productions[i_u].getChangeableVS().size(); i_v++){
 			if(us_and_productions[i_u].getVS()[i_v].getV().size() > 2){
 				// create new u symbol
@@ -561,179 +630,4 @@ bool Grammar::isNonTerminal(std::string vSymbol) const {
 	return false;
 }
 
-/*
-// takes all combinations of indexesOfVLetter and adds all combinations of v with indexes deleted to allCombinations.
-void Grammar::Combi(std::vector<int>& indexesOfVLetter, std::string& word, std::vector<std::string>& allCombinations, int reqLen, int s, int currLen, std::vector<bool> check) {
-	if(currLen > reqLen)
-		return;
-	else if(currLen == reqLen) {
-		std::string tempWord = word;
-		for(int i = 0; i < indexesOfVLetter.size(); i++) {
-			if(check[i] == true) {
-				tempWord[indexesOfVLetter[i]] = ' ';
-				// dont mess with deletion. make it a space. if you delete a letter, the position of another will shift, complicating things
-			}
-		}
-		allCombinations.push_back(tempWord);
-		return;
-	}
-	if(s == indexesOfVLetter.size()) {
-		return;
-	}
-	check[s] = true;
-	Combi(indexesOfVLetter, word, allCombinations, reqLen, s + 1, currLen + 1, check);
-	check[s] = false;
-	Combi(indexesOfVLetter, word, allCombinations, reqLen, s + 1, currLen, check);
-}
-
-void Grammar::eliminateNullProductions() {
-	// check which non-terminals can transform to null
-	std::vector<char> nonTerminalsThatCanTransformToNull;
-	for(const auto& u_v : P){
-		for(const auto& v : u_v.getRight()){
-			if(v == ""){
-				nonTerminalsThatCanTransformToNull.push_back(u_v.getLeft()[0]);
-				break;
-			}
-		}
-	}
-
-	// for every production (u->v) check if v contains a non-terminal that can transform to null
-	std::vector<std::string> allCombinations;
-	for(auto& uToNull : nonTerminalsThatCanTransformToNull){
-		for(auto& u_v : P){
-			for(auto& v : u_v.getRight()){
-				allCombinations.clear();
-				std::vector<int> indexesOfVLetter;
-				// check for the current v each chr_v that is a non-terminal that can transform to null
-				for(int i = 0; i < v.size(); i++)
-					if(v[i] == uToNull)
-						indexesOfVLetter.push_back(i);
-
-				// go through every elem of v and get every combination of v without the non-terminal that can transform to null
-				if(indexesOfVLetter.size() > 0){
-					std::vector<bool> check = std::vector<bool>(indexesOfVLetter.size(), false);
-					for(int i = 1; i < indexesOfVLetter.size(); i++){
-						Combi(indexesOfVLetter, v, allCombinations, i, 0, 0, check);
-					}
-				}
-
-				// add the last combination without all occurences of the non-terminal that transforms to null
-				std::string lastCombination = u_v.getRight()[0];
-				for(int i = 0; i < lastCombination.size(); i++){
-					if(lastCombination[i] == uToNull){
-						lastCombination.erase(i, 1);
-						i--;
-					}
-				}
-				allCombinations.push_back(lastCombination);
-
-				// delete all spaces in combinations where the non-terminals deleted were
-				for(auto& combination : allCombinations){
-					for(int i = 0; i < combination.size(); i++){
-						if(combination[i] == ' '){
-							combination.erase(i, 1);
-							i--;
-						}
-					}
-				}
-
-				// add allCombinations to current P
-				for(auto& production : allCombinations){
-					u_v.addRight(production);
-				}
-			}
-		}
-	}
-}
-
-void Grammar::eliminateUselessProductionsInCFG() {
-	// eliminate null productions
-	eliminateNullProductions();
-
-	// eliminate unit productions
-}
-*/
-
-/*
-// start with S and work your way up to the final word
-std::string Grammar::generateWord() {
-	// 'allCombinationsOfPMade' holds the combination of all transitions of P that will be made
-	// 'PPoolOfCurrentPossibleTransitions' holds the current possible transitions for every instance of the currentWord
-	std::vector<std::pair<std::string, std::string>> allCombinationsOfPMade, PPoolOfCurrentPossibleTransitions;
-	std::string currentWord = S;  // to_string() makes it 83 instead of 'S'. why does to_string() look at the ascii number and not its representation
-	int limitOfTransitions = 100;         // limit the transitions in case the operation runs forever
-	while(--limitOfTransitions) {
-		PPoolOfCurrentPossibleTransitions.clear();
-		// check all u's of P if they are in the currentWord. if yes add the pair to the PPool
-		for(const auto& u_v : P) {
-			for(const auto& v : u_v.getRight()) {
-				auto uInCurrentWord = std::find(currentWord.begin(), currentWord.end(), u_v.getLeft()[0]);
-				if(uInCurrentWord != currentWord.end())
-					PPoolOfCurrentPossibleTransitions.push_back({u_v.getLeft(), v});
-			}
-		}
-		// if PPool is empty then another transition on currentWord is not possible -> break;
-		if(PPoolOfCurrentPossibleTransitions.empty())
-			break;
-		// else choose randomly between the available transitions and save the one used
-		else {
-			std::pair<std::string, std::string> u_v_chosen;
-			u_v_chosen = PPoolOfCurrentPossibleTransitions[randomIntFrom0untilN(PPoolOfCurrentPossibleTransitions.size())];
-			int indexWhereToChange = currentWord.find(u_v_chosen.first[0]);
-			currentWord.replace(indexWhereToChange, 1, u_v_chosen.second);
-			allCombinationsOfPMade.push_back(u_v_chosen);
-		}
-	}
-	std::cout << "for the transitions: \n";
-	for(const auto& u_v : allCombinationsOfPMade)
-		std::cout << u_v.first << " -> " << u_v.second << " \n";
-	return currentWord;
-}
-*/
-
-/*
-// a grammar is in chomsky normal form when the productions (u->v) are of the form: S->null, A->x and A->BC
-bool Grammar::checkIfCanTransformToChomskyNormalForm() {
-	// for every u and v's
-	for(const auto& u_v : P) {
-		// u is of size 1 (also found in isContextFree())
-		if(u_v.getLeft().size() != 1)
-			return false;
-
-		// u has to be part of Vn (also found in isContextFree())
-		{
-			auto findUinVn = std::find(Vn.begin(), Vn.end(), u_v.getLeft());
-			if(findUinVn == Vn.end())
-				return false;
-		}
-
-		// only start symbol can transform to null (lambda (epsilon (empty (etc. etc.))
-		for(const auto& v : u_v.getRight())
-			if(v == "" && u_v.getLeft() != S)
-				return false;
-
-		// v has to be either of size 1 and a terminal or size 2 and both elems non-terminals
-		for(const auto& v : u_v.getRight()) {
-			if(v.size() == 1) {
-				auto findVinVt = std::find(Vt.begin(), Vt.end(), v);
-				if(findVinVt == Vt.end())
-					return false;
-			}
-			else if(v.size() == 2) {
-				auto find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[0]));
-				if(find2ElemsOfVinVn == Vn.end())
-					return false;
-				find2ElemsOfVinVn = std::find(Vn.begin(), Vt.end(), std::to_string(v[1]));
-				if(find2ElemsOfVinVn == Vn.end())
-					return false;
-			}
-			else
-				return false;
-		}
-	}
-
-	return true;
-}
-
-*/
+///!!!! big big big problem in case there is a Vn elem that doesnt produce anything

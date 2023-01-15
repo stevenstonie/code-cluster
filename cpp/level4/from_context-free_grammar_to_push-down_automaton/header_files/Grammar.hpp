@@ -69,6 +69,7 @@ public:
 		void setU(std::string newU){
 			u = newU;
 		}
+		void insertVatIndex(std::vector<std::string>& vector, int index);
 	private:
 		std::string u;
 		std::vector<V> vs;
@@ -107,6 +108,11 @@ public:
 	friend std::istream& operator>>(std::istream& input, Grammar& grammar);
 
 private:
+
+	void eliminateLeftRecursion();
+
+	int getUindex(const std::string& u) const;
+
 	void changeProductionsToSatisfyAscendingOrder();
 
 	void renameNonTerminalsInAscendingOrder();
@@ -122,8 +128,6 @@ private:
 	std::string createNewUSymbolByIncrementing(std::string uSymbol);
 
 	std::string createNewUSymbolByDecrementing(std::string uSymbol);
-
-	void searchAndAddTerminalOnRhsOfReplacingSymbol(U_VS& replacingSymbol, std::string v);
 
 	bool foundStringInVector(const std::vector<std::string>& vector, const std::string& string) const;
 
