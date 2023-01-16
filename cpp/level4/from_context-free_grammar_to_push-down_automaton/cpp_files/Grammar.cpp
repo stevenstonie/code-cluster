@@ -125,6 +125,8 @@ bool Grammar::isContextFree() {
 void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
 	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getVn().size(), false);
+	// from the start the start symbol will be true as i dont want it to be deleted even if it doesnt appear on the rhs of any production
+	foundNonTermOnRhs[0] = true;
 
 	for(int i = 0; i < getVn().size(); i++){
 		for(const auto& u_vs : us_and_productions){
@@ -143,7 +145,7 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 
 	// delete all Vn elements that are unreachable as productions
 	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
-		if(foundNonTermOnRhs[i] == false){
+		if(foundNonTermOnRhs[i] == false && Vn[i] != S){
 			Vn.erase(Vn.begin() + i);
 			foundNonTermOnRhs.erase(foundNonTermOnRhs.begin() + i);
 
@@ -715,5 +717,3 @@ bool Grammar::isNonTerminal(std::string vSymbol) const {
 			return true;
 	return false;
 }
-
-///!!!! big big big problem in case there is a Vn elem that doesnt produce anything

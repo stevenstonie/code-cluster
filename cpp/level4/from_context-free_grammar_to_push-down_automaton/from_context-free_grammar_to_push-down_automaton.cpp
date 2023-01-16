@@ -44,7 +44,7 @@ void menu(Grammar grammar){
 				break;
 			}
 			case '3':{
-				// print simplified grammar
+				// print "simplified" grammar (not actually simplified)
 				std::cout << "the simplified grammar is: \n";
 				simplifiedGrammar.printGrammar();
 
@@ -125,4 +125,4 @@ int main(){
 		exit(1);
 	}
 }
-///!!!! automaton is not equivalent to the grammar
+/// left recursion not done!

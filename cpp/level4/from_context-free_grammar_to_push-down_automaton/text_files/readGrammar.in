@@ -7,7 +7,7 @@ a b c
 S
 
 4
-S aSB
-S aB
-B b
-C a
+S aA
+A bACC
+A bCC
+C c

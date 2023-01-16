@@ -8,24 +8,52 @@ bool PushDownAutomaton::checkWord(std::string givenWord){
 	std::stack<std::string> stack;
 	stack.push(getZ0());
 
+	std::vector<std::stack<std::string>> allPossibleCombinationsOfStacks;
+	allPossibleCombinationsOfStacks.push_back(stack);
+	std::vector<std::stack<std::string>> nextPossibleCombinationsOfStacks;
+
+	int lettersLeft = givenWord.size();
+	// go through each letter of the word
 	for(const auto& letter : givenWord){
-		bool foundProduction = false;
-		for(const auto& delta : deltas){
-			if(letter == delta.getLetter() && stack.top() == delta.getStackElem()){
-				foundProduction = true;
+		// if the vector of stacks is empty but there still are letters to read then it is not accepted
+		if(allPossibleCombinationsOfStacks.size() == 0)
+			return false;
 
-				stack.pop();
-				for(const auto& stackElem : delta.getProductions()[0].getStackPush())
-					stack.push(stackElem);
-				// what if a delta has more than one production???
+		// go through the vector of stacks
+		for(int i_stack = 0; i_stack < allPossibleCombinationsOfStacks.size(); i_stack++){
+			// go through the deltas and check if the stackHead and letter appear in a delta
+			for(int i_delta = 0; i_delta < deltas.size(); i_delta++){
+				// if yes delete the top and add its variations in the nextPossibleCombinationsOfStacks
+				if(allPossibleCombinationsOfStacks[i_stack].top() == deltas[i_delta].getStackElem() &&
+					letter == deltas[i_delta].getLetter()){
 
-				break;
+					allPossibleCombinationsOfStacks[i_stack].pop();
+
+					for(auto& production : deltas[i_delta].getChangeableProductions()){
+						std::stack<std::string> newStack = allPossibleCombinationsOfStacks[i_stack];
+						for(int i_prodElem = production.getStackPush().size() - 1; i_prodElem >= 0; i_prodElem--)
+							newStack.push(production.getStackPush()[i_prodElem]);
+						nextPossibleCombinationsOfStacks.push_back(newStack);
+					}
+
+					break;
+				}
+
 			}
 		}
-		if(foundProduction == false){
-			return false;
-		}
+		// at the end make allpossiblecombs = nextpossiblecombs and empty nextpossiblecombs
+		allPossibleCombinationsOfStacks = nextPossibleCombinationsOfStacks;
+		// if all possible combs is empty there cant be any more operations
+		if(allPossibleCombinationsOfStacks.empty() == true)
+			break;
+		nextPossibleCombinationsOfStacks.clear();
+
+		--lettersLeft;
 	}
+	// if there are still more letters to read or if there are still elements in the stack then the word is not accepted by the automaton
+	if(lettersLeft > 0 || allPossibleCombinationsOfStacks.size() != 0)
+		return false;
+
 	return true;
 }
 

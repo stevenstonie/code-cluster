@@ -72,7 +72,6 @@ public:
 		char letter;
 		std::string stackElem;
 		std::vector<Production> productions;
-		// lambda == '~'
 	};
 
 	PushDownAutomaton() = default;

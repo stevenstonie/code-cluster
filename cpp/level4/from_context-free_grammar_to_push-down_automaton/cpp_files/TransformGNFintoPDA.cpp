@@ -16,21 +16,21 @@ PushDownAutomaton transformGNFintoPDA(Grammar grammar){
 		for(const auto& v : u.getVS()){
 
 			bool alreadyExistingProduction = false;
-			for(auto& deltas : automaton.getChangeableDeltas()){
+			for(auto& delta : automaton.getChangeableDeltas()){
 				// check if the current delta's letter ==  current v's first symbol and if the current delta's stack elem == current u
-				if(deltas.getLetter() == v.getV()[0][0] && deltas.getStackElem() == u.getU()){
+				if(delta.getLetter() == v.getV()[0][0] && delta.getStackElem() == u.getU()){
 					alreadyExistingProduction = true;
 
 					PushDownAutomaton::Delta::Production newProduction(automaton.getq0());
 					if(v.getV().size() == 1){
-						deltas.getChangeableProductions().push_back(newProduction);
+						delta.getChangeableProductions().push_back(newProduction);
 					}
 					else{
 						std::vector<std::string> newStackPush = v.getV();
 						newStackPush.erase(newStackPush.begin());
 
 						newProduction.setStackPush(newStackPush);
-						deltas.getChangeableProductions().push_back(newProduction);
+						delta.getChangeableProductions().push_back(newProduction);
 					}
 				}
 			}

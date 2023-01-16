@@ -149,25 +149,11 @@ private:
 	std::vector<U_VS> us_and_productions;
 };
 /*
-for(const auto& u_vs : us_and_productions){
+for(const auto& u : us_and_productions){
 	for(const auto& v : u_vs.getVS()){
 		for(const auto& vSymbol : v.getV()){
 
 		}
 	}
 }
-*/
-
-/*
-	std::vector<U_VS> allProductions;
-
-	U_VS::V v1({"a", "A"});
-	U_VS::V v2({"B", "C", "D"});
-	U_VS::V v3({"c", "C"});
-
-	U_VS u_vs("S", {v1, v2});
-
-	u_vs.addV(v3);
-
-	allProductions.push_back(u_vs);
 */
