@@ -83,7 +83,11 @@ public:
 
 	bool isContextFree();
 
+	void removeAllUnreachableProductionsAndAllRenamings();
+
 	void transformToGreibachNormalForm();
+
+	std::vector<std::string> generateWord();
 
 	void printGrammar();
 
@@ -118,8 +122,6 @@ private:
 	void changeProductionsToSatisfyAscendingOrder();
 
 	void renameNonTerminalsInAscendingOrder();
-
-	void removeAllUnreachableProductionsAndAllRenamings();
 
 	void replaceTerminalsOnRightOfVsWithNonTerms();
 

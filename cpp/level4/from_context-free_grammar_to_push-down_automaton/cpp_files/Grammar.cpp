@@ -122,6 +122,72 @@ bool Grammar::isContextFree() {
 	return true;
 }
 
+void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
+	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
+	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getVn().size(), false);
+
+	for(int i = 0; i < getVn().size(); i++){
+		for(const auto& u_vs : us_and_productions){
+			for(const auto& v : u_vs.getVS()){
+				for(const auto& vSymbol : v.getV()){
+					if(vSymbol.find(getVn()[i]) != std::string::npos){
+						foundNonTermOnRhs[i] = true;
+						break;
+					}
+				}
+				if(foundNonTermOnRhs[i] == true) break;
+			}
+			if(foundNonTermOnRhs[i] == true) break;
+		}
+	}
+
+	// delete all Vn elements that are unreachable as productions
+	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
+		if(foundNonTermOnRhs[i] == false){
+			Vn.erase(Vn.begin() + i);
+			foundNonTermOnRhs.erase(foundNonTermOnRhs.begin() + i);
+
+			i--;
+		}
+	}
+	// go through all productions and delete each one that it's u doesnt exist as an Vn element
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+		if(getIndexOfStringInVector(us_and_productions[i_u].getU(), getVn()) == -1){
+			us_and_productions.erase(us_and_productions.begin() + i_u);
+
+			i_u--;
+		}
+	}
+
+	// now its time for the renamings
+	// go through all productions. for a production that is of the form A -> B, make it A -> Ba, check if A -> a is already in P. if not add it
+	for(auto& u_vs : us_and_productions){
+		int i_v = 0;
+		for(auto& v : u_vs.getChangeableVS()){
+			if(v.getV().size() == 1 && isNonTerminal(v.getV()[0])){
+				// add first terminal to the v
+				auto newV = v.getChangeableV();
+				newV.push_back(getVt()[0]);
+				u_vs.setV(i_v, newV);
+
+
+				// check if the current u transforms to the first terminal. if not add it
+				bool found = false;
+				for(const auto& v : u_vs.getVS()){
+					if(v.getV() == std::vector<std::string>{getVt()[0]}){
+						found = true;
+						break;
+					}
+				}
+				if(not found){
+					u_vs.addV(std::vector<std::string>{getVt()[0]});
+				}
+			}
+			i_v++;
+		}
+	}
+}
+
 void Grammar::transformToGreibachNormalForm(){
 	// check if it is already in greibach form
 	if(isInGreibachNormalForm()){
@@ -139,6 +205,60 @@ void Grammar::transformToGreibachNormalForm(){
 	changeProductionsToSatisfyAscendingOrder();
 
 	eliminateLeftRecursion();
+}
+
+std::vector<std::string> Grammar::generateWord(){
+	// from the currentWord check which transitions it can transform to, add them to the PPool
+	// at the end choose randomly from the PPool and insert the production into allCombinationsOfPMade
+
+	// 'allCombinationsOfProdsMade' holds the combination of all transitions of the each current production that will be made
+	// 'PPoolOfCurrentPossibleTransitions' holds the current possible transitions for every instance of the currentWord
+	std::vector<std::pair<std::string, std::vector<std::string>>> allCombinationsOfPMade, PPoolOfCurrentPossibleTransitions;
+	std::vector<std::string> currentWord({S});
+
+	int limitOfTransitions = 100;         // limit the transitions in case the operation runs forever
+	while(--limitOfTransitions) {
+		PPoolOfCurrentPossibleTransitions.clear();
+		// check in all productions if their u is in the currentWord. if yes take only all combinations of that specific u and add them to the PPool
+		///!!! only the first non-terminal found right^^??
+		for(const auto& u : us_and_productions) {
+			auto uInCurrentWord = std::find(currentWord.begin(), currentWord.end(), u.getU());
+			if(uInCurrentWord != currentWord.end()){
+				// add all possible transitions into the PPool
+				for(const auto& v : u.getVS())
+					PPoolOfCurrentPossibleTransitions.push_back({u.getU(), v.getV()});
+
+				break;
+			}
+		}
+		// if PPool is empty then another transition on currentWord is not possible -> break;
+		if(PPoolOfCurrentPossibleTransitions.empty())
+			break;
+		// else choose randomly between the available transitions and save the one used
+		else {
+			std::pair<std::string, std::vector<std::string>> u_v_chosen;
+			u_v_chosen = PPoolOfCurrentPossibleTransitions[randomIntFrom0untilN(PPoolOfCurrentPossibleTransitions.size())];
+			int indexWhereToChange = 0;
+			for(indexWhereToChange; indexWhereToChange < currentWord.size(); indexWhereToChange++)
+				if(currentWord[indexWhereToChange] == u_v_chosen.first)
+					break;
+			// no need to check if it is found. i already know the u exists in the currentWord
+			currentWord.erase(currentWord.begin() + indexWhereToChange);
+			for(int i_u_v_chosen = u_v_chosen.second.size() - 1; i_u_v_chosen >= 0; i_u_v_chosen--){
+				currentWord.insert(currentWord.begin() + indexWhereToChange, u_v_chosen.second[i_u_v_chosen]);
+			}
+
+			allCombinationsOfPMade.push_back(u_v_chosen);
+		}
+	}
+	std::cout << "for the transitions: \n";
+	for(const auto& u : allCombinationsOfPMade){
+		for(const auto& v : u.second){
+			std::cout << u.first << " -> " << v << " \n";
+		}
+	}
+
+	return currentWord;
 }
 
 void Grammar::printGrammar() {
@@ -448,72 +568,6 @@ void Grammar::renameNonTerminalsInAscendingOrder(){
 	}
 	setVn(newVn);
 	//change the rest
-}
-
-void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
-	// go through all productions and check if theres a non-terminal that doesnt appear on at least one rhs (i.e. a non-terminal thats unreachable)
-	std::vector<bool> foundNonTermOnRhs = std::vector<bool>(getVn().size(), false);
-
-	for(int i = 0; i < getVn().size(); i++){
-		for(const auto& u_vs : us_and_productions){
-			for(const auto& v : u_vs.getVS()){
-				for(const auto& vSymbol : v.getV()){
-					if(vSymbol.find(getVn()[i]) != std::string::npos){
-						foundNonTermOnRhs[i] = true;
-						break;
-					}
-				}
-				if(foundNonTermOnRhs[i] == true) break;
-			}
-			if(foundNonTermOnRhs[i] == true) break;
-		}
-	}
-
-	// delete all Vn elements that are unreachable as productions
-	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
-		if(foundNonTermOnRhs[i] == false){
-			Vn.erase(Vn.begin() + i);
-			foundNonTermOnRhs.erase(foundNonTermOnRhs.begin() + i);
-
-			i--;
-		}
-	}
-	// go through all productions and delete each one that it's u doesnt exist as an Vn element
-	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
-		if(getIndexOfStringInVector(us_and_productions[i_u].getU(), getVn()) == -1){
-			us_and_productions.erase(us_and_productions.begin() + i_u);
-
-			i_u--;
-		}
-	}
-
-	// now its time for the renamings
-	// go through all productions. for a production that is of the form A -> B, make it A -> Ba, check if A -> a is already in P. if not add it
-	for(auto& u_vs : us_and_productions){
-		int i_v = 0;
-		for(auto& v : u_vs.getChangeableVS()){
-			if(v.getV().size() == 1 && isNonTerminal(v.getV()[0])){
-				// add first terminal to the v
-				auto newV = v.getChangeableV();
-				newV.push_back(getVt()[0]);
-				u_vs.setV(i_v, newV);
-
-
-				// check if the current u transforms to the first terminal. if not add it
-				bool found = false;
-				for(const auto& v : u_vs.getVS()){
-					if(v.getV() == std::vector<std::string>{getVt()[0]}){
-						found = true;
-						break;
-					}
-				}
-				if(not found){
-					u_vs.addV(std::vector<std::string>{getVt()[0]});
-				}
-			}
-			i_v++;
-		}
-	}
 }
 
 void Grammar::replaceTerminalsOnRightOfVsWithNonTerms(){

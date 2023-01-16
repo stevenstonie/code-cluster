@@ -31,3 +31,23 @@ bool checkIfFirstStringIsSmallerThanSecond(const std::string& string1, const std
 		return string1[0] < string2[0];
 	}
 }
+
+void printThreeDots(){
+	Sleep(700);
+	std::cout << ".";
+	Sleep(700);
+	std::cout << ".";
+	Sleep(700);
+	std::cout << ".";
+	Sleep(700);
+}
+
+void printMainMenu(){
+	std::cout << "the currently accepted inputs are: \n";
+	std::cout << "0 - for printing the automaton\n";
+	std::cout << "1 - for generating a word in the grammar(under work) \n";
+	std::cout << "2 - to print the simplified grammar \n";
+	std::cout << "3 - to print the grammar in Greibach normal form \n";
+	std::cout << "4 - for generating a word in the grammar and verifying if it is accepted by the PDA\n";
+	std::cout << "5 - to verify if a word read from keyboard is accepted by the PDA\n";
+}
