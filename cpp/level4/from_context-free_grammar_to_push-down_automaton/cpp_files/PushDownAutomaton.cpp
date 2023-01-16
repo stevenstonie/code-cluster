@@ -4,9 +4,44 @@ void PushDownAutomaton::printAutomaton(){
 	std::cout << *this;
 }
 
+bool PushDownAutomaton::checkWord(std::string givenWord){
+	std::stack<std::string> stack;
+	stack.push(getZ0());
+
+	for(const auto& letter : givenWord){
+		bool foundProduction = false;
+		for(const auto& delta : deltas){
+			if(letter == delta.getLetter() && stack.top() == delta.getStackElem()){
+				foundProduction = true;
+
+				stack.pop();
+				for(const auto& stackElem : delta.getProductions()[0].getStackPush())
+					stack.push(stackElem);
+				// what if a delta has more than one production???
+
+				break;
+			}
+		}
+		if(foundProduction == false){
+			return false;
+		}
+	}
+	return true;
+}
+
+bool PushDownAutomaton::isDeterministic(){
+	for(const auto& delta : deltas){
+		if(delta.getProductions().size() > 1){
+			return false;
+		}
+		/// second case here
+	}
+	return true;
+}
+
 std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDownAutomaton){
 	if(pushDownAutomaton.getQ().size() == 0 || pushDownAutomaton.getSigma().size() == 0
-		|| pushDownAutomaton.getGamma().size() == 0 || pushDownAutomaton.getDelta().size() == 0
+		|| pushDownAutomaton.getGamma().size() == 0 || pushDownAutomaton.getDeltas().size() == 0
 		|| pushDownAutomaton.getq0().size() == 0 || pushDownAutomaton.getZ0().size() == 0){
 		std::cout << "the automaton contains an empty field.. ";
 		exit(1);
@@ -41,27 +76,27 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 		output << pushDownAutomaton.getF().back() << std::endl;
 	}
 
-	output << "delta: " << std::endl;
-	for(int i = 0; i < pushDownAutomaton.getDelta().size(); i++){
+	output << "deltas: " << std::endl;
+	for(int i = 0; i < pushDownAutomaton.getDeltas().size(); i++){
 		output << "d(";
-		output << pushDownAutomaton.getDelta()[i].getState() << ", ";
+		output << pushDownAutomaton.getDeltas()[i].getState() << ", ";
 
-		output << pushDownAutomaton.getDelta()[i].getLetter() << ", ";
+		output << pushDownAutomaton.getDeltas()[i].getLetter() << ", ";
 
-		output << pushDownAutomaton.getDelta()[i].getStackTop() << " ) = {(";
+		output << pushDownAutomaton.getDeltas()[i].getStackElem() << " ) = {(";
 
-		for(int i_prod = 0; i_prod < pushDownAutomaton.getDelta()[i].getProductions().size() - 1; i_prod++){
-			output << pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getNextState() << ", ";
+		for(int i_prod = 0; i_prod < pushDownAutomaton.getDeltas()[i].getProductions().size() - 1; i_prod++){
+			output << pushDownAutomaton.getDeltas()[i].getProductions()[i_prod].getNextState() << ", ";
 
-			for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getStackPush().size(); i_stackSymbol++)
-				output << pushDownAutomaton.getDelta()[i].getProductions()[i_prod].getStackPush()[i_stackSymbol];
+			for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDeltas()[i].getProductions()[i_prod].getStackPush().size(); i_stackSymbol++)
+				output << pushDownAutomaton.getDeltas()[i].getProductions()[i_prod].getStackPush()[i_stackSymbol];
 			output << "), (";
 		}
 
-		output << pushDownAutomaton.getDelta()[i].getProductions().back().getNextState() << ", ";
+		output << pushDownAutomaton.getDeltas()[i].getProductions().back().getNextState() << ", ";
 
-		for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDelta()[i].getProductions().back().getStackPush().size(); i_stackSymbol++)
-			output << pushDownAutomaton.getDelta()[i].getProductions().back().getStackPush()[i_stackSymbol];
+		for(int i_stackSymbol = 0; i_stackSymbol < pushDownAutomaton.getDeltas()[i].getProductions().back().getStackPush().size(); i_stackSymbol++)
+			output << pushDownAutomaton.getDeltas()[i].getProductions().back().getStackPush()[i_stackSymbol];
 		output << ")}" << std::endl;
 	}
 	output << std::endl;
@@ -78,8 +113,8 @@ void PushDownAutomaton::setSigma(std::vector<std::string>& sigma){
 void PushDownAutomaton::setGamma(std::vector<std::string>& gamma){
 	this->gamma = gamma;
 }
-void PushDownAutomaton::setDelta(std::vector<Delta>& delta){
-	this->delta = delta;
+void PushDownAutomaton::setDelta(std::vector<Delta>& deltas){
+	this->deltas = deltas;
 }
 void PushDownAutomaton::setq0(std::string& q0){
 	this->q0 = q0;
@@ -90,8 +125,8 @@ void PushDownAutomaton::setZ0(std::string& Z0){
 void PushDownAutomaton::setF(std::vector<std::string>& F){
 	this->F = F;
 }
-void PushDownAutomaton::addNewDelta(Delta& delta){
-	this->delta.push_back(delta);
+void PushDownAutomaton::addNewDelta(Delta& deltas){
+	this->deltas.push_back(deltas);
 }
 
 std::vector<std::string> PushDownAutomaton::getQ() const{
@@ -103,8 +138,8 @@ std::vector<std::string> PushDownAutomaton::getSigma() const{
 std::vector<std::string> PushDownAutomaton::getGamma() const{
 	return gamma;
 }
-std::vector<PushDownAutomaton::Delta> PushDownAutomaton::getDelta() const{
-	return delta;
+std::vector<PushDownAutomaton::Delta> PushDownAutomaton::getDeltas() const{
+	return deltas;
 }
 std::string PushDownAutomaton::getq0() const{
 	return q0;
@@ -119,6 +154,9 @@ std::vector<std::string> PushDownAutomaton::getF() const{
 std::string& PushDownAutomaton::getChangeableq0(){
 	return q0;
 }
-std::vector<PushDownAutomaton::Delta>& PushDownAutomaton::getChangeableDelta(){
-	return delta;
+std::vector<PushDownAutomaton::Delta>& PushDownAutomaton::getChangeableDeltas(){
+	return deltas;
+}
+std::vector<std::string>& PushDownAutomaton::getChangeableGamma(){
+	return gamma;
 }

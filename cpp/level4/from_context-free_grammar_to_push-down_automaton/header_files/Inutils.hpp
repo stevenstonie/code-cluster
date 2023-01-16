@@ -1,4 +1,4 @@
-#pragma twice
+#pragma once
 
 #include <random>
 #include <vector>

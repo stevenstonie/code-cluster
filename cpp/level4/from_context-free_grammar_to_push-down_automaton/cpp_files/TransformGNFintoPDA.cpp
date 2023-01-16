@@ -16,20 +16,21 @@ PushDownAutomaton transformGNFintoPDA(Grammar grammar){
 		for(const auto& v : u.getVS()){
 
 			bool alreadyExistingProduction = false;
-			for(auto& delta : automaton.getChangeableDelta()){
-				if(delta.getLetter() == v.getV()[0] && delta.getStackTop() == u.getU()){
+			for(auto& deltas : automaton.getChangeableDeltas()){
+				// check if the current delta's letter ==  current v's first symbol and if the current delta's stack elem == current u
+				if(deltas.getLetter() == v.getV()[0][0] && deltas.getStackElem() == u.getU()){
 					alreadyExistingProduction = true;
 
 					PushDownAutomaton::Delta::Production newProduction(automaton.getq0());
 					if(v.getV().size() == 1){
-						delta.getChangeableProductions().push_back(newProduction);
+						deltas.getChangeableProductions().push_back(newProduction);
 					}
 					else{
 						std::vector<std::string> newStackPush = v.getV();
 						newStackPush.erase(newStackPush.begin());
 
 						newProduction.setStackPush(newStackPush);
-						delta.getChangeableProductions().push_back(newProduction);
+						deltas.getChangeableProductions().push_back(newProduction);
 					}
 				}
 			}
@@ -39,7 +40,7 @@ PushDownAutomaton transformGNFintoPDA(Grammar grammar){
 
 				newDelta.setState(automaton.getChangeableq0());
 
-				newDelta.setLetter(v.getV()[0]);
+				newDelta.setLetter(v.getV()[0][0]);
 
 				std::string nonConstStackTop = u.getU();
 				newDelta.setStackTop(nonConstStackTop);

@@ -1,4 +1,3 @@
-#define twice once
 #include <iostream>
 #include <fstream>
 
@@ -6,23 +5,21 @@
 #include "header_files/PushDownAutomaton.hpp"
 #include "header_files/TransformGNFintoPDA.hpp"
 
-void menu(){
-
+void menu(PushDownAutomaton automaton){
+	char option;
 }
 
 int main(){
 	Grammar grammar = Grammar::createGrammar();
-	std::cout << grammar;
-	std::cout << "\n\n";
 
-	// check if grammar is idc
+	if(grammar.isContextFree() == false){
+		std::cout << "unfortunately the grammar is not context-free..";
+		exit(1);
+	}
+	else{
+		grammar.transformToGreibachNormalForm();
+		PushDownAutomaton automaton = transformGNFintoPDA(grammar);
 
-	grammar.transformToGreibachNormalForm();
-	std::cout << grammar;
-
-	PushDownAutomaton automaton = transformGNFintoPDA(grammar);
-
-	automaton.printAutomaton();
-
-	// menu with the automaton
+		menu(automaton);
+	}
 }

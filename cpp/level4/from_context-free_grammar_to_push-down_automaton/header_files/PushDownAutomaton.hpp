@@ -1,7 +1,8 @@
-#pragma twice
+#pragma once
 
 #include <vector>
 #include <iostream>
+#include <stack>
 
 #include "Inutils.hpp"
 
@@ -39,11 +40,11 @@ public:
 		void setState(std::string& state){
 			this->state = state;
 		}
-		void setLetter(std::string& letter){
+		void setLetter(char& letter){
 			this->letter = letter;
 		}
-		void setStackTop(std::string& stackTop){
-			this->stackTop = stackTop;
+		void setStackTop(std::string& stackElem){
+			this->stackElem = stackElem;
 		}
 		void setProduction(std::vector<Production>& productions){
 			this->productions = productions;
@@ -52,11 +53,11 @@ public:
 		std::string getState() const{
 			return state;
 		}
-		std::string getLetter() const{
+		char getLetter() const{
 			return letter;
 		}
-		std::string getStackTop() const{
-			return stackTop;
+		std::string getStackElem() const{
+			return stackElem;
 		}
 		std::vector<Production> getProductions() const{
 			return productions;
@@ -68,8 +69,8 @@ public:
 
 	private:
 		std::string state;
-		std::string letter;
-		std::string stackTop;
+		char letter;
+		std::string stackElem;
 		std::vector<Production> productions;
 		// lambda == '~'
 	};
@@ -96,19 +97,20 @@ public:
 	std::vector<std::string> getQ() const;
 	std::vector<std::string> getSigma() const;
 	std::vector<std::string> getGamma() const;
-	std::vector<Delta> getDelta() const;
+	std::vector<Delta> getDeltas() const;
 	std::string getq0() const;
 	std::string getZ0() const;
 	std::vector<std::string> getF() const;
 
 	std::string& getChangeableq0();
-	std::vector<Delta>& getChangeableDelta();
+	std::vector<Delta>& getChangeableDeltas();
+	std::vector<std::string>& getChangeableGamma();
 
 private:
 	std::vector<std::string> Q;  // states set
 	std::vector<std::string> sigma;  // alphabet of letter symbols
 	std::vector<std::string> gamma;  // alphabet of stack symbols
-	std::vector<Delta> delta; // transitions set
+	std::vector<Delta> deltas; // transitions set
 	std::string q0;  // initial state symbol
 	std::string Z0;  // initial stack symbol
 	std::vector<std::string> F;  // final states set
