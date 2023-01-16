@@ -1,11 +1,11 @@
 #include "../header_files/Grammar.hpp"
 
-Grammar Grammar::createGrammar(){
+Grammar Grammar::addGrammarFromTextFile(){
 	Grammar grammar;
 
 	std::ifstream file1("text_files/readGrammar.in");
 	if(not file1.is_open()){
-		std::cout << "the file wasnt opened correctly. \n";
+		std::cout << "the file wasnt opened correctly.. \n";
 		std::cout << "either choose to insert the data by hand or exit: \n";
 		std::cout << "0 - insert data from keyboard \n1 - exit the program \n";
 		char insertOrExit;

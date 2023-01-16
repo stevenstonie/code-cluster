@@ -77,7 +77,7 @@ public:
 
 	Grammar() = default;
 
-	static Grammar createGrammar();
+	static Grammar addGrammarFromTextFile();
 
 	bool verifyGrammar();
 
