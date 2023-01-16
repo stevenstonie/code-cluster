@@ -11,6 +11,13 @@ public:
 	public:
 		class Production{
 		public:
+			Production(std::string nextState, std::vector<std::string> stackPush)
+				:nextState(nextState), stackPush(stackPush)
+			{}
+			Production(std::string nextState)
+				:nextState(nextState)
+			{}
+
 			std::string getNextState() const{
 				return nextState;
 			}
@@ -55,7 +62,9 @@ public:
 			return productions;
 		}
 
-		// changeable getters
+		std::vector<Production>& getChangeableProductions(){
+			return productions;
+		}
 
 	private:
 		std::string state;
@@ -82,6 +91,7 @@ public:
 	void setq0(std::string& q0);
 	void setZ0(std::string& Z0);
 	void setF(std::vector<std::string>& F);
+	void addNewDelta(Delta& delta);
 
 	std::vector<std::string> getQ() const;
 	std::vector<std::string> getSigma() const;
@@ -91,7 +101,8 @@ public:
 	std::string getZ0() const;
 	std::vector<std::string> getF() const;
 
-	// changeable getters
+	std::string& getChangeableq0();
+	std::vector<Delta>& getChangeableDelta();
 
 private:
 	std::vector<std::string> Q;  // states set

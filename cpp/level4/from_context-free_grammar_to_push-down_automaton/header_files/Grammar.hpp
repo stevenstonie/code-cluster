@@ -89,6 +89,12 @@ public:
 
 	void readGrammar();
 
+	void addToVn(std::string nonTerminal);
+	void addToVt(std::string terminal);
+	void setS(std::string S);
+	void setVn(const std::vector<std::string>& newVn);
+	void addU(std::string u);
+
 	std::vector<std::string> getVn() const;
 	std::vector<std::string> getVt() const;
 	std::string getS() const;
@@ -98,11 +104,6 @@ public:
 	std::vector<std::string>& getChangeableVn();
 	std::vector<std::string>& getChangeableVt();
 
-	void addToVn(std::string nonTerminal);
-	void addToVt(std::string terminal);
-	void setS(std::string S);
-	void setVn(const std::vector<std::string>& newVn);
-	void addU(std::string u);
 
 	friend std::ostream& operator<<(std::ostream& output, const Grammar& grammar);
 
@@ -125,6 +126,8 @@ private:
 	void shortenProductionsAndAddNewOnes();
 
 	void transformToChomskyNormalForm();
+
+	bool isInGreibachNormalForm();
 
 	std::string createNewUSymbolByIncrementing(std::string uSymbol);
 

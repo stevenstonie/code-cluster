@@ -7,8 +7,7 @@ void PushDownAutomaton::printAutomaton(){
 std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDownAutomaton){
 	if(pushDownAutomaton.getQ().size() == 0 || pushDownAutomaton.getSigma().size() == 0
 		|| pushDownAutomaton.getGamma().size() == 0 || pushDownAutomaton.getDelta().size() == 0
-		|| pushDownAutomaton.getq0().size() == 0 || pushDownAutomaton.getZ0().size()
-		|| pushDownAutomaton.getF().size() == 0){
+		|| pushDownAutomaton.getq0().size() == 0 || pushDownAutomaton.getZ0().size() == 0){
 		std::cout << "the automaton contains an empty field.. ";
 		exit(1);
 	}
@@ -33,9 +32,14 @@ std::ostream& operator<<(std::ostream& output, const PushDownAutomaton& pushDown
 	output << "initial stack symbol: " << pushDownAutomaton.getZ0() << std::endl;
 
 	output << "final states: ";
-	for(int i = 0; i < pushDownAutomaton.getF().size() - 1; i++)
-		output << pushDownAutomaton.getF()[i] << ", ";
-	output << pushDownAutomaton.getF().back() << std::endl;
+	if(pushDownAutomaton.getF().size() == 0){
+		output << "none" << std::endl;
+	}
+	else{
+		for(int i = 0; i < pushDownAutomaton.getF().size() - 1; i++)
+			output << pushDownAutomaton.getF()[i] << ", ";
+		output << pushDownAutomaton.getF().back() << std::endl;
+	}
 
 	output << "delta: " << std::endl;
 	for(int i = 0; i < pushDownAutomaton.getDelta().size(); i++){
@@ -86,6 +90,9 @@ void PushDownAutomaton::setZ0(std::string& Z0){
 void PushDownAutomaton::setF(std::vector<std::string>& F){
 	this->F = F;
 }
+void PushDownAutomaton::addNewDelta(Delta& delta){
+	this->delta.push_back(delta);
+}
 
 std::vector<std::string> PushDownAutomaton::getQ() const{
 	return Q;
@@ -107,4 +114,11 @@ std::string PushDownAutomaton::getZ0() const{
 }
 std::vector<std::string> PushDownAutomaton::getF() const{
 	return F;
+}
+
+std::string& PushDownAutomaton::getChangeableq0(){
+	return q0;
+}
+std::vector<PushDownAutomaton::Delta>& PushDownAutomaton::getChangeableDelta(){
+	return delta;
 }

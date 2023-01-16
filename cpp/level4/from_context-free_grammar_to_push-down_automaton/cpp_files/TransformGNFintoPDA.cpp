@@ -9,9 +9,58 @@ PushDownAutomaton transformGNFintoPDA(Grammar grammar){
 	automaton.setq0(automaton.getQ()[0]);
 	automaton.setZ0(grammar.getVn()[0]);
 
-	// make a new delta for every v and not for every u because there might be some productions such as:
-	// S -> aSA, S -> bC 
-	// and so i cant do d(q0, a, S) = {(q0, SA),(q0, C)} as S transitions using a BUT ALSO b
+	// for every v check if the u and the first vSymbol are the same as an already added one.
+	// // if yes add it on the vector of productions
+	// // if not create a new object of type Delta and do your job
+	for(const auto& u : grammar.getUS_VS()){
+		for(const auto& v : u.getVS()){
+
+			bool alreadyExistingProduction = false;
+			for(auto& delta : automaton.getChangeableDelta()){
+				if(delta.getLetter() == v.getV()[0] && delta.getStackTop() == u.getU()){
+					alreadyExistingProduction = true;
+
+					PushDownAutomaton::Delta::Production newProduction(automaton.getq0());
+					if(v.getV().size() == 1){
+						delta.getChangeableProductions().push_back(newProduction);
+					}
+					else{
+						std::vector<std::string> newStackPush = v.getV();
+						newStackPush.erase(newStackPush.begin());
+
+						newProduction.setStackPush(newStackPush);
+						delta.getChangeableProductions().push_back(newProduction);
+					}
+				}
+			}
+
+			if(alreadyExistingProduction == false){
+				PushDownAutomaton::Delta newDelta;
+
+				newDelta.setState(automaton.getChangeableq0());
+
+				newDelta.setLetter(v.getV()[0]);
+
+				std::string nonConstStackTop = u.getU();
+				newDelta.setStackTop(nonConstStackTop);
+
+				PushDownAutomaton::Delta::Production newProduction(automaton.getq0());
+				if(v.getV().size() == 1){
+					newDelta.getChangeableProductions().push_back(newProduction);
+				}
+				else{
+					std::vector<std::string> newStackPush = v.getV();
+					newStackPush.erase(newStackPush.begin());
+
+					newProduction.setStackPush(newStackPush);
+					newDelta.getChangeableProductions().push_back(newProduction);
+				}
+
+				// push back new delta into current vector of deltas
+				automaton.addNewDelta(newDelta);
+			}
+		}
+	}
 
 	return automaton;
 }

@@ -20,7 +20,9 @@ int main(){
 	grammar.transformToGreibachNormalForm();
 	std::cout << grammar;
 
-	transformGNFintoPDA(grammar);
+	PushDownAutomaton automaton = transformGNFintoPDA(grammar);
+
+	automaton.printAutomaton();
 
 	// menu with the automaton
 }

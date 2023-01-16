@@ -123,6 +123,13 @@ bool Grammar::isContextFree() {
 }
 
 void Grammar::transformToGreibachNormalForm(){
+	// check if it is already in greibach form
+	if(isInGreibachNormalForm()){
+		removeAllUnreachableProductionsAndAllRenamings();
+		// renameNonTerminalsInAscendingOrder();
+		return;
+	}
+
 	// transform to chomsky
 	transformToChomskyNormalForm();
 
@@ -188,6 +195,23 @@ void Grammar::readGrammar() {
 	}
 }
 
+void Grammar::addToVn(std::string nonTerminal){
+	this->Vn.push_back(nonTerminal);
+}
+void Grammar::addToVt(std::string terminal){
+	this->Vt.push_back(terminal);
+}
+void Grammar::setS(std::string S){
+	this->S = S;
+}
+void Grammar::setVn(const std::vector<std::string>& newVn){
+	Vn = newVn;
+}
+void Grammar::addU(std::string u){
+	U_VS newU(u);
+	us_and_productions.push_back(newU);
+}
+
 std::vector<std::string> Grammar::getVn() const {
 	return Vn;
 }
@@ -209,23 +233,6 @@ std::vector<std::string>& Grammar::getChangeableVn(){
 }
 std::vector<std::string>& Grammar::getChangeableVt(){
 	return Vt;
-}
-
-void Grammar::addToVn(std::string nonTerminal){
-	this->Vn.push_back(nonTerminal);
-}
-void Grammar::addToVt(std::string terminal){
-	this->Vt.push_back(terminal);
-}
-void Grammar::setS(std::string S){
-	this->S = S;
-}
-void Grammar::setVn(const std::vector<std::string>& newVn){
-	Vn = newVn;
-}
-void Grammar::addU(std::string u){
-	U_VS newU(u);
-	us_and_productions.push_back(newU);
 }
 
 std::ostream& operator<<(std::ostream& output, const Grammar& grammar) {
@@ -462,17 +469,21 @@ void Grammar::removeAllUnreachableProductionsAndAllRenamings(){
 		}
 	}
 
-	// delete all productions that are unreachable excluding the start symbol
+	// delete all Vn elements that are unreachable as productions
 	for(int i = 0; i < foundNonTermOnRhs.size(); i++){
-		if(foundNonTermOnRhs[i] == false && us_and_productions[i].getU() != S){
-			// delete the object in P at the index i 
-			std::swap(us_and_productions[i], us_and_productions[us_and_productions.size() - 1]);
-			us_and_productions.pop_back();
-
-			foundNonTermOnRhs[i] = foundNonTermOnRhs[foundNonTermOnRhs.size() - 1];
-			foundNonTermOnRhs.pop_back();
+		if(foundNonTermOnRhs[i] == false){
+			Vn.erase(Vn.begin() + i);
+			foundNonTermOnRhs.erase(foundNonTermOnRhs.begin() + i);
 
 			i--;
+		}
+	}
+	// go through all productions and delete each one that it's u doesnt exist as an Vn element
+	for(int i_u = 0; i_u < us_and_productions.size(); i_u++){
+		if(getIndexOfStringInVector(us_and_productions[i_u].getU(), getVn()) == -1){
+			us_and_productions.erase(us_and_productions.begin() + i_u);
+
+			i_u--;
 		}
 	}
 
@@ -586,6 +597,23 @@ void Grammar::transformToChomskyNormalForm() {
 
 	// step 3: for all productions where v is longer than 2, shorten them and add new productions that transform to the discarded symbols
 	shortenProductionsAndAddNewOnes();
+}
+
+bool Grammar::isInGreibachNormalForm(){
+	for(const auto& u : us_and_productions){
+		// dont check for u to be a single non-terminal (already checked in isContextFree())
+		for(const auto& v : u.getVS()){
+			// first elem has to be a terminal
+			if(isNonTerminal(v.getV()[0]) == true)
+				return false;
+			// the rest have to be non-terminals
+			for(int i_vSymbol = 1; i_vSymbol < v.getV().size(); i_vSymbol++){
+				if(isNonTerminal(v.getV()[i_vSymbol]) == false)
+					return false;
+			}
+		}
+	}
+	return true;
 }
 
 std::string Grammar::createNewUSymbolByIncrementing(std::string uSymbol) {

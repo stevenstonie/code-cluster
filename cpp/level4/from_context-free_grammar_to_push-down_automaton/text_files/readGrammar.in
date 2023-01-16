@@ -6,10 +6,8 @@ a b c
 
 S
 
-6
-S aA
-S b
-A aBC
-A C
-C c
-B A
+4
+S aSB
+S aB
+B b
+C a
