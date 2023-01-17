@@ -13,7 +13,7 @@ currently consists of school homework as i am still learning the language
 ### the java folder 
 consists of the same type of exercises as the cpp one
 
-#### more noticeable projects:
+#### notable projects:
 - ```exercise-cluster/cpp/level4/from_context-free_grammar_to_push-down_automaton/```
 
 - ```exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
