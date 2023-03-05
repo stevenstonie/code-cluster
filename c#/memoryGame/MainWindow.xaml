@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:memoryGame"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="change dis" Height="450" Width="800">
     <Grid>
-        
+        <TextBlock FontSize="20" Foreground="Black" Margin="10,10,10,329" TextAlignment="Center" 
+            Text="Welcome to an experience that will truly leave you with hope for the future. Welcome to the place where your brain will significantly grow more synapses as you play this piece of art. Welcome to the best memory game that has ever been created. have fun" TextWrapping="WrapWithOverflow"/>
+        <Button x:Name="start" Content="ok" Margin="350,321,350,73" FontSize="20" Click="start_Click"/>
+        <Button x:Name="exit" Content="no" Margin="390,388,390,28" FontSize="10" Click="exit_Click"/>
     </Grid>
 </Window>
