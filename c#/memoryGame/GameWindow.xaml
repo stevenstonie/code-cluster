@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="GameWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock FontSize="20" Foreground="Black" Margin="10,10,10,329" TextAlignment="Center" Text="here gaem" TextWrapping="WrapWithOverflow"/>
+        <TextBlock Name="tbTime" />
     </Grid>
 </Window>

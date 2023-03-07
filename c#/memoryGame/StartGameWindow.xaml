@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:memoryGame"
         mc:Ignorable="d"
         Title="StartGameWindow" Height="600" Width="800">
@@ -12,5 +13,17 @@
         <Button x:Name="continueExistentGame" Content="continue existent game" Height="30" Margin="333,504,333,50"/>
         <Button x:Name="startNewGame" Content="start new game" Height="30" Margin="510,504,190,50" Click="startNewGame_Click"/>
         <Button x:Name="exit" Content="exit" Height="30" Width="70" Margin="668,504,62,50"></Button>
+
+        <StackPanel Margin="595,0,0,419">
+            <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
+                <StackPanel Margin="16 10 0 6" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock VerticalAlignment="Center" Text="Dark Mode" />
+                    <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="12 0 8 0"
+                            x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="toggleTheme"/>
+                    <!-- dark mode doesnt work -->
+                    <Button x:Name="buttonExit" Content="exit" Click="exitApp"></Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </StackPanel>
     </Grid>
 </Window>
