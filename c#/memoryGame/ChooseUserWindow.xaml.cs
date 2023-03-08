@@ -2,9 +2,6 @@
 using System.Windows;
 
 namespace memoryGame {
-	/// <summary>
-	/// Interaction logic for ChooseUserWindow.xaml
-	/// </summary>
 	public partial class ChooseUserWindow : Window {
 		public ChooseUserWindow() {
 			InitializeComponent();

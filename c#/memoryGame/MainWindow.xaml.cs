@@ -1,9 +1,6 @@
 ﻿using System.Windows;
 
 namespace memoryGame {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
@@ -14,11 +11,16 @@ namespace memoryGame {
 			this.Hide();
 			ChooseUserWindow chooseUserWindow = new ChooseUserWindow();
 			chooseUserWindow.ShowDialog();
-
 		}
 
 		private void exit_Click(object sender, RoutedEventArgs e) {
 			System.Windows.Application.Current.Shutdown();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e) {
+			this.Hide();
+			TestWindow testWindow = new TestWindow();
+			testWindow.ShowDialog();
 		}
 	}
 }

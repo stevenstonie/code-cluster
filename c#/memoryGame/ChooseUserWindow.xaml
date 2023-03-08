@@ -12,14 +12,14 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock Text="choose your user" Height="50" Margin="62,27,469,507" FontSize="30" TextWrapping="WrapWithOverflow"/>
-        <Button x:Name="newUser" Content="new user" Margin="91,510,0,56" HorizontalAlignment="Left" Height="35"></Button>
-        <Button x:Name="deleteUser" Content="delete user" Margin="250,510,428,55" Height="35"></Button>
+        <Button x:Name="newUser" Content="new user" HorizontalAlignment="Left" Margin="78,510,0,55"></Button>
+        <Button x:Name="deleteUser" Content="delete user" Margin="268,510,422,55"/>
         <Button x:Name="nextWindow" Content="next" Margin="457,510,243,55" Click="nextWindow_Click" Width="100" Height="35"></Button>
         <Button x:Name="cancel" Content="cancel" Margin="632,510,88,55" Height="35"></Button>
 
         <StackPanel Margin="733,0,0,540">
             <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
-                <StackPanel Margin="16 10 0 6" Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="10 10 10 10" Orientation="Vertical" HorizontalAlignment="Center">
                     <TextBlock VerticalAlignment="Center" Text="Dark Mode" />
                     <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="12 0 8 0"
                             x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="toggleTheme"/>

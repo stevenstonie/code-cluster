@@ -9,7 +9,8 @@
     <Grid>
         <TextBlock FontSize="20" Foreground="Black" Margin="10,10,10,329" TextAlignment="Center" 
             Text="Welcome to an experience that will truly leave you with hope for the future. Welcome to the place where your brain will significantly grow more synapses as you play this piece of art. Welcome to the best memory game that has ever been created. have fun" TextWrapping="WrapWithOverflow"/>
-        <Button x:Name="start" Content="ok"  FontSize="20" Margin="358,314,358,30" Click="start_Click" Height="48" VerticalAlignment="Top" />
-        <Button x:Name="exit" Content="no" Margin="0,385,0,0" FontSize="10" Click="exit_Click" FontWeight="Normal" VerticalAlignment="Top" HorizontalAlignment="Center" Width="44" Height="21"/>
+        <Button x:Name="start" Content="ok"  FontSize="20" Margin="358,283,358,0" Click="start_Click" Height="48" VerticalAlignment="Top" />
+        <Button x:Name="exit" Content="no" Margin="0,352,0,0" FontSize="10" Click="exit_Click" FontWeight="Normal" VerticalAlignment="Top" Width="46" Height="22" HorizontalAlignment="Center"/>
+        <Button Content="Test" HorizontalAlignment="Left" Margin="713,379,0,0" VerticalAlignment="Top" Click="Button_Click"/>
     </Grid>
 </Window>
