@@ -9,8 +9,6 @@
     <Grid x:Name="ImageGrid">
         <WrapPanel x:Name="ImageWrapPanel"
                    Orientation="Horizontal"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   Margin="10"/>
+    ></WrapPanel>
     </Grid>
 </Window>
