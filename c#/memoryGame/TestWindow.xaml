@@ -8,7 +8,7 @@
         Title="TestWindow" Height="450" Width="800">
     <Grid x:Name="ImageGrid">
         <WrapPanel x:Name="ImageWrapPanel"
-                   Orientation="Horizontal"
+                   Orientation="Vertical"
     ></WrapPanel>
     </Grid>
 </Window>

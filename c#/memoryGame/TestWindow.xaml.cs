@@ -11,8 +11,8 @@ namespace memoryGame {
 			InitializeComponent();
 
 			// Define the dimensions of the matrix
-			int cols = 3;
-			int rows = 4;
+			int cols = 4;
+			int rows = 5;
 
 			// Create a Grid to hold the buttons
 			Grid grid = new Grid();
@@ -33,9 +33,9 @@ namespace memoryGame {
 			for(int i = 0; i < rows; i++) {
 				for(int j = 0; j < cols; j++) {
 					Button button = new Button();
-					button.Content = string.Format("Button {0},{1}", i, j);
-					button.Height = 50;
-					button.Width = 50;
+					button.MinHeight = 50;
+					button.MinWidth = 50;
+					button.Margin = new Thickness(5); // Set the margin to 5 pixels
 					Grid.SetRow(button, i);
 					Grid.SetColumn(button, j);
 					grid.Children.Add(button);
@@ -48,38 +48,41 @@ namespace memoryGame {
 			// Add the grid to your WPF window
 			this.Content = grid;
 
-			//////
-
 			// specify the folder path where your images are stored
 			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "GridImages");
-
-			// create a new WrapPanel and set its properties
-			var wrapPanel = new WrapPanel {
-				Orientation = Orientation.Horizontal,
-				HorizontalAlignment = HorizontalAlignment.Center,
-				VerticalAlignment = VerticalAlignment.Center,
-				Margin = new Thickness(5)
-			};
 
 			// get the file names of all the images in the folder
 			string[] images = Directory.GetFiles(folderPath, "*.png");
 
-			// Create the buttons and add them to the grid
-			for(int i = 0; i < rows; i++) {
-				for(int j = 0; j < cols; j++) {
-					Button button = new Button();
+			// Loop through each button and assign an image to it
+			int imageIndex = 0;
+			foreach(Button button in grid.Children) {
+				// Set the background of the button to an image
+				ImageBrush imageBrush = new ImageBrush();
+				imageBrush.ImageSource = new BitmapImage(new Uri(images[imageIndex], UriKind.Relative));
+				imageBrush.Stretch = Stretch.Uniform;
+				button.Background = imageBrush;
 
-					// Set the background of the button to an image
-					ImageBrush imageBrush = new ImageBrush();
-					imageBrush.ImageSource = new BitmapImage(new Uri(images[i * cols + j], UriKind.Relative));
-					imageBrush.Stretch = Stretch.Uniform;
-					button.Background = imageBrush;
+				// Increment the image index
+				imageIndex++;
 
-					Grid.SetRow(button, i);
-					Grid.SetColumn(button, j);
-					grid.Children.Add(button);
+				// If we've assigned all the images, start again from the beginning
+				if(imageIndex == images.Length) {
+					imageIndex = 0;
 				}
 			}
+
+			// Add a SizeChanged event handler for the window
+			this.SizeChanged += (sender, e) => {
+				// Calculate the new button size based on the window size
+				double size = Math.Min((this.ActualWidth - grid.Margin.Right) / cols, this.ActualHeight / rows);
+
+				// Update the button sizes
+				foreach(Button button in grid.Children) {
+					button.Width = size;
+					button.Height = size;
+				}
+			};
 		}
 	}
 }
