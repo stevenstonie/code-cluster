@@ -74,9 +74,6 @@
     <Compile Include="StartGameWindow.xaml.cs">
       <DependentUpon>StartGameWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TestWindow.xaml.cs">
-      <DependentUpon>TestWindow.xaml</DependentUpon>
-    </Compile>
     <Page Include="ChooseUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,10 +98,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="StartGameWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="TestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

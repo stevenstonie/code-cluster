@@ -7,8 +7,15 @@
         mc:Ignorable="d"
         Title="GameWindow" Height="600" Width="800">
     <Grid>
-        <TextBlock Name="tbTime" Margin="0,0,697,523" />
-        <TextBlock Name="youLostMessage" Text="" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"></TextBlock>
-        <Image Name="img1" Source="Assets\GridImages\5.png" Margin="297,107,112,99" />
+        <Grid x:Name="GameGrid" Grid.Row="0">
+            <!-- optionally empty -->
+        </Grid>
+        <StackPanel x:Name="InfoGrid" Grid.Row="1" VerticalAlignment="Top">
+            <TextBlock Name="tbTime" />
+            <TextBlock Name="youLostMessage" Text="" FontSize="20"></TextBlock>
+        </StackPanel>
+        <StackPanel x:Name="ButtonGrid" VerticalAlignment="Bottom" Height="40">
+            <Button x:Name="test1" Content="save and exit" Width="184"/>
+        </StackPanel>
     </Grid>
 </Window>
