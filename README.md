@@ -14,8 +14,8 @@ currently consists of school homework as i am still learning the language
 consists of the same type of exercises as the cpp one
 
 #### notable projects:
-- ```exercise-cluster/cpp/level4/from_context-free_grammar_to_push-down_automaton/```
-
 - ```exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
+
+- ```exercise-cluster/cpp/level4/from_context-free_grammar_to_push-down_automaton/```
 
 - ```exercise-cluster/cpp/level4/from_regular_grammar_to_automaton/```
