@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,9 +12,13 @@ namespace MemoryTilesGame {
 	public partial class GameWindow : Window {
 		DispatcherTimer _timer;
 		TimeSpan _time;
+		private string button1Tag;
+		private Button button1;
 
 		public GameWindow() {
 			InitializeComponent();
+
+			initAllVariables();
 
 			int cols = 6;
 			int rows = 5;
@@ -22,6 +28,11 @@ namespace MemoryTilesGame {
 			addImagesToGrid(cols, rows);
 
 			placeTimer();
+		}
+
+		private void initAllVariables() {
+			button1Tag = "";
+			button1 = null;
 		}
 
 		private void createGrid(int cols, int rows) {
@@ -124,10 +135,37 @@ namespace MemoryTilesGame {
 			_timer.Start();
 		}
 
-		private void Button_Click(object sender, RoutedEventArgs e) {
-			Button clickedButton = (Button)sender;
-			string buttonTag = clickedButton.Tag.ToString();
-			Console.WriteLine("Clicked button key: " + buttonTag);
+		private async void Button_Click(object sender, RoutedEventArgs e) {
+			// Disable all buttons
+			foreach(var button in GameGrid.Children.OfType<Button>()) {
+				button.IsEnabled = false;
+			}
+			// Wait for half a second
+			await Task.Delay(800);
+
+			if(button1Tag == "") {
+				button1Tag = ((Button)sender).Tag.ToString();
+				button1 = (Button)sender;
+			}
+			else {
+				if(((Button)sender).Tag.ToString() == button1Tag && ((Button)sender) != button1) {
+					button1.Opacity = 0;
+					button1.IsEnabled = false;
+					((Button)sender).Opacity = 0;
+					((Button)sender).IsEnabled = false;
+					button1 = null;
+					button1Tag = "";
+				}
+				else {
+					button1 = null;
+					button1Tag = "";
+				}
+			}
+
+			// Enable all buttons
+			foreach(var button in GameGrid.Children.OfType<Button>()) {
+				button.IsEnabled = true;
+			}
 		}
 	}
 }
