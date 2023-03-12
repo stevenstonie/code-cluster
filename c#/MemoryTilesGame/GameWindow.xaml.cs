@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,30 +77,26 @@ namespace MemoryTilesGame {
 			// get the file names of all the images in the folder
 			string[] images = Directory.GetFiles(folderPath, "*.png");
 
-			// Loop through each button and assign an image to it
-			int imageIndex = 0;
-			string[] keys = { "key1", "key2", "key3" };
-			int keyIndex = 0;
+			// put images in a list
+			List<KeyValuePair<string, ImageBrush>> imagesList = new List<KeyValuePair<string, ImageBrush>>(); // 1 param - tag, 2 param - image
+			for(int i = 0; i < cols * rows / 2; i++) {
+				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+			}
+
+			//shuffle the list
+			Random random = new Random();
+			imagesList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
+
+
+			// Loop through each button and assign an image and a tag to it
+			int listIndex = 0;
 			foreach(var child in GameGrid.Children) {
 				if(child is Button button) {
-					// Set the background of the button to an image
-					ImageBrush imageBrush = new ImageBrush();
-					imageBrush.ImageSource = new BitmapImage(new Uri(images[imageIndex], UriKind.Relative));
-					imageBrush.Stretch = Stretch.UniformToFill;
-					button.Background = imageBrush;
-					// Increment the image index
-					imageIndex++;
-					//!!!!temp If we've assigned all the images, start again from the beginning
-					if(imageIndex == images.Length) {
-						imageIndex = 0;
-					}
+					button.Background = imagesList[listIndex].Value;
+					button.Tag = imagesList[listIndex].Key;
 
-					// assign keys to each button
-					button.Tag = keys[keyIndex];
-					keyIndex++;
-					if(keyIndex == keys.Length) {
-						keyIndex = 0;
-					}
+					listIndex++;
 				}
 			}
 
@@ -169,3 +166,11 @@ namespace MemoryTilesGame {
 		}
 	}
 }
+
+// notes here:
+// - add images like this: take cols*rows/2 images from the folder and put them in the images array.
+// shuffle the array and for each image insert one in an random empty place and the other one in another random empty place.
+// (note: the same images have the same tag)
+// - make the images initially grey (idk turn the brightness on full or something. when a button gets clicked change the setting accordingly)
+// - add more images
+// - get parameter of how many cols and rows should the grid have. (also limit the cols and rows to a maximum and also make sure one is even)
