@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -116,7 +115,7 @@ namespace MemoryTilesGame {
 		}
 
 		private void placeTimer() {
-			_time = TimeSpan.FromSeconds(4);
+			_time = TimeSpan.FromSeconds(10);
 			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
 
 			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
@@ -133,18 +132,21 @@ namespace MemoryTilesGame {
 		}
 
 		private async void Button_Click(object sender, RoutedEventArgs e) {
-			// Disable all buttons
-			foreach(var button in GameGrid.Children.OfType<Button>()) {
-				button.IsEnabled = false;
-			}
-			// Wait for half a second
-			await Task.Delay(800);
+			Console.WriteLine("tag: " + ((Button)sender).Tag);
 
+			// disable the mouse for the entire grid
+			IsHitTestVisible = false;
+			// Wait some time
+			await Task.Delay(1000);
+
+			// first flipped image
 			if(button1Tag == "") {
 				button1Tag = ((Button)sender).Tag.ToString();
 				button1 = (Button)sender;
 			}
+			// second flipped image
 			else {
+				// are the same image but different button
 				if(((Button)sender).Tag.ToString() == button1Tag && ((Button)sender) != button1) {
 					button1.Opacity = 0;
 					button1.IsEnabled = false;
@@ -159,10 +161,8 @@ namespace MemoryTilesGame {
 				}
 			}
 
-			// Enable all buttons
-			foreach(var button in GameGrid.Children.OfType<Button>()) {
-				button.IsEnabled = true;
-			}
+			// reenable the mouse for the entire grid
+			IsHitTestVisible = true;
 		}
 	}
 }
@@ -174,3 +174,4 @@ namespace MemoryTilesGame {
 // - make the images initially grey (idk turn the brightness on full or something. when a button gets clicked change the setting accordingly)
 // - add more images
 // - get parameter of how many cols and rows should the grid have. (also limit the cols and rows to a maximum and also make sure one is even)
+// - redo the timer and the lose case.
