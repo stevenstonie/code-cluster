@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace memoryGame {
+namespace MemoryTilesGame {
 	public partial class GameWindow : Window {
 		DispatcherTimer _timer;
 		TimeSpan _time;

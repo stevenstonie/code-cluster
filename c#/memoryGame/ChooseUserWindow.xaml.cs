@@ -1,7 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 
-namespace memoryGame {
+namespace MemoryTilesGame {
 	public partial class ChooseUserWindow : Window {
 		public ChooseUserWindow() {
 			InitializeComponent();

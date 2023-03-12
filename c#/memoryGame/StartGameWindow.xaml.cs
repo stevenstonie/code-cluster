@@ -1,7 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Windows;
 
-namespace memoryGame {
+namespace MemoryTilesGame {
 	/// <summary>
 	/// Interaction logic for StartGameWindow.xaml
 	/// </summary>

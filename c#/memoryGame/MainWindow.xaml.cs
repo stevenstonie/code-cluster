@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace memoryGame {
+namespace MemoryTilesGame {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
