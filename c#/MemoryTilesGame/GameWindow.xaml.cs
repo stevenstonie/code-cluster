@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,22 +21,7 @@ namespace MemoryTilesGame {
 
 			addImagesToGrid(cols, rows);
 
-			_time = TimeSpan.FromSeconds(4);
-			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
-
-			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
-				tbTime.Text = _time.ToString("c");
-				if(_time == TimeSpan.Zero) {
-					_timer.Stop();
-					youLostMessage.Text = "the time is up. you lost..";
-				}
-				_time = _time.Add(TimeSpan.FromSeconds(-1));
-			}, System.Windows.Application.Current.Dispatcher);
-
-
-			_timer.Start();
-
-
+			placeTimer();
 		}
 
 		private void createGrid(int cols, int rows) {
@@ -61,7 +44,9 @@ namespace MemoryTilesGame {
 					button.MinHeight = 50;
 					button.MinWidth = 50;
 					button.Margin = new Thickness(3);
-					Grid.SetZIndex(button, -1); // Set the Panel.ZIndex to -1 to make the button behind any other elements
+
+					button.Click += Button_Click; // add event handler
+
 					Grid.SetRow(button, i);
 					Grid.SetColumn(button, j);
 					GameGrid.Children.Add(button);
@@ -69,6 +54,7 @@ namespace MemoryTilesGame {
 			}
 
 			GameGrid.VerticalAlignment = VerticalAlignment.Top;
+			GameGrid.HorizontalAlignment = HorizontalAlignment.Left;
 			GameGrid.Margin = new Thickness(0, 40, 0, 50);
 		}
 
@@ -81,20 +67,27 @@ namespace MemoryTilesGame {
 
 			// Loop through each button and assign an image to it
 			int imageIndex = 0;
+			string[] keys = { "key1", "key2", "key3" };
+			int keyIndex = 0;
 			foreach(var child in GameGrid.Children) {
 				if(child is Button button) {
 					// Set the background of the button to an image
 					ImageBrush imageBrush = new ImageBrush();
 					imageBrush.ImageSource = new BitmapImage(new Uri(images[imageIndex], UriKind.Relative));
-					imageBrush.Stretch = Stretch.Uniform;
+					imageBrush.Stretch = Stretch.UniformToFill;
 					button.Background = imageBrush;
-
 					// Increment the image index
 					imageIndex++;
-
-					// If we've assigned all the images, start again from the beginning
+					//!!!!temp If we've assigned all the images, start again from the beginning
 					if(imageIndex == images.Length) {
 						imageIndex = 0;
+					}
+
+					// assign keys to each button
+					button.Tag = keys[keyIndex];
+					keyIndex++;
+					if(keyIndex == keys.Length) {
+						keyIndex = 0;
 					}
 				}
 			}
@@ -112,6 +105,29 @@ namespace MemoryTilesGame {
 					}
 				}
 			};
+		}
+
+		private void placeTimer() {
+			_time = TimeSpan.FromSeconds(4);
+			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
+
+			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
+				tbTime.Text = _time.ToString("c");
+				if(_time == TimeSpan.Zero) {
+					_timer.Stop();
+					youLostMessage.Text = "the time is up. you lost..";
+				}
+				_time = _time.Add(TimeSpan.FromSeconds(-1));
+			}, System.Windows.Application.Current.Dispatcher);
+
+
+			_timer.Start();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e) {
+			Button clickedButton = (Button)sender;
+			string buttonTag = clickedButton.Tag.ToString();
+			Console.WriteLine("Clicked button key: " + buttonTag);
 		}
 	}
 }
