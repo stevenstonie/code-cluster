@@ -17,9 +17,8 @@ namespace MemoryTilesGame {
 
 		public GameWindow() {
 			InitializeComponent();
-
-			initAllVariables();
-
+			button1Tag = "";
+			button1 = null;
 			int cols = 6;
 			int rows = 5;
 
@@ -28,11 +27,6 @@ namespace MemoryTilesGame {
 			addImagesToGrid(cols, rows);
 
 			placeTimer();
-		}
-
-		private void initAllVariables() {
-			button1Tag = "";
-			button1 = null;
 		}
 
 		private void createGrid(int cols, int rows) {
@@ -67,37 +61,6 @@ namespace MemoryTilesGame {
 			GameGrid.VerticalAlignment = VerticalAlignment.Top;
 			GameGrid.HorizontalAlignment = HorizontalAlignment.Left;
 			GameGrid.Margin = new Thickness(0, 40, 0, 50);
-		}
-
-		private void addImagesToGrid(int cols, int rows) {
-			// specify the folder path where your images are stored
-			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
-
-			// get the file names of all the images in the folder
-			string[] images = Directory.GetFiles(folderPath, "*.png");
-
-			// put images in a list
-			List<KeyValuePair<string, ImageBrush>> imagesList = new List<KeyValuePair<string, ImageBrush>>(); // 1 param - tag, 2 param - image
-			for(int i = 0; i < cols * rows / 2; i++) {
-				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
-				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
-			}
-
-			//shuffle the list
-			Random random = new Random();
-			imagesList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
-
-
-			// Loop through each button and assign an image and a tag to it
-			int listIndex = 0;
-			foreach(var child in GameGrid.Children) {
-				if(child is Button button) {
-					button.Background = imagesList[listIndex].Value;
-					button.Tag = imagesList[listIndex].Key;
-
-					listIndex++;
-				}
-			}
 
 			// Add a SizeChanged event handler for the window
 			this.SizeChanged += (sender, e) => {
@@ -112,6 +75,37 @@ namespace MemoryTilesGame {
 					}
 				}
 			};
+		}
+
+		private void addImagesToGrid(int cols, int rows) {
+			// specify the folder path where your images are stored
+			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
+
+			// get the file names of all the images in the folder
+			string[] images = Directory.GetFiles(folderPath, "*.png");
+
+			// put images in a list
+			List<KeyValuePair<string, ImageBrush>> imagesList = new List<KeyValuePair<string, ImageBrush>>(); // param1 - tag, param2 - image
+			for(int i = 0; i < cols * rows / 2; i++) {
+				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+			}
+
+			//shuffle the list
+			Random random = new Random();
+			imagesList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
+
+
+			// Loop through each button and assign an image and a tag to it
+			int listIndex = 0;
+			foreach(var child in GameGrid.Children) {
+				if(child is Button button) {
+					button.Tag = imagesList[listIndex].Key;
+					button.Background = imagesList[listIndex].Value;
+
+					listIndex++;
+				}
+			}
 		}
 
 		private void placeTimer() {
@@ -146,7 +140,7 @@ namespace MemoryTilesGame {
 			}
 			// second flipped image
 			else {
-				// are the same image but different button
+				// are the same image(or tag) but different button
 				if(((Button)sender).Tag.ToString() == button1Tag && ((Button)sender) != button1) {
 					button1.Opacity = 0;
 					button1.IsEnabled = false;
@@ -168,9 +162,6 @@ namespace MemoryTilesGame {
 }
 
 // notes here:
-// - add images like this: take cols*rows/2 images from the folder and put them in the images array.
-// shuffle the array and for each image insert one in an random empty place and the other one in another random empty place.
-// (note: the same images have the same tag)
 // - make the images initially grey (idk turn the brightness on full or something. when a button gets clicked change the setting accordingly)
 // - add more images
 // - get parameter of how many cols and rows should the grid have. (also limit the cols and rows to a maximum and also make sure one is even)
