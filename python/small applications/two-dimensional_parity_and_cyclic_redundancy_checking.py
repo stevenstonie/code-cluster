@@ -1,5 +1,30 @@
-def crc(input):
-    None
+def crc(message, key):
+    if crcVerification(message, key) is False:
+        print('the parameters do not meet the requirements')
+        return
+
+    print('orig message')
+    print(message)
+    print('\ncoded message\n')
+
+    degreeOfPolynome = len(key)-1
+    remainder = message + '0' * degreeOfPolynome
+
+    while len(remainder) > degreeOfPolynome:
+        partOfMessage = remainder[:degreeOfPolynome+1]
+        partOfMessage = xor(partOfMessage, key)
+        remainder = remainder[degreeOfPolynome+1:]
+        remainder = partOfMessage + remainder
+        while len(remainder) > 0 and remainder[0] == '0':
+            remainder = remainder[1:]
+
+    if remainder == '':
+        remainder = '0' * degreeOfPolynome
+
+    message += xor(remainder, '0' * degreeOfPolynome)
+
+    print(message)
+    return message
 
 
 def twoDimensionalParity(input):
@@ -10,11 +35,13 @@ def twoDimensionalParity(input):
 
 
 def main():
-    print("~~~~~~TWO-DIMENSIONAL PARITY CHECKER~~~~~~")
+    print('~~~~~~TWO-DIMENSIONAL PARITY CHECKER~~~~~~')
     twoDimensionalParity('100101100100111100101')
 
-    print("\n~~~~~~CRC~~~~~~")
-    crc('100101100100111100101')
+    print('\n~~~~~~CRC~~~~~~')
+    encodedMessage = crc('1011111', '101')
+
+    print('\n~~~~~~CRC VERIFICATION~~~~~~')
 
 
 def isBinary(input):
@@ -36,6 +63,25 @@ def printTheParityMatrix(input):
     parityMatrix += ['', newRow]
 
     print('\n'.join(parityMatrix))
+
+
+def crcVerification(message, key):
+    if key[0] != '1':
+        while key[0] != '1':
+            print('the binary polinome has to be binary and start with 1!!')
+            key = input("input another key: ")
+    if isBinary(message) is False or isBinary(key) is False:
+        return False
+    else:
+        return True
+
+
+def xor(a, b):
+    result = ""
+
+    for i in range(len(a)):
+        result += '0' if a[i] == b[i] else '1'
+    return result
 
 
 if __name__ == '__main__':
