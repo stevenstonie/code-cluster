@@ -12,15 +12,19 @@ namespace MemoryTilesGame {
 	public partial class GameWindow : Window {
 		DispatcherTimer _timer;
 		TimeSpan _time;
-		private string button1Tag;
+		private int button1ListIndex;
+		private int button1ImageId;
 		private Button button1;
+		List<KeyValuePair<int, ImageBrush>> imagesList; // param1 - id, param2 - image
 
 		public GameWindow() {
 			InitializeComponent();
-			button1Tag = "";
+			button1ListIndex = -1;
+			button1ImageId = -1;
 			button1 = null;
 			int cols = 6;
 			int rows = 5;
+			imagesList = new List<KeyValuePair<int, ImageBrush>>();
 
 			createGrid(cols, rows);
 
@@ -85,10 +89,9 @@ namespace MemoryTilesGame {
 			string[] images = Directory.GetFiles(folderPath, "*.png");
 
 			// put images in a list
-			List<KeyValuePair<string, ImageBrush>> imagesList = new List<KeyValuePair<string, ImageBrush>>(); // param1 - tag, param2 - image
 			for(int i = 0; i < cols * rows / 2; i++) {
-				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
-				imagesList.Add(new KeyValuePair<string, ImageBrush>(i.ToString(), new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
 			}
 
 			//shuffle the list
@@ -96,14 +99,12 @@ namespace MemoryTilesGame {
 			imagesList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
 
 
-			// Loop through each button and assign an image and a tag to it
-			int listIndex = 0;
+			// Loop through each button and assign an image and a tag to it (the tag represents the index in the list)
+			int index = 0;
 			foreach(var child in GameGrid.Children) {
 				if(child is Button button) {
-					button.Tag = imagesList[listIndex].Key;
-					button.Background = imagesList[listIndex].Value;
-
-					listIndex++;
+					button.Tag = index++;
+					button.Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
 				}
 			}
 		}
@@ -130,29 +131,38 @@ namespace MemoryTilesGame {
 
 			// disable the mouse for the entire grid
 			IsHitTestVisible = false;
-			// Wait some time
-			await Task.Delay(1000);
 
 			// first flipped image
-			if(button1Tag == "") {
-				button1Tag = ((Button)sender).Tag.ToString();
+			if(button1ListIndex == -1) {
+				button1ListIndex = (int)((Button)sender).Tag;
+				button1ImageId = imagesList[button1ListIndex].Key;
 				button1 = (Button)sender;
+				button1.Background = imagesList[button1ListIndex].Value;
+
+				// Wait some time
+				await Task.Delay(1000);
 			}
 			// second flipped image
 			else {
-				// are the same image(or tag) but different button
-				if(((Button)sender).Tag.ToString() == button1Tag && ((Button)sender) != button1) {
-					button1.Opacity = 0;
+				((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
+				// Wait some time
+				await Task.Delay(1000);
+
+				// have the same imageid but different button
+				if(imagesList[(int)((Button)sender).Tag].Key == button1ImageId && ((Button)sender) != button1) {
 					button1.IsEnabled = false;
-					((Button)sender).Opacity = 0;
+
+					((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
 					((Button)sender).IsEnabled = false;
-					button1 = null;
-					button1Tag = "";
 				}
 				else {
-					button1 = null;
-					button1Tag = "";
+					((Button)sender).Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
+					button1.Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
 				}
+
+				button1 = null;
+				button1ImageId = -1;
+				button1ListIndex = -1;
 			}
 
 			// reenable the mouse for the entire grid
@@ -162,7 +172,7 @@ namespace MemoryTilesGame {
 }
 
 // notes here:
-// - make the images initially grey (idk turn the brightness on full or something. when a button gets clicked change the setting accordingly)
+// - change the datatype of the imagesList from <int, image> to <int, string> where string is the path of the images
 // - add more images
 // - get parameter of how many cols and rows should the grid have. (also limit the cols and rows to a maximum and also make sure one is even)
 // - redo the timer and the lose case.

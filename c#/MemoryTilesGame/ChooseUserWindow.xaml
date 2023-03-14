@@ -14,7 +14,7 @@
         <TextBlock Text="choose your user" Height="50" Margin="62,27,469,507" FontSize="30" TextWrapping="WrapWithOverflow"/>
         <Button x:Name="newUser" Content="new user" HorizontalAlignment="Left" Margin="78,510,0,55"></Button>
         <Button x:Name="deleteUser" Content="delete user" Margin="268,510,422,55"/>
-        <Button x:Name="nextWindow" Content="next" Margin="457,510,243,55" Click="nextWindow_Click" Width="100" Height="35"></Button>
+        <Button x:Name="nextWindow" Content="next" Margin="457,465,243,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
         <Button x:Name="cancel" Content="cancel" Margin="632,510,88,55" Height="35"></Button>
 
         <StackPanel Margin="733,0,0,540">
