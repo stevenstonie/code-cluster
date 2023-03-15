@@ -108,12 +108,14 @@ def xor(a, b):  # len(a) == len(b)
         result += '0' if a[i] == b[i] else '1'
     return result
 
+# 10100101010001011001
+
 
 def modulo2Division(remainder, key):
     while len(remainder) > len(key) - 1:
         partOfMessage = remainder[:len(key)]
-        partOfMessage = xor(partOfMessage, key)
         remainder = remainder[len(key):]
+        partOfMessage = xor(partOfMessage, key)
         remainder = partOfMessage + remainder
         while len(remainder) > 0 and remainder[0] == '0':
             remainder = remainder[1:]
