@@ -139,25 +139,21 @@ namespace MemoryTilesGame {
 				button1 = (Button)sender;
 				button1.Background = imagesList[button1ListIndex].Value;
 
-				// Wait some time
-				await Task.Delay(1000);
+				await Task.Delay(700);
 			}
 			// second flipped image
 			else {
 				((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
-				// Wait some time
-				await Task.Delay(1000);
+				await Task.Delay(700);
 
 				// have the same imageid but different button
 				if(imagesList[(int)((Button)sender).Tag].Key == button1ImageId && ((Button)sender) != button1) {
-					button1.IsEnabled = false;
-
 					((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
-					((Button)sender).IsEnabled = false;
+
+					((Button)sender).IsEnabled = button1.IsEnabled = false;
 				}
 				else {
-					((Button)sender).Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
-					button1.Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
+					((Button)sender).Background = button1.Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
 				}
 
 				button1 = null;

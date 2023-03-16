@@ -33,5 +33,11 @@ namespace MemoryTilesGame {
 		private void exitApp(object sender, RoutedEventArgs e) {
 			Application.Current.Shutdown();
 		}
+
+		private void cancel_Click(object sender, RoutedEventArgs e) {
+			this.Hide();
+			MainWindow mainWindow = new MainWindow();
+			mainWindow.Show();
+		}
 	}
 }
