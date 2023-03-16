@@ -1,0 +1,18 @@
+[
+	{
+		"userFolderPath": ".\\..\\bin\\Debug\\Users\\fakar",
+		"userImagePath": ".\\..\\bin\\Debug\\Users\\fakar\\*.png"
+	},
+	{
+		"userFolderPath": ".\\..\\bin\\Debug\\Users\\flood",
+		"userImagePath": ".\\..\\bin\\Debug\\Users\\flood\\*.png"
+	},
+	{
+		"userFolderPath": ".\\..\\bin\\Debug\\Users\\jorj",
+		"userImagePath": ".\\..\\bin\\Debug\\Users\\jorj\\*.png"
+	},
+	{
+		"userFolderPath": ".\\..\\bin\\Debug\\Users\\madar",
+		"userImagePath": ".\\..\\bin\\Debug\\Users\\madar\\*.png"
+	}
+]

@@ -4,15 +4,16 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
+
 namespace MemoryTilesGame {
 	public partial class ChooseUserWindow : Window {
-		string[] usersFoldersPaths;
-		int userIndex;
+		private string[] usersFoldersPaths;
+		private int userIndex;
 
 		public ChooseUserWindow() {
 			InitializeComponent();
 
-			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Users");
+			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Users");
 			usersFoldersPaths = Directory.GetDirectories(folderPath);
 			userIndex = 0;
 		}
@@ -57,6 +58,26 @@ namespace MemoryTilesGame {
 		private void assignUserToWindow() {
 			userImage.Source = new BitmapImage(new Uri(Directory.GetFiles(usersFoldersPaths[userIndex], "*.png").FirstOrDefault()));
 			userName.Text = System.IO.Path.GetFileName(usersFoldersPaths[userIndex]);
+		}
+
+		private void deleteUser_Click(object sender, RoutedEventArgs e) {
+
+			if(userImage.Source != null) {
+				var userPathToDelete = usersFoldersPaths[userIndex];
+				var filesToDelete = Directory.GetFiles(userPathToDelete);
+
+				nextUser_Click(sender, e);
+
+				foreach(var fileToDelete in filesToDelete) {
+					using(var stream = new FileStream(fileToDelete, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
+						File.Delete(fileToDelete);
+					}
+				}
+				Directory.Delete(userPathToDelete);
+			}
+			else {
+				MessageBox.Show("no user has been selected");
+			}
 		}
 	}
 }
