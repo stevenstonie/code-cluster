@@ -12,7 +12,7 @@
         <Button x:Name="saveCurrentGame" Content="save current game" Width="170" Height="32" Margin="0,495,0,0"/>
         <Button x:Name="continueExistentGame" Content="continue existent game" Width="188" Height="32" Margin="0,405,0,0" />
         <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,315,0,0" Click="startNewGame_Click"/>
-        <Button x:Name="exit" Content="exit" Width="80" Height="30" Margin="500, 500, 0, 0"/>
+        <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
 
         <StackPanel Margin="595,0,0,419">
             <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">

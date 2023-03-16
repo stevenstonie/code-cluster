@@ -7,15 +7,22 @@
         xmlns:local="clr-namespace:MemoryTilesGame"
         mc:Ignorable="d"
         Title="change this" Height="600" Width="800"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <TextBlock Text="choose your user" Height="50" Margin="62,27,469,507" FontSize="30" TextWrapping="WrapWithOverflow"/>
-        <Button x:Name="newUser" Content="new user" Margin="0,450,560,0" Width="100" Height="35"></Button>
-        <Button x:Name="deleteUser" Content="delete user" Margin="0,450,200,0" Width="120" Height="35"/>
-        <Button x:Name="nextWindow" Content="next" Margin="210,450, 0,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
-        <Button x:Name="cancel" Content="cancel" Margin="560,450,0,0" Width="100" Height="35" Click="cancel_Click"></Button>
+        <TextBlock Text="choose your user" FontSize="30" Width="300" Height="50" Margin="0,0,400,480"/>
+
+        <Border BorderBrush="#FF673AB7" BorderThickness="7" Margin="0,0,0,0" Width="370" Height="400"/>
+        <Button x:Name="nextUser" Content="next" Margin="500,0,0,0" Width="60" Height="30" Click="nextUser_Click"></Button>
+        <Button x:Name="prevUser" Content="prev" Margin="0,0,500,0" Width="60" Height="30" Click="prevUser_Click"></Button>
+        <Image x:Name="userImage" Height="330" Width="330" Margin="0,0,0,30"></Image>
+        <TextBlock Text="name: " FontSize="30" Margin="0,335,250,0" Width="90" Height="40"/>
+        <TextBlock x:Name="userName" Text="" FontSize="30" Margin="90,335,0,0" Width="260" Height="40"/>
+
+        <Button x:Name="newUser" Content="new user" Margin="0,480,560,0" Width="100" Height="35"></Button>
+        <Button x:Name="deleteUser" Content="delete user" Margin="0,480,200,0" Width="120" Height="35"/>
+        <Button x:Name="nextWindow" Content="continue" Margin="210,480, 0,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
+        <Button x:Name="back" Content="back" Margin="560,480,0,0" Width="100" Height="35" Click="back_Click"></Button>
 
         <StackPanel Margin="733,0,0,540">
             <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
@@ -24,6 +31,5 @@
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
-
     </Grid>
 </Window>

@@ -1,12 +1,11 @@
-﻿using MaterialDesignThemes.Wpf;
-using System.Windows;
+﻿using System.Windows;
 
 namespace MemoryTilesGame {
 	/// <summary>
 	/// Interaction logic for StartGameWindow.xaml
 	/// </summary>
 	public partial class StartGameWindow : Window {
-		public StartGameWindow() {
+		public StartGameWindow(string userFolderPath) {
 			InitializeComponent();
 		}
 
@@ -16,25 +15,14 @@ namespace MemoryTilesGame {
 			gameWindow.Show();
 		}
 
-		private void toggleTheme(object sender, RoutedEventArgs e) {
-			ITheme theme = paletteHelper.GetTheme();
-			if(IsDarkTheme = theme.GetBaseTheme() == BaseTheme.Dark) {
-				IsDarkTheme = false;
-				theme.SetBaseTheme(Theme.Light);
-			}
-			else {
-				IsDarkTheme = true;
-				theme.SetBaseTheme(Theme.Dark);
-			}
-			paletteHelper.SetTheme(theme);
-		}
-		public bool IsDarkTheme {
-			get; set;
-		}
-		private readonly PaletteHelper paletteHelper = new PaletteHelper();
-
 		private void exitApp(object sender, RoutedEventArgs e) {
 			Application.Current.Shutdown();
+		}
+
+		private void back_Click(object sender, RoutedEventArgs e) {
+			this.Hide();
+			ChooseUserWindow chooseUserWindow = new ChooseUserWindow();
+			chooseUserWindow.Show();
 		}
 	}
 }
