@@ -17,13 +17,11 @@ namespace MemoryTilesGame {
 		private Button button1;
 		List<KeyValuePair<int, ImageBrush>> imagesList; // param1 - id, param2 - image
 
-		public GameWindow() {
+		public GameWindow(int cols, int rows) {
 			InitializeComponent();
 			button1ListIndex = -1;
 			button1ImageId = -1;
 			button1 = null;
-			int cols = 6;
-			int rows = 5;
 			imagesList = new List<KeyValuePair<int, ImageBrush>>();
 
 			createGrid(cols, rows);

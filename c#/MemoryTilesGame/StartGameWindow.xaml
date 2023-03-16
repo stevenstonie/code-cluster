@@ -15,11 +15,19 @@
         <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
 
         <StackPanel Margin="595,0,0,419">
-            <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
-                <StackPanel Margin="10 10 10 10" Orientation="Vertical" HorizontalAlignment="Center">
-                    <Button x:Name="buttonExit" Content="exit" Click="exitApp"></Button>
+            <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="True" Height="25">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text=" Grid size:" VerticalAlignment="Center" />
+                        <TextBox Width="50" x:Name="tbGridSizeY" VerticalAlignment="Center" />
+                        <TextBlock Text="x" VerticalAlignment="Center" Margin="5 0" />
+                        <TextBox Width="50" x:Name="tbGridSizeX" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="50" Height="50" Margin="10 5 0 0" />
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
+
+
     </Grid>
 </Window>
