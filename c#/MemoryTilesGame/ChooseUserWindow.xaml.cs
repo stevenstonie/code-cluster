@@ -4,8 +4,58 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-
 namespace MemoryTilesGame {
+	class User {
+		private string name;
+		private string profileImagePath;
+		private int matchesPlayed;
+		private int matchesWon;
+
+		public User() {
+			Random random = new Random();
+			name = "user" + random.Next(1000, 10000).ToString();
+			profileImagePath = "../../Assets/greysquare.png";
+			matchesPlayed = 0;
+			matchesWon = 0;
+		}
+
+		public string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
+			}
+		}
+
+		public string ProfileImagePath {
+			get {
+				return profileImagePath;
+			}
+			set {
+				profileImagePath = value;
+			}
+		}
+
+		public int MatchesPlayed {
+			get {
+				return matchesPlayed;
+			}
+			set {
+				matchesPlayed = value;
+			}
+		}
+
+		public int MatchesWon {
+			get {
+				return matchesWon;
+			}
+			set {
+				matchesWon = value;
+			}
+		}
+	}
+
 	public partial class ChooseUserWindow : Window {
 		private string[] usersFoldersPaths;
 		private int userIndex;
@@ -15,7 +65,7 @@ namespace MemoryTilesGame {
 
 			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Users");
 			usersFoldersPaths = Directory.GetDirectories(folderPath);
-			userIndex = 0;
+			userIndex = -1;
 		}
 
 		private void nextWindow_Click(object sender, RoutedEventArgs e) {
@@ -44,7 +94,7 @@ namespace MemoryTilesGame {
 			if(userIndex >= usersFoldersPaths.Length)
 				userIndex = 0;
 
-			assignUserToWindow();
+			updateUserOnWindow();
 		}
 
 		private void prevUser_Click(object sender, RoutedEventArgs e) {
@@ -52,32 +102,21 @@ namespace MemoryTilesGame {
 			if(userIndex < 0)
 				userIndex = usersFoldersPaths.Length - 1;
 
-			assignUserToWindow();
+			updateUserOnWindow();
 		}
 
-		private void assignUserToWindow() {
+		private void updateUserOnWindow() {
 			userImage.Source = new BitmapImage(new Uri(Directory.GetFiles(usersFoldersPaths[userIndex], "*.png").FirstOrDefault()));
 			userName.Text = System.IO.Path.GetFileName(usersFoldersPaths[userIndex]);
 		}
 
+		private void newUser_Click(object sender, RoutedEventArgs e) {
+			CreateNewUserWindow createNewUserWindow = new CreateNewUserWindow();
+			createNewUserWindow.ShowDialog();
+		}
+
 		private void deleteUser_Click(object sender, RoutedEventArgs e) {
 
-			if(userImage.Source != null) {
-				var userPathToDelete = usersFoldersPaths[userIndex];
-				var filesToDelete = Directory.GetFiles(userPathToDelete);
-
-				nextUser_Click(sender, e);
-
-				foreach(var fileToDelete in filesToDelete) {
-					using(var stream = new FileStream(fileToDelete, FileMode.Open, FileAccess.ReadWrite, FileShare.None)) {
-						File.Delete(fileToDelete);
-					}
-				}
-				Directory.Delete(userPathToDelete);
-			}
-			else {
-				MessageBox.Show("no user has been selected");
-			}
 		}
 	}
 }
