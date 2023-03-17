@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
-using System.Windows.Media.Imaging;
 
 namespace MemoryTilesGame {
 	class User {
@@ -19,7 +18,14 @@ namespace MemoryTilesGame {
 			matchesWon = 0;
 		}
 
-
+		public string Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
+			}
+		}
 
 		public string ProfileImagePath {
 			get {
@@ -50,21 +56,16 @@ namespace MemoryTilesGame {
 	}
 
 	public partial class ChooseUserWindow : Window {
-		private string[] usersFoldersPaths;
-		private int userIndex;
-
 		public ChooseUserWindow() {
 			InitializeComponent();
 
 			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Users");
-			usersFoldersPaths = Directory.GetDirectories(folderPath);
-			userIndex = -1;
 		}
 
 		private void nextWindow_Click(object sender, RoutedEventArgs e) {
 			if(userImage.Source != null) {
 				this.Hide();
-				StartGameWindow startGameWindow = new StartGameWindow(usersFoldersPaths[userIndex]);
+				StartGameWindow startGameWindow = new StartGameWindow();
 				startGameWindow.Show();
 			}
 			else {
@@ -83,38 +84,53 @@ namespace MemoryTilesGame {
 		}
 
 		private void nextUser_Click(object sender, RoutedEventArgs e) {
-			userIndex++;
+			/*userIndex++;
 			if(userIndex >= usersFoldersPaths.Length)
-				userIndex = 0;
+				userIndex = 0;*/
 
 			updateUserOnWindow();
 		}
 
 		private void prevUser_Click(object sender, RoutedEventArgs e) {
-			userIndex--;
+			/*userIndex--;
 			if(userIndex < 0)
-				userIndex = usersFoldersPaths.Length - 1;
+				userIndex = usersFoldersPaths.Length - 1;*/
 
 			updateUserOnWindow();
 		}
 
 		private void updateUserOnWindow() {
-			userImage.Source = new BitmapImage(new Uri(Directory.GetFiles(usersFoldersPaths[userIndex], "*.png").FirstOrDefault()));
-			userName.Text = System.IO.Path.GetFileName(usersFoldersPaths[userIndex]);
+			/*userImage.Source = new BitmapImage(new Uri(Directory.GetFiles(usersFoldersPaths[userIndex], "*.png").FirstOrDefault()));
+			userName.Text = System.IO.Path.GetFileName(usersFoldersPaths[userIndex]);*/
 		}
 
 		private void newUser_Click(object sender, RoutedEventArgs e) {
-			string newUserName = "";
-			string newUserImagePath = "";
+			User newUser = new User();
 
 			CreateNewUserWindow createNewUserWindow = new CreateNewUserWindow();
 			createNewUserWindow.ShowDialog();
 
-			newUserName = createNewUserWindow.NewUserName;
-			newUserImagePath = createNewUserWindow.NewUserImagePath;
+			newUser.Name = createNewUserWindow.NewUserName;
+			newUser.ProfileImagePath = createNewUserWindow.NewUserImagePath;
 
-			if(newUserName != "" && newUserImagePath != "") {
+			if(newUser.Name != "" && newUser.ProfileImagePath != "") {
+				appendToUsersJsonFile(newUser);
+			}
+		}
 
+		private void appendToUsersJsonFile(User newUser) {
+			string filePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
+
+			((Action)(() => { if(!File.Exists(filePath)) { File.Create(filePath).Dispose(); } }))();
+
+			using(StreamWriter sw = new StreamWriter(filePath, append: true)) {
+				using(JsonTextWriter jtw = new JsonTextWriter(sw)) {
+					JsonSerializer serializer = new JsonSerializer();
+					serializer.Formatting = Formatting.Indented;
+
+					serializer.Serialize(jtw, newUser);
+					jtw.WriteRaw("\n");
+				}
 			}
 		}
 

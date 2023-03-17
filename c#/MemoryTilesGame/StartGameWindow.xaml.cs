@@ -7,7 +7,7 @@ namespace MemoryTilesGame {
 		private readonly int standardRows;
 		private readonly int standardCols;
 
-		public StartGameWindow(string userFolderPath) {
+		public StartGameWindow() {
 			InitializeComponent();
 
 			standardRows = 5;

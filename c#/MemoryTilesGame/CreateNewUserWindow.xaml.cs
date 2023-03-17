@@ -7,12 +7,18 @@ namespace MemoryTilesGame {
 	public partial class CreateNewUserWindow : Window {
 		private string[] imagesPathsArray;
 		private int imageIndex;
+		public string NewUserName {
+			get; set;
+		}
+		public string NewUserImagePath {
+			get; set;
+		}
 
 		public CreateNewUserWindow() {
 			InitializeComponent();
 			this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
-			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
+			string folderPath = Path.Combine(Environment.CurrentDirectory, "Assets", "Images");
 			imagesPathsArray = Directory.GetFiles(folderPath, "*.png");
 			imageIndex = -1;
 		}
@@ -60,14 +66,6 @@ namespace MemoryTilesGame {
 
 		private void updateUserImageOnScreen() {
 			newUserImageBox.Source = new BitmapImage(new Uri(imagesPathsArray[imageIndex]));
-		}
-
-		public string NewUserName {
-			get; set;
-		}
-
-		public string NewUserImagePath {
-			get; set;
 		}
 	}
 }
