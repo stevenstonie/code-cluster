@@ -19,14 +19,7 @@ namespace MemoryTilesGame {
 			matchesWon = 0;
 		}
 
-		public string Name {
-			get {
-				return name;
-			}
-			set {
-				name = value;
-			}
-		}
+
 
 		public string ProfileImagePath {
 			get {
@@ -111,8 +104,18 @@ namespace MemoryTilesGame {
 		}
 
 		private void newUser_Click(object sender, RoutedEventArgs e) {
+			string newUserName = "";
+			string newUserImagePath = "";
+
 			CreateNewUserWindow createNewUserWindow = new CreateNewUserWindow();
 			createNewUserWindow.ShowDialog();
+
+			newUserName = createNewUserWindow.NewUserName;
+			newUserImagePath = createNewUserWindow.NewUserImagePath;
+
+			if(newUserName != "" && newUserImagePath != "") {
+
+			}
 		}
 
 		private void deleteUser_Click(object sender, RoutedEventArgs e) {

@@ -7,9 +7,8 @@ namespace MemoryTilesGame {
 	public partial class CreateNewUserWindow : Window {
 		private string[] imagesPathsArray;
 		private int imageIndex;
-		private string currentUserImagePath;
 
-		public CreateNewUserWindow(string newUserName, string newUserImagePath) {
+		public CreateNewUserWindow() {
 			InitializeComponent();
 			this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
@@ -37,17 +36,38 @@ namespace MemoryTilesGame {
 		}
 
 		private void add_Click(object sender, RoutedEventArgs e) {
+			if(newUserNameBox.Text == "" || newUserNameBox.Text.Length > 20) {
+				MessageBox.Show("the name either is null or over the limit of 20 characters");
+			}
+			else {
+				if(newUserImageBox.Source == null) {
+					MessageBox.Show("no image has been assigned yet.");
+				}
+				else {
+					NewUserName = newUserNameBox.Text;
+					NewUserImagePath = imagesPathsArray[imageIndex];
 
+					Close();
+				}
+			}
 		}
 
 		private void cancel_Click(object sender, RoutedEventArgs e) {
-
+			NewUserName = "";
+			NewUserImagePath = "";
+			Close();
 		}
 
 		private void updateUserImageOnScreen() {
-			newUserImage.Source = new BitmapImage(new Uri(imagesPathsArray[imageIndex]));
+			newUserImageBox.Source = new BitmapImage(new Uri(imagesPathsArray[imageIndex]));
+		}
 
+		public string NewUserName {
+			get; set;
+		}
 
+		public string NewUserImagePath {
+			get; set;
 		}
 	}
 }
