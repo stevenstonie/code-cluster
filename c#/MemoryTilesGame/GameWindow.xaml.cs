@@ -122,11 +122,14 @@ namespace MemoryTilesGame {
 				tbTime.Text = _time.ToString("c");
 				if(_time == TimeSpan.Zero) {
 					_timer.Stop();
-					youLostMessage.Text = "the time is up. you lost..";
+
+					youLostMessage.Text = "damn you suck";
+					MessageBox.Show("the time is up. you lost..");
+
+					Close();
 				}
 				_time = _time.Add(TimeSpan.FromSeconds(-1));
 			}, System.Windows.Application.Current.Dispatcher);
-
 
 			_timer.Start();
 		}
@@ -168,6 +171,7 @@ namespace MemoryTilesGame {
 				button1ListIndex = -1;
 
 				if(nbOfTilesLeftToFlip == 0) {
+					_timer.Stop();
 					RoundWon = true;
 					MessageBox.Show("nice");
 					Close();
