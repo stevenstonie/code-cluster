@@ -16,7 +16,6 @@ namespace MemoryTilesGame {
 
 		public CreateNewUserWindow() {
 			InitializeComponent();
-			this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
 			string folderPath = Path.Combine(Environment.CurrentDirectory, "Assets", "Images");
 			imagesPathsArray = Directory.GetFiles(folderPath, "*.png");

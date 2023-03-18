@@ -16,6 +16,8 @@ namespace MemoryTilesGame {
 			standardCols = 6;
 
 			this.currentUser = currentUser;
+			userName.Text = currentUser.Value<string>("Name");
+			userImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(currentUser.Value<string>("ImagePath")));
 		}
 
 		private void startNewGame_Click(object sender, RoutedEventArgs e) {

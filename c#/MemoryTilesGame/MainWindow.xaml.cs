@@ -4,6 +4,8 @@ namespace MemoryTilesGame {
 	public partial class MainWindow : Window {
 		public MainWindow() {
 			InitializeComponent();
+
+
 		}
 
 		private void start_Click(object sender, RoutedEventArgs e) {
@@ -14,7 +16,7 @@ namespace MemoryTilesGame {
 		}
 
 		private void exit_Click(object sender, RoutedEventArgs e) {
-			System.Windows.Application.Current.Shutdown();
+			Application.Current.Shutdown();
 		}
 	}
 }

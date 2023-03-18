@@ -16,6 +16,7 @@ namespace MemoryTilesGame {
 			Random random = new Random();
 			name = "user" + random.Next(1000, 10000).ToString();
 			imagePath = "../../Assets/greysquare.png";
+			// ik these initializations^ are useless but eh
 			matchesPlayed = 0;
 			matchesWon = 0;
 		}
@@ -120,6 +121,8 @@ namespace MemoryTilesGame {
 			usersArray.RemoveAt(indexOfUserToDelete);
 
 			updateUsersJsonFileFromUsersArray(usersArray);
+
+			MessageBox.Show("user deleted succesfully");
 		}
 
 		private void updateCurrentUserOnScreen() {
@@ -131,6 +134,9 @@ namespace MemoryTilesGame {
 			}
 			catch(System.ArgumentOutOfRangeException) {
 				return;
+			}
+			catch(System.ArgumentNullException) {
+				eliminateCurrentNullUser();
 			}
 		}
 
@@ -151,6 +157,25 @@ namespace MemoryTilesGame {
 		private void updateUsersJsonFileFromUsersArray(JArray usersArray) {
 			string json = JsonConvert.SerializeObject(usersArray, Formatting.Indented);
 			File.WriteAllText(usersJsonFilePath, json);
+		}
+
+		// i dont know why but sometimes a null user gets added. i have to find out where and why it happens.
+		private void eliminateCurrentNullUser() {
+			var indexOfUserToDelete = currentUserIndex;
+			if(usersArray.Count == 1) {
+				userImage.Source = null;
+				userName.Text = "";
+			}
+			else {
+				currentUserIndex++;
+				if(currentUserIndex >= usersArray.Count)
+					currentUserIndex = 0;
+
+				updateCurrentUserOnScreen();
+			}
+			usersArray.RemoveAt(indexOfUserToDelete);
+
+			updateUsersJsonFileFromUsersArray(usersArray);
 		}
 	}
 }

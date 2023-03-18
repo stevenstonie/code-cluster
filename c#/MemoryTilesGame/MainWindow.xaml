@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MemoryTilesGame"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="change dis" Height="450" Width="800">
     <Grid>
         <TextBlock FontSize="20" Foreground="Black" Margin="10,10,10,0" TextAlignment="Center" 
