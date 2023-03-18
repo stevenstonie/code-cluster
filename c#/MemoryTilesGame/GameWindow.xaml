@@ -9,15 +9,20 @@
         WindowStartupLocation="CenterScreen"
 >
     <Grid>
-        <Grid x:Name="GameGrid" Grid.Row="0">
-            <!-- optionally empty -->
-        </Grid>
         <StackPanel x:Name="InfoGrid" Grid.Row="1" VerticalAlignment="Top">
             <TextBlock Name="tbTime" />
             <TextBlock Name="youLostMessage" Text="" FontSize="20"></TextBlock>
         </StackPanel>
+
+        <Image x:Name="userImage" Width="30" Height="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,5,10,0"></Image>
+        <TextBlock x:Name="userName" FontSize="18" Width="500" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,6,45,0" TextAlignment="Right"></TextBlock>
+
+        <Grid x:Name="GameGrid" Grid.Row="0">
+            <!-- optionally empty -->
+        </Grid>
+
         <StackPanel x:Name="ButtonGrid" VerticalAlignment="Bottom" Height="40">
-            <Button x:Name="test1" Content="save and exit" Width="184"/>
+            <Button x:Name="saveAndExitButton" Content="save and exit (currently not implemented)" Width="300"/>
         </StackPanel>
     </Grid>
 </Window>

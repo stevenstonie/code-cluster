@@ -7,21 +7,20 @@ namespace MemoryTilesGame {
 		private int cols;
 		private readonly int standardRows;
 		private readonly int standardCols;
-		JToken currentUser;
+		JToken user;
 
-		public StartGameWindow(JToken currentUser) {
+		public StartGameWindow(JToken user) {
 			InitializeComponent();
 
 			standardRows = 5;
 			standardCols = 6;
 
-			this.currentUser = currentUser;
-			userName.Text = currentUser.Value<string>("Name");
-			userImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(currentUser.Value<string>("ImagePath")));
+			this.user = user;
+			userName.Text = user.Value<string>("Name");
+			userImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(user.Value<string>("ImagePath")));
 		}
 
 		private void startNewGame_Click(object sender, RoutedEventArgs e) {
-			// for now dont hide this window until you implement a button to go back to the game menu
 
 			try {
 				cols = int.Parse(tbGridSizeX.Text);
@@ -40,8 +39,16 @@ namespace MemoryTilesGame {
 					MessageBox.Show("at least dimension has to be even");
 				}
 				else {
-					GameWindow gameWindow = new GameWindow(cols, rows);
-					gameWindow.Show();
+					user["RoundsPlayed"] = user.Value<int>("RoundsPlayed") + 1;
+
+					GameWindow gameWindow = new GameWindow(user, cols, rows);
+					gameWindow.ShowDialog();
+
+					if(gameWindow.RoundWon == true) {
+						user["RoundsWon"] = user.Value<int>("RoundsWon") + 1;
+					}
+
+					updateUserStatsInJsonFile();
 				}
 			}
 
@@ -55,6 +62,22 @@ namespace MemoryTilesGame {
 			this.Hide();
 			ChooseUserWindow chooseUserWindow = new ChooseUserWindow();
 			chooseUserWindow.Show();
+		}
+
+		private void updateUserStatsInJsonFile() {
+			string usersFile = "users.json";
+
+			string jsonData = System.IO.File.ReadAllText(usersFile);
+			JArray usersArray = JArray.Parse(jsonData);
+
+			foreach(JObject userObj in usersArray.Children<JObject>()) {
+				if(userObj.Value<string>("Name") == user.Value<string>("Name")) {
+					userObj["RoundsPlayed"] = user.Value<int>("RoundsPlayed");
+					userObj["RoundsWon"] = user.Value<int>("RoundsWon");
+				}
+			}
+
+			System.IO.File.WriteAllText(usersFile, usersArray.ToString());
 		}
 	}
 }

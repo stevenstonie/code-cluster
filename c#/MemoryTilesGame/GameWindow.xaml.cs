@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,13 +17,19 @@ namespace MemoryTilesGame {
 		private int button1ImageId;
 		private Button button1;
 		List<KeyValuePair<int, ImageBrush>> imagesList; // param1 - id, param2 - image
+		int nbOfTilesLeftToFlip;
 
-		public GameWindow(int cols, int rows) {
+		public bool RoundWon {
+			get; set;
+		}
+
+		public GameWindow(JToken user, int cols, int rows) {
 			InitializeComponent();
-			button1ListIndex = -1;
-			button1ImageId = -1;
-			button1 = null;
-			imagesList = new List<KeyValuePair<int, ImageBrush>>();
+
+			userImage.Source = new BitmapImage(new Uri(user.Value<string>("ImagePath")));
+			userName.Text = user.Value<string>("Name");
+
+			initializeMembers(cols, rows);
 
 			createGrid(cols, rows);
 
@@ -144,8 +151,10 @@ namespace MemoryTilesGame {
 				((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
 				await Task.Delay(700);
 
-				// have the same imageid but different button
+				// if they have the same imageid but different button
 				if(imagesList[(int)((Button)sender).Tag].Key == button1ImageId && ((Button)sender) != button1) {
+					nbOfTilesLeftToFlip -= 2;
+
 					((Button)sender).Background = imagesList[(int)((Button)sender).Tag].Value;
 
 					((Button)sender).IsEnabled = button1.IsEnabled = false;
@@ -157,10 +166,25 @@ namespace MemoryTilesGame {
 				button1 = null;
 				button1ImageId = -1;
 				button1ListIndex = -1;
+
+				if(nbOfTilesLeftToFlip == 0) {
+					RoundWon = true;
+					MessageBox.Show("nice");
+					Close();
+				}
 			}
 
 			// reenable the mouse for the entire grid
 			IsHitTestVisible = true;
+		}
+
+		private void initializeMembers(int cols, int rows) {
+			RoundWon = false;
+			button1ListIndex = -1;
+			button1ImageId = -1;
+			button1 = null;
+			imagesList = new List<KeyValuePair<int, ImageBrush>>();
+			nbOfTilesLeftToFlip = cols * rows;
 		}
 	}
 }

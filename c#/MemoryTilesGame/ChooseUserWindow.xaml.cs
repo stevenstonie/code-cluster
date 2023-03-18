@@ -9,16 +9,16 @@ namespace MemoryTilesGame {
 	class User {
 		private string name;
 		private string imagePath;
-		private int matchesPlayed;
-		private int matchesWon;
+		private int roundsPlayed;
+		private int roundsWon;
 
 		public User() {
 			Random random = new Random();
 			name = "user" + random.Next(1000, 10000).ToString();
 			imagePath = "../../Assets/greysquare.png";
 			// ik these initializations^ are useless but eh
-			matchesPlayed = 0;
-			matchesWon = 0;
+			roundsPlayed = 0;
+			roundsWon = 0;
 		}
 
 		public string Name {
@@ -29,11 +29,11 @@ namespace MemoryTilesGame {
 			get; set;
 		}
 
-		public int MatchesPlayed {
+		public int RoundsPlayed {
 			get; set;
 		}
 
-		public int MatchesWon {
+		public int RoundsWon {
 			get; set;
 		}
 	}
