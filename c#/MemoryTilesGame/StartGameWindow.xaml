@@ -32,7 +32,5 @@
                 </StackPanel>
             </materialDesign:PopupBox>
         </StackPanel>
-
-
     </Grid>
 </Window>

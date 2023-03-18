@@ -35,7 +35,7 @@ namespace MemoryTilesGame {
 
 			addImagesToGrid(cols, rows);
 
-			placeTimer();
+			placeTimer(cols, rows);
 		}
 
 		private void createGrid(int cols, int rows) {
@@ -114,20 +114,23 @@ namespace MemoryTilesGame {
 			}
 		}
 
-		private void placeTimer() {
-			_time = TimeSpan.FromSeconds(10);
+		private void placeTimer(int cols, int rows) {
+			_time = TimeSpan.FromSeconds((cols * (cols / 2) * rows * (rows / 2)) / 2 + 3);
 			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
 
 			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
 				tbTime.Text = _time.ToString("c");
+
 				if(_time == TimeSpan.Zero) {
 					_timer.Stop();
+					IsHitTestVisible = false;   // made sure that if messagebox doesnt work i still shouldnt be able to click
 
 					youLostMessage.Text = "damn you suck";
 					MessageBox.Show("the time is up. you lost..");
 
 					Close();
 				}
+
 				_time = _time.Add(TimeSpan.FromSeconds(-1));
 			}, System.Windows.Application.Current.Dispatcher);
 
@@ -135,8 +138,6 @@ namespace MemoryTilesGame {
 		}
 
 		private async void Button_Click(object sender, RoutedEventArgs e) {
-			Console.WriteLine("tag: " + ((Button)sender).Tag);
-
 			// disable the mouse for the entire grid
 			IsHitTestVisible = false;
 

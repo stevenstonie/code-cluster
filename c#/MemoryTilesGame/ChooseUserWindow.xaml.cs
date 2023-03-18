@@ -53,9 +53,9 @@ namespace MemoryTilesGame {
 
 		private void nextWindow_Click(object sender, RoutedEventArgs e) {
 			if(userImage.Source != null) {
-				Close();
 				StartGameWindow startGameWindow = new StartGameWindow(usersArray[currentUserIndex]);    // jtoken argument
 				startGameWindow.Show();
+				Close();
 			}
 			else {
 				MessageBox.Show("no user has been assigned yet.");
@@ -67,9 +67,9 @@ namespace MemoryTilesGame {
 		}
 
 		private void back_Click(object sender, RoutedEventArgs e) {
-			Close();
 			MainWindow mainWindow = new MainWindow();
 			mainWindow.Show();
+			Close();
 		}
 
 		private void nextUser_Click(object sender, RoutedEventArgs e) {
