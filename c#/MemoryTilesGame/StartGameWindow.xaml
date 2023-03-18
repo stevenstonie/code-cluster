@@ -13,7 +13,14 @@
         <Image x:Name="userImage" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,26,0,0"></Image>
         <TextBlock x:Name="userName" FontSize="35" Width="600" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,25,0,0"></TextBlock>
 
-        <Button x:Name="statistics" Content="statistics" Height="32" Width="120" Margin="0,498,500,0"/>
+        <Grid x:Name="usersStatsGrid" Margin="10,80,500,70">
+            <ScrollViewer x:Name="usersStatsScroll" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="usersStatsStackPanel">
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <Button x:Name="usersStatsButton" Content="users stats" Height="32" Width="120" Margin="0,498,500,0" Click="toggleUsersStatsButton_Click"/>
         <!-- <Button x:Name="saveCurrentGame" Content="save current game" Width="170" Height="32" Margin="0,495,0,0"/> -->
         <!-- <Button x:Name="continueExistentGame" Content="continue existent game" Width="188" Height="32" Margin="0,405,0,0" /> -->
         <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,315,0,0" Click="startNewGame_Click"/>

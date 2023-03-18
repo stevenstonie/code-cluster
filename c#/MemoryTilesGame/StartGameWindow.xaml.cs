@@ -1,23 +1,25 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace MemoryTilesGame {
 	public partial class StartGameWindow : Window {
 		private int rows;
 		private int cols;
-		private readonly int standardRows;
-		private readonly int standardCols;
+		private readonly int standardRows = 5;
+		private readonly int standardCols = 6;
 		JToken user;
+		JArray usersArray;
+		string usersJsonFile;
 
 		public StartGameWindow(JToken user) {
 			InitializeComponent();
 
-			standardRows = 5;
-			standardCols = 6;
+			initializeMembers(user);
 
-			this.user = user;
-			userName.Text = user.Value<string>("Name");
-			userImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(user.Value<string>("ImagePath")));
+			usersStatsGrid.Visibility = Visibility.Hidden;
+			initializeUsersStats();
 		}
 
 		private void startNewGame_Click(object sender, RoutedEventArgs e) {
@@ -48,7 +50,7 @@ namespace MemoryTilesGame {
 						user["RoundsWon"] = user.Value<int>("RoundsWon") + 1;
 					}
 
-					updateUserStatsInJsonFile();
+					updateUserStatsInArrayAndJsonFile();
 				}
 			}
 
@@ -64,12 +66,60 @@ namespace MemoryTilesGame {
 			chooseUserWindow.Show();
 		}
 
-		private void updateUserStatsInJsonFile() {
-			string usersFile = "users.json";
+		private void initializeMembers(JToken user) {
+			this.user = user;
+			userName.Text = user.Value<string>("Name");
+			userImage.Source = new System.Windows.Media.Imaging.BitmapImage(new System.Uri(user.Value<string>("ImagePath")));
 
-			string jsonData = System.IO.File.ReadAllText(usersFile);
-			JArray usersArray = JArray.Parse(jsonData);
+			usersJsonFile = "users.json";
+			initializeJArrayFromJsonFile();
+		}
 
+		private void initializeUsersStats() {
+
+			foreach(JToken user in usersArray) {
+				Grid userStatsGrid = new Grid();
+
+				ColumnDefinition column1 = new ColumnDefinition();
+				column1.Width = new GridLength(50);
+				ColumnDefinition column2 = new ColumnDefinition();
+				column2.Width = new GridLength(380);
+				userStatsGrid.ColumnDefinitions.Add(column1);
+				userStatsGrid.ColumnDefinitions.Add(column2);
+
+				Image userImage = new Image();
+				userImage.Source = new BitmapImage(new System.Uri(user.Value<string>("ImagePath")));
+				userImage.Height = userImage.Width = 25;
+				userStatsGrid.Children.Add(userImage);
+
+				TextBlock userName = new TextBlock();
+				userName.Text = user.Value<string>("Name");
+				userName.FontSize = 20;
+				Grid.SetColumn(userName, 1);
+				userStatsGrid.Children.Add(userName);
+
+				usersStatsStackPanel.Children.Add(userStatsGrid);
+
+				TextBlock roundsPlayed = new TextBlock();
+				roundsPlayed.Text = "rounds played: " + user.Value<int>("RoundsPlayed").ToString();
+				roundsPlayed.FontSize = 10;
+				usersStatsStackPanel.Children.Add(roundsPlayed);
+
+				TextBlock roundsWon = new TextBlock();
+				roundsWon.Text = "rounds won: " + user.Value<int>("RoundsWon").ToString();
+				roundsWon.FontSize = 10;
+				usersStatsStackPanel.Children.Add(roundsWon);
+
+				usersStatsStackPanel.Children.Add(new Separator());
+			}
+		}
+
+		private void initializeJArrayFromJsonFile() {
+			string jsonData = System.IO.File.ReadAllText(usersJsonFile);
+			usersArray = JArray.Parse(jsonData);
+		}
+
+		private void updateUserStatsInArrayAndJsonFile() {
 			foreach(JObject userObj in usersArray.Children<JObject>()) {
 				if(userObj.Value<string>("Name") == user.Value<string>("Name")) {
 					userObj["RoundsPlayed"] = user.Value<int>("RoundsPlayed");
@@ -77,7 +127,16 @@ namespace MemoryTilesGame {
 				}
 			}
 
-			System.IO.File.WriteAllText(usersFile, usersArray.ToString());
+			System.IO.File.WriteAllText(usersJsonFile, usersArray.ToString());
+		}
+
+		private void toggleUsersStatsButton_Click(object sender, RoutedEventArgs e) {
+			if(usersStatsGrid.Visibility == Visibility.Hidden) {
+				usersStatsGrid.Visibility = Visibility.Visible;
+			}
+			else {
+				usersStatsGrid.Visibility = Visibility.Hidden;
+			}
 		}
 	}
 }

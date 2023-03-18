@@ -191,6 +191,16 @@ namespace MemoryTilesGame {
 			imagesList = new List<KeyValuePair<int, ImageBrush>>();
 			nbOfTilesLeftToFlip = cols * rows;
 		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+			_timer.Stop();
+
+			var result = MessageBox.Show("Are you sure you want to exit?", "Confirm exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
+			if(result == MessageBoxResult.No) {
+				e.Cancel = true;
+				_timer.Start();
+			}
+		}
 	}
 }
 
