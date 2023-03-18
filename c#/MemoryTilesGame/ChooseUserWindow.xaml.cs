@@ -87,18 +87,6 @@ namespace MemoryTilesGame {
 			updateCurrentUserOnScreen();
 		}
 
-		private void updateCurrentUserOnScreen() {
-			try {
-				JToken currentUser = usersArray[currentUserIndex];
-				// check for null values that get parsed to the json file and if yes add a catch for null arguments or smth
-				userImage.Source = new BitmapImage(new Uri(currentUser.Value<string>("ImagePath")));
-				userName.Text = currentUser.Value<string>("Name");
-			}
-			catch(System.ArgumentOutOfRangeException) {
-				return;
-			}
-		}
-
 		private void newUser_Click(object sender, RoutedEventArgs e) {
 			User newUser = new User();
 
@@ -109,23 +97,49 @@ namespace MemoryTilesGame {
 			newUser.ImagePath = createNewUserWindow.NewUserImagePath;
 
 			if(newUser.Name != "" && newUser.ImagePath != "") {
-				updateUsersArrayAndAddItToUsersJsonFile(newUser);
-			}
+				usersArray.Add(JObject.FromObject(newUser));
 
+				updateUsersJsonFileFromUsersArray(usersArray);
+			}
 		}
 
-		private void updateUsersArrayAndAddItToUsersJsonFile(User newUser) {
-			usersArray.Add(JObject.FromObject(newUser));
-			string json = JsonConvert.SerializeObject(usersArray, Formatting.Indented);
-			File.WriteAllText(usersJsonFilePath, json);
+		private void deleteUser_Click(object sender, RoutedEventArgs e) {
+			if(usersArray.Count == 0 || userImage.Source == null) {
+				MessageBox.Show("you cannot delete a non-existent user.");
+				return;
+			}
+
+			var indexOfUserToDelete = currentUserIndex;
+			if(usersArray.Count == 1) {
+				userImage.Source = null;
+				userName.Text = "";
+			}
+			else {
+				nextUser_Click(sender, e);
+			}
+			usersArray.RemoveAt(indexOfUserToDelete);
+
+			updateUsersJsonFileFromUsersArray(usersArray);
+		}
+
+		private void updateCurrentUserOnScreen() {
+			try {
+				JToken currentUser = usersArray[currentUserIndex];
+				// check for null values that get parsed to the json file (if they might) and if yes add a catch for null arguments or smth
+				userImage.Source = new BitmapImage(new Uri(currentUser.Value<string>("ImagePath")));
+				userName.Text = currentUser.Value<string>("Name");
+			}
+			catch(System.ArgumentOutOfRangeException) {
+				return;
+			}
 		}
 
 		private void initializeUsersJsonFile() {
 			usersJsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
 
 			if(!File.Exists(usersJsonFilePath)) {
-				string jsonString = JsonConvert.SerializeObject(new JArray(), Formatting.Indented);
-				File.WriteAllText(usersJsonFilePath, jsonString);
+				// create json file with an empty array
+				updateUsersJsonFileFromUsersArray(new JArray());
 			}
 		}
 
@@ -134,12 +148,9 @@ namespace MemoryTilesGame {
 			currentUserIndex = -1;
 		}
 
-		// delete the current user
-		private void deleteUser_Click(object sender, RoutedEventArgs e) {
-			// check if the usersArray would be empty without the current user. if yes assign the image and name as null
-			// if not assign the next user as the one on the screen
-			// delete the given user 
-			// update the json file with the jarray
+		private void updateUsersJsonFileFromUsersArray(JArray usersArray) {
+			string json = JsonConvert.SerializeObject(usersArray, Formatting.Indented);
+			File.WriteAllText(usersJsonFilePath, json);
 		}
 	}
 }
