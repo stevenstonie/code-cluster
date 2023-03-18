@@ -1,71 +1,59 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace MemoryTilesGame {
 	class User {
 		private string name;
-		private string profileImagePath;
+		private string imagePath;
 		private int matchesPlayed;
 		private int matchesWon;
 
 		public User() {
 			Random random = new Random();
 			name = "user" + random.Next(1000, 10000).ToString();
-			profileImagePath = "../../Assets/greysquare.png";
+			imagePath = "../../Assets/greysquare.png";
 			matchesPlayed = 0;
 			matchesWon = 0;
 		}
 
 		public string Name {
-			get {
-				return name;
-			}
-			set {
-				name = value;
-			}
+			get; set;
 		}
 
-		public string ProfileImagePath {
-			get {
-				return profileImagePath;
-			}
-			set {
-				profileImagePath = value;
-			}
+		public string ImagePath {
+			get; set;
 		}
 
 		public int MatchesPlayed {
-			get {
-				return matchesPlayed;
-			}
-			set {
-				matchesPlayed = value;
-			}
+			get; set;
 		}
 
 		public int MatchesWon {
-			get {
-				return matchesWon;
-			}
-			set {
-				matchesWon = value;
-			}
+			get; set;
 		}
 	}
 
 	public partial class ChooseUserWindow : Window {
+		string usersJsonFilePath;
+		JArray usersArray;
+		int currentUserIndex;
+
 		public ChooseUserWindow() {
 			InitializeComponent();
 
-			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Users");
+			initializeUsersJsonFile();
+
+			initializeUsersArray();
 		}
 
 		private void nextWindow_Click(object sender, RoutedEventArgs e) {
 			if(userImage.Source != null) {
-				this.Hide();
-				StartGameWindow startGameWindow = new StartGameWindow();
+				Close();
+				StartGameWindow startGameWindow = new StartGameWindow(usersArray[currentUserIndex]);    // jtoken argument
 				startGameWindow.Show();
 			}
 			else {
@@ -78,30 +66,37 @@ namespace MemoryTilesGame {
 		}
 
 		private void back_Click(object sender, RoutedEventArgs e) {
-			this.Hide();
+			Close();
 			MainWindow mainWindow = new MainWindow();
 			mainWindow.Show();
 		}
 
 		private void nextUser_Click(object sender, RoutedEventArgs e) {
-			/*userIndex++;
-			if(userIndex >= usersFoldersPaths.Length)
-				userIndex = 0;*/
+			currentUserIndex++;
+			if(currentUserIndex >= usersArray.Count)
+				currentUserIndex = 0;
 
-			updateUserOnWindow();
+			updateCurrentUserOnScreen();
 		}
 
 		private void prevUser_Click(object sender, RoutedEventArgs e) {
-			/*userIndex--;
-			if(userIndex < 0)
-				userIndex = usersFoldersPaths.Length - 1;*/
+			currentUserIndex--;
+			if(currentUserIndex < 0)
+				currentUserIndex = usersArray.Count - 1;
 
-			updateUserOnWindow();
+			updateCurrentUserOnScreen();
 		}
 
-		private void updateUserOnWindow() {
-			/*userImage.Source = new BitmapImage(new Uri(Directory.GetFiles(usersFoldersPaths[userIndex], "*.png").FirstOrDefault()));
-			userName.Text = System.IO.Path.GetFileName(usersFoldersPaths[userIndex]);*/
+		private void updateCurrentUserOnScreen() {
+			try {
+				JToken currentUser = usersArray[currentUserIndex];
+				// check for null values that get parsed to the json file and if yes add a catch for null arguments or smth
+				userImage.Source = new BitmapImage(new Uri(currentUser.Value<string>("ImagePath")));
+				userName.Text = currentUser.Value<string>("Name");
+			}
+			catch(System.ArgumentOutOfRangeException) {
+				return;
+			}
 		}
 
 		private void newUser_Click(object sender, RoutedEventArgs e) {
@@ -111,31 +106,40 @@ namespace MemoryTilesGame {
 			createNewUserWindow.ShowDialog();
 
 			newUser.Name = createNewUserWindow.NewUserName;
-			newUser.ProfileImagePath = createNewUserWindow.NewUserImagePath;
+			newUser.ImagePath = createNewUserWindow.NewUserImagePath;
 
-			if(newUser.Name != "" && newUser.ProfileImagePath != "") {
-				appendToUsersJsonFile(newUser);
+			if(newUser.Name != "" && newUser.ImagePath != "") {
+				updateUsersArrayAndAddItToUsersJsonFile(newUser);
+			}
+
+		}
+
+		private void updateUsersArrayAndAddItToUsersJsonFile(User newUser) {
+			usersArray.Add(JObject.FromObject(newUser));
+			string json = JsonConvert.SerializeObject(usersArray, Formatting.Indented);
+			File.WriteAllText(usersJsonFilePath, json);
+		}
+
+		private void initializeUsersJsonFile() {
+			usersJsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
+
+			if(!File.Exists(usersJsonFilePath)) {
+				string jsonString = JsonConvert.SerializeObject(new JArray(), Formatting.Indented);
+				File.WriteAllText(usersJsonFilePath, jsonString);
 			}
 		}
 
-		private void appendToUsersJsonFile(User newUser) {
-			string filePath = Path.Combine(Directory.GetCurrentDirectory(), "users.json");
-
-			((Action)(() => { if(!File.Exists(filePath)) { File.Create(filePath).Dispose(); } }))();
-
-			using(StreamWriter sw = new StreamWriter(filePath, append: true)) {
-				using(JsonTextWriter jtw = new JsonTextWriter(sw)) {
-					JsonSerializer serializer = new JsonSerializer();
-					serializer.Formatting = Formatting.Indented;
-
-					serializer.Serialize(jtw, newUser);
-					jtw.WriteRaw("\n");
-				}
-			}
+		private void initializeUsersArray() {
+			usersArray = JArray.Parse(File.ReadAllText(usersJsonFilePath));
+			currentUserIndex = -1;
 		}
 
+		// delete the current user
 		private void deleteUser_Click(object sender, RoutedEventArgs e) {
-
+			// check if the usersArray would be empty without the current user. if yes assign the image and name as null
+			// if not assign the next user as the one on the screen
+			// delete the given user 
+			// update the json file with the jarray
 		}
 	}
 }

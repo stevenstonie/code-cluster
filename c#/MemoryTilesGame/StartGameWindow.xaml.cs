@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Newtonsoft.Json.Linq;
+using System.Windows;
 
 namespace MemoryTilesGame {
 	public partial class StartGameWindow : Window {
@@ -6,12 +7,15 @@ namespace MemoryTilesGame {
 		private int cols;
 		private readonly int standardRows;
 		private readonly int standardCols;
+		JToken currentUser;
 
-		public StartGameWindow() {
+		public StartGameWindow(JToken currentUser) {
 			InitializeComponent();
 
 			standardRows = 5;
 			standardCols = 6;
+
+			this.currentUser = currentUser;
 		}
 
 		private void startNewGame_Click(object sender, RoutedEventArgs e) {
