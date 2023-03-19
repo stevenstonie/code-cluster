@@ -114,7 +114,13 @@ namespace MemoryTilesGame {
 			else {
 				nextUser_Click(sender, e);
 			}
-			usersArray.RemoveAt(indexOfUserToDelete);
+			try {
+				usersArray.RemoveAt(indexOfUserToDelete);
+			}
+			catch { // in case of a random exception thrown
+				indexOfUserToDelete = -1;
+				userImage.Source = null;
+			}
 
 			updateUsersJsonFileFromUsersArray(usersArray);
 

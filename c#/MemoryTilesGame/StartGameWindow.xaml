@@ -24,7 +24,7 @@
         <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,500,0,0" Click="startNewGame_Click"/>
         <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
 
-        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20"/>
         <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
             <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">

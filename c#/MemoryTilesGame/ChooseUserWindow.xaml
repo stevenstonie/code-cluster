@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:MemoryTilesGame"
         mc:Ignorable="d"
         Title="change this" Height="600" Width="800"
-        WindowStyle="None"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <TextBlock Text="choose your user" FontSize="30" Width="300" Height="50" Margin="0,0,400,480"/>
@@ -24,7 +23,7 @@
         <Button x:Name="nextWindow" Content="continue" Margin="210,480, 0,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
         <Button x:Name="back" Content="back" Margin="560,480,0,0" Width="100" Height="35" Click="back_Click"></Button>
 
-        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" />
         <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
             <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">

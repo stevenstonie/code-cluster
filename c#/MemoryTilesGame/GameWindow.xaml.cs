@@ -195,11 +195,7 @@ namespace MemoryTilesGame {
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
 			_timer.Stop();
 
-			var result = MessageBox.Show("Are you sure you want to exit?", "Confirm exit", MessageBoxButton.YesNo, MessageBoxImage.Question);
-			if(result == MessageBoxResult.No) {
-				e.Cancel = true;
-				_timer.Start();
-			}
+			MessageBox.Show("youre about to exit the window.");
 		}
 	}
 }
@@ -207,5 +203,3 @@ namespace MemoryTilesGame {
 // notes here:
 // - change the datatype of the imagesList from <int, image> to <int, string> where string is the path of the images
 // - add more images
-// - get parameter of how many cols and rows should the grid have. (also limit the cols and rows to a maximum and also make sure one is even)
-// - redo the timer and the lose case.

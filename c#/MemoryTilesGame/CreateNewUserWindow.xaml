@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MemoryTilesGame"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow"
         Title="CreateNewUserWindow" Height="500" Width="400">
 
     <Grid>
