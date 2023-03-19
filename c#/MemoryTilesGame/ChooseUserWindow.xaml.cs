@@ -62,10 +62,6 @@ namespace MemoryTilesGame {
 			}
 		}
 
-		private void exitApp(object sender, RoutedEventArgs e) {
-			Application.Current.Shutdown();
-		}
-
 		private void back_Click(object sender, RoutedEventArgs e) {
 			MainWindow mainWindow = new MainWindow();
 			mainWindow.Show();
@@ -123,6 +119,14 @@ namespace MemoryTilesGame {
 			updateUsersJsonFileFromUsersArray(usersArray);
 
 			MessageBox.Show("user deleted succesfully");
+		}
+
+		private void popupButton_Click(object sender, RoutedEventArgs e) {
+			MyPopup.IsOpen = true;
+		}
+
+		private void exit_Click(object sender, RoutedEventArgs e) {
+			Application.Current.Shutdown();
 		}
 
 		private void updateCurrentUserOnScreen() {

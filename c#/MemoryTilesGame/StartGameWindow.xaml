@@ -21,13 +21,12 @@
         </Grid>
 
         <Button x:Name="usersStatsButton" Content="users stats" Height="32" Width="120" Margin="0,498,500,0" Click="toggleUsersStatsButton_Click"/>
-        <!-- <Button x:Name="saveCurrentGame" Content="save current game" Width="170" Height="32" Margin="0,495,0,0"/> -->
-        <!-- <Button x:Name="continueExistentGame" Content="continue existent game" Width="188" Height="32" Margin="0,405,0,0" /> -->
-        <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,315,0,0" Click="startNewGame_Click"/>
+        <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,500,0,0" Click="startNewGame_Click"/>
         <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
 
-        <StackPanel Margin="595,0,0,419">
-            <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="True" Height="25">
+        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+        <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
+            <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text=" Grid size:" VerticalAlignment="Center" />
@@ -35,9 +34,9 @@
                         <TextBlock Text="x" VerticalAlignment="Center" Margin="5 0" />
                         <TextBox Width="50" x:Name="tbGridSizeX" VerticalAlignment="Center" />
                     </StackPanel>
-                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="50" Height="50" Margin="10 5 0 0" />
+                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="60" Height="30" Margin="10 5 0 0" />
                 </StackPanel>
-            </materialDesign:PopupBox>
-        </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

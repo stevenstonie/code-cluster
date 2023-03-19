@@ -24,13 +24,14 @@
         <Button x:Name="nextWindow" Content="continue" Margin="210,480, 0,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
         <Button x:Name="back" Content="back" Margin="560,480,0,0" Width="100" Height="35" Click="back_Click"></Button>
 
-        <StackPanel Margin="733,0,0,540">
-            <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0 20 20 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
-                <StackPanel Margin="10 10 10 10" Orientation="Vertical" HorizontalAlignment="Center">
-                    <Button x:Name="buttonExit" Content="exit" Click="exitApp"></Button>
+        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right"  />
+        <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
+            <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="60" Height="30" Margin="10 5 0 0" />
                 </StackPanel>
-            </materialDesign:PopupBox>
-        </StackPanel>
+            </Border>
+        </Popup>
 
 
     </Grid>

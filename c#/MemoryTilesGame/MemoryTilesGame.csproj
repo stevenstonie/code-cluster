@@ -139,7 +139,28 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\greysquare.png" />
+    <Resource Include="Assets\Images\afropig.png" />
+    <Resource Include="Assets\Images\annoyingoranj.png" />
+    <Resource Include="Assets\Images\bacon.png" />
+    <Resource Include="Assets\Images\bro.png" />
+    <Resource Include="Assets\Images\catburger.png" />
+    <Resource Include="Assets\Images\crazyfrog.png" />
+    <Resource Include="Assets\Images\damnheprettychilldoengl.png" />
+    <Resource Include="Assets\Images\dora_schwartzenegger.png" />
+    <Resource Include="Assets\Images\duud.png" />
+    <Resource Include="Assets\Images\fische.png" />
+    <Resource Include="Assets\Images\freewifi.png" />
+    <Resource Include="Assets\Images\gumball.png" />
+    <Resource Include="Assets\Images\guy.png" />
+    <Resource Include="Assets\Images\michael.png" />
+    <Resource Include="Assets\Images\monke.png" />
+    <Resource Include="Assets\Images\shrock.png" />
+    <Resource Include="Assets\Images\squirel.png" />
+    <Resource Include="Assets\Images\thanosbling.png" />
+    <Resource Include="Assets\Images\winniethebruh.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.4.8.0\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

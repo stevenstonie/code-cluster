@@ -66,6 +66,11 @@ namespace MemoryTilesGame {
 			chooseUserWindow.Show();
 		}
 
+		private void popupButton_Click(object sender, RoutedEventArgs e) {
+			MyPopup.IsOpen = true;
+		}
+
+
 		private void initializeMembers(JToken user) {
 			this.user = user;
 			userName.Text = user.Value<string>("Name");
