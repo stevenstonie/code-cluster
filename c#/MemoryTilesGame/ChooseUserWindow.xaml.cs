@@ -93,7 +93,7 @@ namespace MemoryTilesGame {
 			newUser.Name = createNewUserWindow.NewUserName;
 			newUser.ImagePath = createNewUserWindow.NewUserImagePath;
 
-			if(newUser.Name != "" && newUser.ImagePath != "") {
+			if(newUser.Name != "" && newUser.ImagePath != "" && newUser.Name != null && newUser.ImagePath != null) {
 				usersArray.Add(JObject.FromObject(newUser));
 
 				updateUsersJsonFileFromUsersArray(usersArray);

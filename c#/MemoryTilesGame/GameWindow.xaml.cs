@@ -202,4 +202,5 @@ namespace MemoryTilesGame {
 
 // notes here:
 // - change the datatype of the imagesList from <int, image> to <int, string> where string is the path of the images
+// ^^^ i mean wouldnt it be faster when loading the window but slower when clicking any button?
 // - add more images

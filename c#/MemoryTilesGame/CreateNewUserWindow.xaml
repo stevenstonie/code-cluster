@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
-        Title="CreateNewUserWindow" Height="500" Width="400">
+    Title="CreateNewUserWindow" Height="500" Width="400">
+    <!-- dont set the WindowStyle to anything else as if i close the "create a new user" window from the 'x' there will be consequences (i could solve them but i dont want to) -->
 
     <Grid>
         <Image x:Name="newUserImageBox" Height="320" Width="320" Margin="0,0,0,90"></Image>
