@@ -8,12 +8,12 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ToolWindow"
     Title="CreateNewUserWindow" Height="500" Width="400">
-    <!-- dont set the WindowStyle to anything else as if i close the "create a new user" window from the 'x' there will be consequences (i could solve them but i dont want to) -->
 
     <Grid>
         <Image x:Name="newUserImageBox" Height="320" Width="320" Margin="0,0,0,90"></Image>
-        <Button x:Name="next" Content="" Width="20" Height="40" Margin="360,0,0,80" Click="next_Click"></Button>
         <Button x:Name="prev" Content="" Width="20" Height="40" Margin="0,0,360,80" Click="prev_Click"></Button>
+        <Button x:Name="next" Content="" Width="20" Height="40" Margin="360,0,0,80" Click="next_Click"></Button>
+
         <TextBlock Text="enter your name below" Width="250" Height="40" FontSize="24" Margin="0,310,140,0" ></TextBlock>
         <TextBox x:Name="newUserNameBox" Width="280" Height="40" FontSize="24" Margin="0,380,110,0"></TextBox>
         <Button x:Name="add" Content="add" Width="80" Height="30" Margin="300,340,0,0" Click="add_Click"></Button>

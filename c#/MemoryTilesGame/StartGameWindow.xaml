@@ -8,6 +8,10 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="StartGameWindow" Height="600" Width="800">
+    <Window.Background>
+        <ImageBrush ImageSource="pack://application:,,,/bin/Debug/Assets/chooseyourgridsize.png" Stretch="Fill"/>
+    </Window.Background>
+
     <Grid>
         <TextBlock Text="Welcome, " FontSize="40" Width="180" Height="55" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,0,0"></TextBlock>
         <Image x:Name="userImage" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,26,0,0"></Image>
