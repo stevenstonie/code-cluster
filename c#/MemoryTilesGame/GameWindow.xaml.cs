@@ -105,10 +105,10 @@ namespace MemoryTilesGame {
 
 
 			// Loop through each button and assign an image and a tag to it (the tag represents the index in the list)
-			int index = 0;
+			int imagesListId = 0;
 			foreach(var child in GameGrid.Children) {
 				if(child is Button button) {
-					button.Tag = index++;
+					button.Tag = imagesListId++;
 					button.Background = new ImageBrush(new BitmapImage(new Uri("Assets/greysquare.png", UriKind.Relative)));
 				}
 			}

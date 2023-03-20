@@ -17,6 +17,21 @@
         <Image x:Name="userImage" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,26,0,0"></Image>
         <TextBlock x:Name="userName" FontSize="35" Width="600" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,25,0,0"></TextBlock>
 
+        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20"/>
+        <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
+            <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text=" Grid size:" VerticalAlignment="Center" />
+                        <TextBox Width="50" x:Name="tbGridSizeX" VerticalAlignment="Center" />
+                        <TextBlock Text="x" VerticalAlignment="Center" Margin="5 0" />
+                        <TextBox Width="50" x:Name="tbGridSizeY" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="60" Height="30" Margin="10 5 0 0" />
+                </StackPanel>
+            </Border>
+        </Popup>
+
         <Grid x:Name="usersStatsGrid" Margin="10,80,500,70">
             <ScrollViewer x:Name="usersStatsScroll" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="usersStatsStackPanel">
@@ -27,20 +42,5 @@
         <Button x:Name="usersStatsButton" Content="users stats" Height="32" Width="120" Margin="0,498,500,0" Click="toggleUsersStatsButton_Click"/>
         <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,500,0,0" Click="startNewGame_Click"/>
         <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
-
-        <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20"/>
-        <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">
-            <Border BorderBrush="Black" BorderThickness="2" Background="White" CornerRadius="5">
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text=" Grid size:" VerticalAlignment="Center" />
-                        <TextBox Width="50" x:Name="tbGridSizeY" VerticalAlignment="Center" />
-                        <TextBlock Text="x" VerticalAlignment="Center" Margin="5 0" />
-                        <TextBox Width="50" x:Name="tbGridSizeX" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <Button x:Name="exit" Content="exit" Click="exit_Click" Width="60" Height="30" Margin="10 5 0 0" />
-                </StackPanel>
-            </Border>
-        </Popup>
     </Grid>
 </Window>
