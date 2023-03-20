@@ -118,7 +118,7 @@ namespace MemoryTilesGame {
 				usersArray.RemoveAt(indexOfUserToDelete);
 			}
 			catch { // in case of a random exception thrown
-				indexOfUserToDelete = -1;
+				currentUserIndex = -1;
 				userImage.Source = null;
 			}
 
@@ -170,8 +170,10 @@ namespace MemoryTilesGame {
 		}
 
 		// i dont know why but sometimes a null user gets added. i have to find out where and why it happens.
+		// (i think i solved the problem but i will leave this here just in case)
 		private void eliminateCurrentNullUser() {
 			var indexOfUserToDelete = currentUserIndex;
+
 			if(usersArray.Count == 1) {
 				userImage.Source = null;
 				userName.Text = "";

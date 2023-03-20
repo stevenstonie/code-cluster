@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:MemoryTilesGame"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="StartGameWindow" Height="600" Width="800">
+        Title="xd" Height="600" Width="800">
     <Window.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#ff2d68" Offset="0.0" />
@@ -16,6 +16,10 @@
     </Window.Background>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/bin/Debug/Assets/chooseyourgridsize.png" Stretch="Fill"/>
+        </Grid.Background>
+
         <TextBlock Text="Welcome, " FontSize="40" Width="180" Height="55" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,20,0,0"></TextBlock>
         <Image x:Name="userImage" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="210,26,0,0"></Image>
         <TextBlock x:Name="userName" FontSize="35" Width="600" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="265,25,0,0"></TextBlock>
@@ -36,7 +40,7 @@
         </Popup>
 
         <Grid x:Name="usersStatsGrid" Margin="10,80,500,70">
-            <ScrollViewer x:Name="usersStatsScroll" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="usersStatsScroll" VerticalScrollBarVisibility="Auto" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black">
                 <StackPanel x:Name="usersStatsStackPanel">
                 </StackPanel>
             </ScrollViewer>

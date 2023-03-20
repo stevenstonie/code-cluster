@@ -15,8 +15,8 @@
     </Window.Background>
 
     <Grid>
-        <TextBlock FontSize="35" FontFamily="Comic Sans MS" Foreground="Azure" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" 
-            Text="Welcome to an experience that will truly leave you with hope for the future. Welcome to the place where your brain will significantly grow more synapses as you play this piece of art. Welcome to the best memory game that has ever been created. have fun" TextWrapping="WrapWithOverflow"/>
+        <TextBlock FontSize="35" FontFamily="Comic Sans MS" Margin="0,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" TextAlignment="Center" 
+            Text="Welcome to an experience that will truly leave you with hope for the future. Welcome to the place where your brain will significantly grow more synapses as you play this piece of art. Welcome to the best memory game that has ever been created. have fun" TextWrapping="WrapWithOverflow" Foreground="White"/>
         <Button x:Name="start" Content="ok" FontSize="20" Margin="0,250,0,0"  Width="100" Height="48" Click="start_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
         <Button x:Name="exit" Content="no" Margin="0,350,0,0" FontSize="7" Click="exit_Click" FontWeight="Normal" Width="41" Height="18" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
 

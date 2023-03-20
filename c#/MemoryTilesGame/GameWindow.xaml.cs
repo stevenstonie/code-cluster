@@ -57,9 +57,9 @@ namespace MemoryTilesGame {
 					Button button = new Button();
 					button.MinHeight = 50;
 					button.MinWidth = 50;
-					button.Margin = new Thickness(3);
+					button.Margin = new Thickness(2);
 
-					button.Click += Button_Click; // add event handler
+					button.Click += Button_Click; // add event handler to each button
 
 					Grid.SetRow(button, i);
 					Grid.SetColumn(button, j);
@@ -69,7 +69,7 @@ namespace MemoryTilesGame {
 
 			GameGrid.VerticalAlignment = VerticalAlignment.Top;
 			GameGrid.HorizontalAlignment = HorizontalAlignment.Left;
-			GameGrid.Margin = new Thickness(0, 40, 0, 50);
+			GameGrid.Margin = new Thickness(0, 40, 0, 50);  // the distance between the top and the bottom part of the window
 
 			// Add a SizeChanged event handler for the window
 			this.SizeChanged += (sender, e) => {
@@ -199,8 +199,3 @@ namespace MemoryTilesGame {
 		}
 	}
 }
-
-// notes here:
-// - change the datatype of the imagesList from <int, image> to <int, string> where string is the path of the images
-// ^^^ i mean wouldnt it be faster when loading the window but slower when clicking any button?
-// - add more images
