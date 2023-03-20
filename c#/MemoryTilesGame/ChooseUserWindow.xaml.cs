@@ -138,7 +138,6 @@ namespace MemoryTilesGame {
 		private void updateCurrentUserOnScreen() {
 			try {
 				JToken currentUser = usersArray[currentUserIndex];
-				// check for null values that get parsed to the json file (if they might) and if yes add a catch for null arguments or smth
 				userImage.Source = new BitmapImage(new Uri(currentUser.Value<string>("ImagePath")));
 				userName.Text = currentUser.Value<string>("Name");
 			}
@@ -146,6 +145,7 @@ namespace MemoryTilesGame {
 				return;
 			}
 			catch(System.ArgumentNullException) {
+				// check for null values that get parsed to the json file (if they might) and if yes add a catch for null arguments or smth
 				eliminateCurrentNullUser();
 			}
 		}

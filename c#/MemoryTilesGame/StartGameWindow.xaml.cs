@@ -51,6 +51,8 @@ namespace MemoryTilesGame {
 					}
 
 					updateUserStatsInArrayAndJsonFile();
+
+					initializeUsersStats();
 				}
 			}
 
@@ -81,6 +83,7 @@ namespace MemoryTilesGame {
 		}
 
 		private void initializeUsersStats() {
+			usersStatsStackPanel.Children.Clear();
 
 			foreach(JToken user in usersArray) {
 				Grid userStatsGrid = new Grid();

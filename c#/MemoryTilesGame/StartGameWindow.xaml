@@ -9,7 +9,10 @@
         WindowStartupLocation="CenterScreen"
         Title="StartGameWindow" Height="600" Width="800">
     <Window.Background>
-        <ImageBrush ImageSource="pack://application:,,,/bin/Debug/Assets/chooseyourgridsize.png" Stretch="Fill"/>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#ff2d68" Offset="0.0" />
+            <GradientStop Color="#280094" Offset="1.0" />
+        </LinearGradientBrush>
     </Window.Background>
 
     <Grid>
@@ -39,8 +42,8 @@
             </ScrollViewer>
         </Grid>
 
-        <Button x:Name="usersStatsButton" Content="users stats" Height="32" Width="120" Margin="0,498,500,0" Click="toggleUsersStatsButton_Click"/>
-        <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,500,0,0" Click="startNewGame_Click"/>
-        <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click"/>
+        <Button x:Name="usersStatsButton" Content="users stats" Height="32" Width="120" Margin="0,498,500,0" Click="toggleUsersStatsButton_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
+        <Button x:Name="startNewGame" Content="start new game" Width="180" Height="32" Margin="0,500,0,0" Click="startNewGame_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
+        <Button x:Name="back" Content="back" Width="80" Height="30" Margin="500, 500, 0, 0" Click="back_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
     </Grid>
 </Window>

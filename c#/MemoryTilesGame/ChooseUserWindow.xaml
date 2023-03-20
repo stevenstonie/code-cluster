@@ -8,20 +8,27 @@
         mc:Ignorable="d"
         Title="change this" Height="600" Width="800"
         WindowStartupLocation="CenterScreen">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#ff2d68" Offset="0.0" />
+            <GradientStop Color="#280094" Offset="1.0" />
+        </LinearGradientBrush>
+    </Window.Background>
+
     <Grid>
         <TextBlock Text="choose your user" FontSize="30" Width="300" Height="50" Margin="0,0,400,480"/>
 
-        <Border BorderBrush="#FF673AB7" BorderThickness="7" Margin="0,0,0,0" Width="370" Height="400"/>
-        <Button x:Name="nextUser" Content="next" Margin="500,0,0,0" Width="60" Height="30" Click="nextUser_Click"></Button>
-        <Button x:Name="prevUser" Content="prev" Margin="0,0,500,0" Width="60" Height="30" Click="prevUser_Click"></Button>
+        <Border BorderBrush="{DynamicResource MaterialDesignChipBackground}" BorderThickness="7" Margin="0,0,0,0" Width="370" Height="400" Background="{DynamicResource AttentionToActionBrush}"/>
+        <Button x:Name="nextUser" Content="next" Margin="500,0,0,0" Width="60" Height="30" Click="nextUser_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"></Button>
+        <Button x:Name="prevUser" Content="prev" Margin="0,0,500,0" Width="60" Height="30" Click="prevUser_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"></Button>
         <Image x:Name="userImage" Height="330" Width="330" Margin="0,0,0,30"></Image>
-        <TextBlock Text="name: " FontSize="30" Margin="0,335,250,0" Width="90" Height="40"/>
-        <TextBlock x:Name="userName" Text="" FontSize="30" Margin="90,335,0,0" Width="260" Height="40"/>
+        <TextBlock Text="name: " FontSize="30" Margin="0,335,250,0" Width="90" Height="40" Foreground="#FFF4F4F4"/>
+        <TextBlock x:Name="userName" Text="" FontSize="30" Foreground="#FFF4F4F4" Margin="90,335,0,0" Width="260" Height="40"/>
 
-        <Button x:Name="newUser" Content="new user" Margin="0,480,560,0" Width="100" Height="35" Click="newUser_Click"></Button>
-        <Button x:Name="deleteUser" Content="delete user" Margin="0,480,200,0" Width="120" Height="35" Click="deleteUser_Click"/>
-        <Button x:Name="nextWindow" Content="continue" Margin="210,480, 0,0" Click="nextWindow_Click" Width="100" Height="35"></Button>
-        <Button x:Name="back" Content="back" Margin="560,480,0,0" Width="100" Height="35" Click="back_Click"></Button>
+        <Button x:Name="newUser" Content="new user" Margin="0,480,560,0" Width="100" Height="35" Click="newUser_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"></Button>
+        <Button x:Name="deleteUser" Content="delete user" Margin="0,480,200,0" Width="120" Height="35" Click="deleteUser_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
+        <Button x:Name="nextWindow" Content="continue" Margin="210,480, 0,0" Click="nextWindow_Click" Width="100" Height="35" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"></Button>
+        <Button x:Name="back" Content="back" Margin="560,480,0,0" Width="100" Height="35" Click="back_Click" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"></Button>
 
         <Button x:Name="popupButton" Click="popupButton_Click" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Height="20" />
         <Popup x:Name="MyPopup" IsOpen="False" StaysOpen="False" Placement="Bottom" PlacementTarget="{Binding ElementName=popupButton}" VerticalOffset="5">

@@ -7,8 +7,14 @@
         mc:Ignorable="d"
         Title="GameWindow" Height="600" Width="800"
         WindowStartupLocation="CenterScreen"
-        Closing="Window_Closing"
->
+        Closing="Window_Closing">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#ff2d68" Offset="0.0" />
+            <GradientStop Color="#280094" Offset="1.0" />
+        </LinearGradientBrush>
+    </Window.Background>
+
     <Grid>
         <StackPanel x:Name="InfoGrid" Grid.Row="1" VerticalAlignment="Top">
             <TextBlock Name="tbTime" FontSize="20"/>
@@ -23,7 +29,7 @@
         </Grid>
 
         <StackPanel x:Name="ButtonGrid" VerticalAlignment="Bottom" Height="40">
-            <Button x:Name="saveAndExitButton" Content="save and exit (currently not implemented)" Width="300"/>
+            <Button x:Name="saveAndExitButton" Content="save and exit (currently not implemented)" Width="300" Background="{DynamicResource AttentionToActionBrush}" BorderBrush="Black"/>
         </StackPanel>
     </Grid>
 </Window>
