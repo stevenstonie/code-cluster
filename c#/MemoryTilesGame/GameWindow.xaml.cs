@@ -115,7 +115,7 @@ namespace MemoryTilesGame {
 		}
 
 		private void placeTimer(int cols, int rows) {
-			_time = TimeSpan.FromSeconds((cols * (cols / 2) * rows * (rows / 2)) / 2 + 3);
+			_time = TimeSpan.FromSeconds((int)(10 * Math.Pow((Math.Sqrt((cols * rows) / 6)), 3) - 3));
 			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
 
 			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
@@ -199,3 +199,9 @@ namespace MemoryTilesGame {
 		}
 	}
 }
+
+// make the timer better suited for each input
+
+// add music
+
+// make a presentation

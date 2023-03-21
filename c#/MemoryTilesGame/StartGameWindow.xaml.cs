@@ -7,8 +7,8 @@ namespace MemoryTilesGame {
 	public partial class StartGameWindow : Window {
 		private int rows;
 		private int cols;
-		private readonly int standardRows = 5;
 		private readonly int standardCols = 6;
+		private readonly int standardRows = 5;
 		JToken user;
 		JArray usersArray;
 		string usersJsonFile;
@@ -25,13 +25,13 @@ namespace MemoryTilesGame {
 		private void startNewGame_Click(object sender, RoutedEventArgs e) {
 
 			try {
-				cols = int.Parse(tbGridSizeX.Text);
-				rows = int.Parse(tbGridSizeY.Text);
+				cols = int.Parse(tbGridSizeY.Text);
+				rows = int.Parse(tbGridSizeX.Text);
 			}
 			catch {
-				MessageBox.Show("the input is either null or contains invalid symbols. \nthe game will start with the standard dimensions: " + standardRows + "x" + standardCols);
-				rows = standardRows;
+				MessageBox.Show("the input is either null or contains invalid symbols. \nthe game will start with the standard dimensions: " + standardCols + "x" + standardRows);
 				cols = standardCols;
+				rows = standardRows;
 			}
 			if(cols < 2 || cols > 12 || rows < 2 || rows > 12) {
 				MessageBox.Show("the dimensions are out of bounds. the accepted limits are from 2 to 12");

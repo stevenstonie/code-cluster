@@ -9,6 +9,7 @@ namespace MemoryTilesGame {
 		private void start_Click(object sender, RoutedEventArgs e) {
 			ChooseUserWindow chooseUserWindow = new ChooseUserWindow();
 			chooseUserWindow.Show();
+
 			Close();
 		}
 
