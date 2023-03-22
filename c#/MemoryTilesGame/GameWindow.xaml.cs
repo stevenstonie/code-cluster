@@ -39,19 +39,17 @@ namespace MemoryTilesGame {
 		}
 
 		private void createGrid(int cols, int rows) {
-			// Create the rows of the grid
 			for(int i = 0; i < rows; i++) {
 				RowDefinition rowDef = new RowDefinition();
 				GameGrid.RowDefinitions.Add(rowDef);
 			}
 
-			// Create the columns of the grid
 			for(int i = 0; i < cols; i++) {
 				ColumnDefinition colDef = new ColumnDefinition();
 				GameGrid.ColumnDefinitions.Add(colDef);
 			}
 
-			// Create the buttons and add them to the grid
+			// create the buttons and add them to the grid
 			for(int i = 0; i < rows; i++) {
 				for(int j = 0; j < cols; j++) {
 					Button button = new Button();
@@ -71,12 +69,12 @@ namespace MemoryTilesGame {
 			GameGrid.HorizontalAlignment = HorizontalAlignment.Left;
 			GameGrid.Margin = new Thickness(0, 40, 0, 50);  // the distance between the top and the bottom part of the window
 
-			// Add a SizeChanged event handler for the window
+			// adding a SizeChanged event handler to the window for resizing the buttons based on the window dimensions
 			this.SizeChanged += (sender, e) => {
-				// Calculate the new button size based on the window size
+				// calculate the new button size based on the window size
 				double size = Math.Min((this.ActualWidth - GameGrid.Margin.Right) / cols, this.ActualHeight / rows);
 
-				// Update the button sizes
+				// update the button sizes
 				foreach(var child in GameGrid.Children) {
 					if(child is Button button) {
 						button.Width = size;
@@ -92,6 +90,9 @@ namespace MemoryTilesGame {
 
 			// get the file names of all the images in the folder
 			string[] images = Directory.GetFiles(folderPath, "*.png");
+
+			// place the images in an intermediary list to shuffle them for random selection
+
 
 			// put images in a list
 			for(int i = 0; i < cols * rows / 2; i++) {
@@ -115,7 +116,15 @@ namespace MemoryTilesGame {
 		}
 
 		private void placeTimer(int cols, int rows) {
-			_time = TimeSpan.FromSeconds((int)(10 * Math.Pow((Math.Sqrt((cols * rows) / 6)), 3) - 3));
+			if(cols * rows == 4) {
+				_time = TimeSpan.FromSeconds(3);
+			}
+			else if(cols * rows == 6) {
+				_time = TimeSpan.FromSeconds(7);
+			}
+			else {
+				_time = TimeSpan.FromSeconds((int)(10 * Math.Pow((Math.Sqrt((cols * rows) / 7)), 3) + 5));
+			}
 			tbTime.Margin = new Thickness(0, 0, GameGrid.ActualWidth - tbTime.ActualWidth, 0);
 
 			_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate {
@@ -200,8 +209,5 @@ namespace MemoryTilesGame {
 	}
 }
 
-// make the timer better suited for each input
-
 // add music
-
 // make a presentation
