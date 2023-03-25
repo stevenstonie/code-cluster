@@ -5,7 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace MemoryTilesGame {
+namespace MatchingTilesGame {
 	class User {
 		private string name;
 		private string imagePath;

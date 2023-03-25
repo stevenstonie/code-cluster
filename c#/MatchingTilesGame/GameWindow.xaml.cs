@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace MemoryTilesGame {
+namespace MatchingTilesGame {
 	public partial class GameWindow : Window {
 		DispatcherTimer _timer;
 		TimeSpan _time;
@@ -208,6 +208,3 @@ namespace MemoryTilesGame {
 		}
 	}
 }
-
-// add music
-// make a presentation

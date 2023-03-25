@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace MemoryTilesGame {
+namespace MatchingTilesGame {
 	public partial class StartGameWindow : Window {
 		private int rows;
 		private int cols;

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace MemoryTilesGame {
+namespace MatchingTilesGame {
 	public partial class App : Application {
 	}
 }

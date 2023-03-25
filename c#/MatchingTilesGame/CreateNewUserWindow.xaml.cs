@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace MemoryTilesGame {
+namespace MatchingTilesGame {
 	public partial class CreateNewUserWindow : Window {
 		private string[] imagesPathsArray;
 		private int imageIndex;
