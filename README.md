@@ -1,6 +1,6 @@
 # exercise cluster
 
-this is a project containing different types of exercises, for example: dynamic programming, data structures, or just simple operations like number manipulation. the reason i created this project and why i will update it regularly is mostly for beginners to have some content to learn from.
+this is a repository containing either small scale projects or different types of exercises, for example: dynamic programming, data structures, or just simple operations like number manipulation. the reason i created this repo and why i will update it regularly is mostly for beginners to have some content to learn from.
 
 ### the cpp folder contains
 
@@ -14,6 +14,8 @@ random projects
 ### etc
 
 #### notable projects
+
+- ```exercise-cluster/c#/MatchingTilesGame/```
 
 - ```exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
 
