@@ -1,7 +1,18 @@
 package com.stevenstonie.rc;
 
+import com.stevenstonie.rc.classes.Network;
+
 public class App {
     public static void main(String... args) {
+        Network network = new Network();
+        network.addNodes(15);
+
+        for (int i = 0; i < network.getNetwork().size(); i++) {
+            System.out.println(network.getNetwork().get(i).getIP());
+            System.out.println(network.getNetwork().get(i).getName());
+            System.out.println();
+        }
+
         // all computers are initialized with a random unique ip address
         // the token ring is initialized
 

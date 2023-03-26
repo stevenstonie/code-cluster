@@ -27,4 +27,8 @@ public class Network {
 				network.add(new Node(ip, String.valueOf(nameOfLastNode)));
 		}
 	}
+
+	public List<Node> getNetwork() {
+		return network;
+	}
 }

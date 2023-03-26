@@ -5,7 +5,7 @@ import java.util.random.RandomGenerator;
 
 public class Tools {
 	public static boolean isTheIPValid(String nodeIP) {
-		String[] IPAddressBytes = nodeIP.split(".");
+		String[] IPAddressBytes = nodeIP.split("\\.");
 
 		if (IPAddressBytes.length != 4)
 			return false;
@@ -24,8 +24,8 @@ public class Tools {
 	}
 
 	public static boolean isTheIPPartOfTheNetwork(String nodeIP, String networkIP) {
-		String[] IPBytes = nodeIP.split(".");
-		String[] networkIPBytes = networkIP.split(".");
+		String[] IPBytes = nodeIP.split("\\.");
+		String[] networkIPBytes = networkIP.split("\\.");
 
 		for (int i = 0; i < 2; i++)
 			if (!IPBytes[i].equals(networkIPBytes[i]))
@@ -59,10 +59,10 @@ public class Tools {
 		String nodeIP = "";
 
 		for (int nbOfBytes = 0, indexOfIPString = 0; nbOfBytes < 2;) {
-			nodeIP += networkIP.charAt(indexOfIPString++);
-
 			if (networkIP.charAt(indexOfIPString) == '.')
 				nbOfBytes++;
+
+			nodeIP += networkIP.charAt(indexOfIPString++);
 		}
 
 		for (int i = 0; i < 2; i++) {

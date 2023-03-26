@@ -1,15 +1,19 @@
 package com.stevenstonie.rc.classes;
 
 public class Node {
-	private IPAddress IP;
+	private String IP;
 	private String name;
 
-	public Node(IPAddress IP, String name) {
+	public Node(String IP, String name) {
 		this.IP = IP;
 		this.name = name;
 	}
 
-	public IPAddress getIP() {
+	public String getIP() {
 		return IP;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
