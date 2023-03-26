@@ -8,4 +8,8 @@ public class Node {
 		this.IP = IP;
 		this.name = name;
 	}
+
+	public IPAddress getIP() {
+		return IP;
+	}
 }

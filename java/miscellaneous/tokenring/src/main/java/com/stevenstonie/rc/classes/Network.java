@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Network {
 	private List<Node> network;
-	private IPAddress networkIP;
+	private String networkIP;
 	private char nameOfLastNode;
 
 	public Network() {
@@ -19,9 +19,9 @@ public class Network {
 	public void addNodes(int nbOfNodes) {
 		for (; nameOfLastNode < 'A' + nbOfNodes; nameOfLastNode++) {
 			// create a random ip address for the node
-			IPAddress ip = Tools.generateRandomIPForNode(networkIP);
+			String ip = Tools.generateRandomIPForNode(networkIP);
 
-			if (Tools.isTheIPValid(ip)
+			if (Tools.isTheIPValid(ip) // fake verifications
 					&& Tools.isTheIPPartOfTheNetwork(ip, networkIP)
 					&& !Tools.isTheIPAlreadyUsed(ip, network))
 				network.add(new Node(ip, String.valueOf(nameOfLastNode)));

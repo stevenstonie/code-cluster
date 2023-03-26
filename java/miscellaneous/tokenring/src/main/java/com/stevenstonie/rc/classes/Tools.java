@@ -4,28 +4,45 @@ import java.util.List;
 import java.util.random.RandomGenerator;
 
 public class Tools {
-	public static boolean isTheIPValid(IPAddress ip) {
-		// check for the validity of the IP adress
+	public static boolean isTheIPValid(String nodeIP) {
+		String[] IPAddressBytes = nodeIP.split(".");
 
-		// split the IP address by the dots
+		if (IPAddressBytes.length != 4)
+			return false;
 
-		// 1. check if the IP adress has 4 parts
+		for (String part : IPAddressBytes) {
+			try {
+				int integer = Integer.parseInt(part); // check if it is a number
+				if (integer < 0 || integer > 255) // check if it is between 0 and 255
+					return false;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		}
 
-		// 2. check if each part is a number
+		return true;
+	}
 
-		// 3. check if each part is between 0 and 255
+	public static boolean isTheIPPartOfTheNetwork(String nodeIP, String networkIP) {
+		String[] IPBytes = nodeIP.split(".");
+		String[] networkIPBytes = networkIP.split(".");
+
+		for (int i = 0; i < 2; i++)
+			if (!IPBytes[i].equals(networkIPBytes[i]))
+				return false;
+
+		return true;
+	}
+
+	public static boolean isTheIPAlreadyUsed(String nodeIP, List<Node> network) {
+		for (Node node : network)
+			if (node.getIP().equals(nodeIP))
+				return true;
+
 		return false;
 	}
 
-	public static boolean isTheIPPartOfTheNetwork(IPAddress ip, IPAddress networkIP) {
-		return false;
-	}
-
-	public static boolean isTheIPAlreadyUsed(IPAddress ip, List<Node> network) {
-		return false;
-	}
-
-	public static IPAddress generateRandomIP() {
+	public static String generateRandomIP() {
 		RandomGenerator rand = RandomGenerator.getDefault();
 		String ip = "";
 
@@ -34,25 +51,25 @@ public class Tools {
 			ip += ".";
 		}
 
-		return new IPAddress(ip.substring(0, ip.length() - 1));
+		return new String(ip.substring(0, ip.length() - 1));
 	}
 
-	public static IPAddress generateRandomIPForNode(IPAddress networkIP) {
+	public static String generateRandomIPForNode(String networkIP) {
 		RandomGenerator rand = RandomGenerator.getDefault();
-		String ip = "";
+		String nodeIP = "";
 
 		for (int nbOfBytes = 0, indexOfIPString = 0; nbOfBytes < 2;) {
-			ip += networkIP.getIP().charAt(indexOfIPString++);
+			nodeIP += networkIP.charAt(indexOfIPString++);
 
-			if (networkIP.getIP().charAt(indexOfIPString) == '.')
+			if (networkIP.charAt(indexOfIPString) == '.')
 				nbOfBytes++;
 		}
 
 		for (int i = 0; i < 2; i++) {
-			ip += rand.nextInt(0, 256);
-			ip += ".";
+			nodeIP += rand.nextInt(0, 256);
+			nodeIP += ".";
 		}
 
-		return new IPAddress(ip.substring(0, ip.length() - 1));
+		return new String(nodeIP.substring(0, nodeIP.length() - 1));
 	}
 }
