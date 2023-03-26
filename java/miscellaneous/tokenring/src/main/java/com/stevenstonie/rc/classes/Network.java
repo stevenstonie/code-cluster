@@ -17,14 +17,15 @@ public class Network {
 	}
 
 	public void addNodes(int nbOfNodes) {
-		for (; nameOfLastNode < 'A' + nbOfNodes; nameOfLastNode++) {
-			// create a random ip address for the node
+		while (nameOfLastNode < 'A' + nbOfNodes) {
 			String ip = Tools.generateRandomIPForNode(networkIP);
 
 			if (Tools.isTheIPValid(ip) // fake verifications
-					&& Tools.isTheIPPartOfTheNetwork(ip, networkIP)
+					&& Tools.hasTheIPTheSignatureOfNetwork(ip, networkIP)
 					&& !Tools.isTheIPAlreadyUsed(ip, network))
 				network.add(new Node(ip, String.valueOf(nameOfLastNode)));
+
+			nameOfLastNode++;
 		}
 	}
 

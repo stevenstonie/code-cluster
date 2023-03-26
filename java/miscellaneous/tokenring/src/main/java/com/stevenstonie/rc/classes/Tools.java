@@ -23,7 +23,7 @@ public class Tools {
 		return true;
 	}
 
-	public static boolean isTheIPPartOfTheNetwork(String nodeIP, String networkIP) {
+	public static boolean hasTheIPTheSignatureOfNetwork(String nodeIP, String networkIP) {
 		String[] IPBytes = nodeIP.split("\\.");
 		String[] networkIPBytes = networkIP.split("\\.");
 

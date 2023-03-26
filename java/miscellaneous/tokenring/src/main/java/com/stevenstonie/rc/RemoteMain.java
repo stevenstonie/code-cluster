@@ -9,18 +9,7 @@ public class RemoteMain {
 	public static void simulateTokenRing() {
 		Network network = new Network();
 		network.addNodes(15);
-
-		// the token ring is initialized
 		TokenRing tokenRing = new TokenRing();
-
-		// does the ring have to move constantly around the network?
-
-		// now the problem i havent solved from the start is how to map the token Ring to the network
-
-		// maybe a for loop with an index from on which the position is the token's position in that network
-
-		// so the index will be called posOfToken and depending on the user's choice of the direction the 
-		// token is moving, the index will either increment or decrement
 
 		boolean direction = true;
 		System.out.println(
@@ -34,15 +23,31 @@ public class RemoteMain {
 		java.util.Random rand = new java.util.Random();
 		int posOfToken = rand.nextInt(0, network.getNetwork().size());
 		boolean isExit = false;
+		boolean hasInstruction = false;
 		while (isExit != true) {
 			// the token's movement will be controlled by a breakpoint for now until i figure out how to make the loop run every 0.5 sec
 
-			if (tokenRing.isOpen()) {
-				// user is prompted to enter a command
-			} else {
+			// user is prompted to enter a command
+			// 1. enter the name of the user.
+			//// 1.1 hasInstruction = true;
+			// 2. exit.
+			//// 2.1. isExit = true;
+			if (tokenRing.isOpen() && hasInstruction) {
+				//// 1.2. enter the message
+				//// 1.3. enter the name of the user to whom the command is to be directed
+				//// 1.4. isOpen() = false;
+				//// 1.5. hasInstruction = false;
+			} else if (!tokenRing.isOpen()) {
 				// user is unable to say anything as a boulder is about to crush his family's heads
-			}
 
+				// update the history of the token
+
+				// check if the posOfToken is at the destination
+				//// if yes then isOpen() = true;
+				//// ipSource and ipDestination = null;
+				//// sentMessage = null;
+				//// atDestination = false;
+			}
 			if (direction) {
 				++posOfToken;
 				if (posOfToken == network.getNetwork().size())
@@ -52,6 +57,8 @@ public class RemoteMain {
 				if (posOfToken == -1)
 					posOfToken = network.getNetwork().size() - 1;
 			}
+
+			// maybe print the token's position in the network
 		}
 		// if yes then create a function (which gets called every 0.5 sec) that will have two instances:
 		// 1. the token ring is moving in the background and the user can insert commands
