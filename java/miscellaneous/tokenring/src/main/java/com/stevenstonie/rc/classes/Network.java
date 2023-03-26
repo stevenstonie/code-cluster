@@ -5,4 +5,26 @@ import java.util.LinkedList;
 
 public class Network {
 	private List<Node> network;
+	private IPAddress networkIP;
+	private char nameOfLastNode;
+
+	public Network() {
+		network = new LinkedList<Node>();
+
+		networkIP = Tools.generateRandomIP();
+
+		nameOfLastNode = 'A';
+	}
+
+	public void addNodes(int nbOfNodes) {
+		for (; nameOfLastNode < 'A' + nbOfNodes; nameOfLastNode++) {
+			// create a random ip address for the node
+			IPAddress ip = Tools.generateRandomIPForNode(networkIP);
+
+			if (Tools.isTheIPValid(ip)
+					&& Tools.isTheIPPartOfTheNetwork(ip, networkIP)
+					&& !Tools.isTheIPAlreadyUsed(ip, network))
+				network.add(new Node(ip, String.valueOf(nameOfLastNode)));
+		}
+	}
 }
