@@ -4,6 +4,20 @@ import java.util.List;
 import java.util.random.RandomGenerator;
 
 public class Tools {
+	public static String getIPFromUserName(String name, List<Node> network) {
+		for (Node node : network)
+			if (name.equals(node.getName()))
+				return node.getIP();
+		return null;
+	}
+
+	public static boolean checkIfTheUserExists(String nameOrIP, List<Node> network) {
+		for (Node node : network)
+			if (nameOrIP.equals(node.getIP()) || nameOrIP.equals(node.getName()))
+				return true;
+		return false;
+	}
+
 	public static boolean isTheIPValid(String nodeIP) {
 		String[] IPAddressBytes = nodeIP.split("\\.");
 

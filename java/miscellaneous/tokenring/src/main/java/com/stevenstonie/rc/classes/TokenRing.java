@@ -6,32 +6,76 @@ import java.util.List;
 public class TokenRing {
 	private String ipSource;
 	private String ipDestination;
-	private String sentMessage;
+	private String message;
 	private boolean hasArrivedAtDestination;
-	private boolean open;
+	private boolean isOpen;
 	private List<String> history;
 
-	public TokenRing(String ipSource, String ipDestination, String sentMessage, boolean hasArrivedAtDestination,
-			boolean open, List<String> history) {
+	public TokenRing(String ipSource, String ipDestination, String message, boolean hasArrivedAtDestination,
+			boolean isOpen, List<String> history) {
 		this.ipSource = ipSource;
 		this.ipDestination = ipDestination;
-		this.sentMessage = sentMessage;
+		this.message = message;
 		this.hasArrivedAtDestination = hasArrivedAtDestination;
-		this.open = open;
+		this.isOpen = isOpen;
 		this.history = history;
 	}
 
 	public TokenRing() {
-		ipSource = ipDestination = sentMessage = null;
-		hasArrivedAtDestination = open = false;
+		ipSource = ipDestination = message = null;
+		hasArrivedAtDestination = isOpen = true;
 		history = new ArrayList<String>();
 	}
 
 	public boolean isOpen() {
-		return open;
+		return isOpen;
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
+	public void setOpen(boolean isOpen) {
+		this.isOpen = isOpen;
+	}
+
+	public boolean hasArrivedAtDestination() {
+		return hasArrivedAtDestination;
+	}
+
+	public void setHasArrivedAtDestination(boolean hasArrivedAtDestination) {
+		this.hasArrivedAtDestination = hasArrivedAtDestination;
+	}
+
+	public String getIPSource() {
+		return ipSource;
+	}
+
+	public void setIPSource(String ipSource) {
+		this.ipSource = ipSource;
+	}
+
+	public String getIPDestination() {
+		return ipDestination;
+	}
+
+	public void setIPDestination(String ipDestination) {
+		this.ipDestination = ipDestination;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public List<String> getHistory() {
+		return history;
+	}
+
+	public void resetHistory() {
+		this.history = null;
+	}
+
+	public void addToHistory(String lastIPVisited) {
+		this.history.add(lastIPVisited);
 	}
 }
