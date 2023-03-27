@@ -76,6 +76,10 @@ public class RemoteMain {
 		return senderName.equals(currentNode.getName());
 	}
 
+	private static boolean isTheReceiverDifferentThanTheSender(String receiverName, Network network, String senderIP) {
+		return !Tools.getIPFromUserName(receiverName, network.getNetwork()).equals(senderIP);
+	}
+
 	private static void processInstruction(Scanner scanner, Network network, TokenRing tokenRing, Node currentNode) {
 		String input;
 
@@ -99,7 +103,12 @@ public class RemoteMain {
 		System.out.println("enter the name of the user to whom the message is to be directed to: ");
 		input = scanner.nextLine();
 		if (Tools.checkIfTheUserExists(input, network.getNetwork())) {
-			tokenRing.setIPDestination(Tools.getIPFromUserName(input, network.getNetwork()));
+			if (isTheReceiverDifferentThanTheSender(input, network, tokenRing.getIPSource())) {
+				tokenRing.setIPDestination(Tools.getIPFromUserName(input, network.getNetwork()));
+			} else {
+				System.out.println("the sender cannot send a message to himself...");
+				return;
+			}
 		} else {
 			System.out.println("the user does not exist...");
 			return;
