@@ -22,6 +22,12 @@ public class TokenRing {
 	}
 
 	public TokenRing() {
+		history = new ArrayList<String>();
+
+		setDefaultValuesForAllMembers();
+	}
+
+	public void setDefaultValuesForAllMembers() {
 		ipSource = ipDestination = message = null;
 		hasArrivedAtDestination = isOpen = true;
 		history = new ArrayList<String>();

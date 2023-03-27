@@ -32,4 +32,10 @@ public class Network {
 	public List<Node> getNetwork() {
 		return network;
 	}
+
+	public void printAllNodes() {
+		for (Node node : network) {
+			System.out.println(node.getName() + ": " + node.getIP());
+		}
+	}
 }

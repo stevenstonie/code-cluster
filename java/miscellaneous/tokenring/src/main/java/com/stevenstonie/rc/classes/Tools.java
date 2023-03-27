@@ -1,9 +1,35 @@
 package com.stevenstonie.rc.classes;
 
 import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.locks.LockSupport;
 import java.util.random.RandomGenerator;
 
 public class Tools {
+	public static void printThreeLoadingDotsInConsole() {
+		LockSupport.parkNanos(java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(300));
+		System.out.print(".");
+		LockSupport.parkNanos(java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(300));
+		System.out.print(".");
+		LockSupport.parkNanos(java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(300));
+		System.out.println(".");
+		LockSupport.parkNanos(java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(300));
+	}
+
+	public static boolean setDirectionFromConsole(Scanner scanner) {
+		boolean direction = true;
+
+		System.out
+				.println("If you want the token to move clockwise, enter 1, otherwise for counter-clockwise enter 0: ");
+		try {
+			direction = scanner.nextLine().charAt(0) == '1';
+		} catch (Exception e) {
+			System.out.println("Invalid input. The token will move clockwise.");
+		}
+
+		return direction;
+	}
+
 	public static String getIPFromUserName(String name, List<Node> network) {
 		for (Node node : network)
 			if (name.equals(node.getName()))
