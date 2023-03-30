@@ -14,8 +14,8 @@ public class RemoteMain {
 
 		Network network = new Network();
 		network.addNodes(6);
-		TokenRing tokenRing = new TokenRing();
 		network.printAllNodes();
+		TokenRing tokenRing = new TokenRing();
 
 		boolean direction = Tools.setDirectionFromConsole(scanner);
 
@@ -52,15 +52,7 @@ public class RemoteMain {
 	}
 
 	private static int changePositionOfToken(int posOfToken, boolean direction, int sizeOfNetwork) {
-		if (direction) {
-			++posOfToken;
-			if (posOfToken == sizeOfNetwork)
-				posOfToken = 0;
-		} else {
-			--posOfToken;
-			if (posOfToken == -1)
-				posOfToken = sizeOfNetwork - 1;
-		}
+		posOfToken = (direction) ? (posOfToken + 1) % sizeOfNetwork : (posOfToken - 1 + sizeOfNetwork) % sizeOfNetwork;
 
 		return posOfToken;
 	}

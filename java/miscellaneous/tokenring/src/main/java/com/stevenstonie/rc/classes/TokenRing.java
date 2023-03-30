@@ -22,8 +22,6 @@ public class TokenRing {
 	}
 
 	public TokenRing() {
-		history = new ArrayList<String>();
-
 		setDefaultValuesForAllMembers();
 	}
 
