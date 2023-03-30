@@ -89,21 +89,21 @@ namespace MatchingTilesGame {
 			string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Images");
 
 			// get the file names of all the images in the folder
-			string[] images = Directory.GetFiles(folderPath, "*.png");
+			string[] paths = Directory.GetFiles(folderPath, "*.png");
 
 			// place the images in an intermediary list to shuffle them for random selection
+			List<string> intermediaryList = new List<string>(paths);
+			Random random = new Random();
+			intermediaryList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
 
 
 			// put images in a list
 			for(int i = 0; i < cols * rows / 2; i++) {
-				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
-				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(images[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(intermediaryList[i], UriKind.Relative)) }));
+				imagesList.Add(new KeyValuePair<int, ImageBrush>(i, new ImageBrush { ImageSource = new BitmapImage(new Uri(intermediaryList[i], UriKind.Relative)) }));
 			}
 
-			//shuffle the list
-			Random random = new Random();
 			imagesList.Sort((a, b) => random.Next(2) == 0 ? -1 : 1);
-
 
 			// Loop through each button and assign an image and a tag to it (the tag represents the index in the list)
 			int imagesListId = 0;
@@ -120,7 +120,7 @@ namespace MatchingTilesGame {
 				_time = TimeSpan.FromSeconds(3);
 			}
 			else if(cols * rows == 6) {
-				_time = TimeSpan.FromSeconds(7);
+				_time = TimeSpan.FromSeconds(6);
 			}
 			else {
 				_time = TimeSpan.FromSeconds((int)(10 * Math.Pow((Math.Sqrt((cols * rows) / 7)), 3) + 5));
