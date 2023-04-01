@@ -1,5 +1,9 @@
 package com.steven.student_management_system.service;
 
-public interface StudentService {
+import java.util.List;
 
+import com.steven.student_management_system.entity.Student;
+
+public interface StudentService {
+	List<Student> getAllStudents();
 }
