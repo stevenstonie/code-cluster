@@ -17,7 +17,7 @@ random projects
 
 - ```exercise-cluster/c#/MatchingTilesGame/```
 
-- ```exercise-cluster/java/miscellaneous/movie-nerecommendation-platform/```
+- ```exercise-cluster/java/miscellaneous/movie_nerecommendation_platform/```
 
 - ```exercise-cluster/cpp/group4/from_context-free_grammar_to_push-down_automaton/```
 
