@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import com.steven.student_management_system.entity.Student;
 import com.steven.student_management_system.service.StudentService;
@@ -49,12 +48,22 @@ public class StudentController {
 	public String updateStudent(@PathVariable Long id, @ModelAttribute("student") Student student, Model model) {
 		Student existingStudent = studentService.getStudentById(id);
 
+		updateStudentCredentials(existingStudent, student);
+
+		studentService.updateStudent(existingStudent);
+		return "redirect:/students";
+	}
+
+	@GetMapping("/students/{id}")
+	public String deleteStudent(@PathVariable Long id) {
+		studentService.deleteStudentById(id);
+		return "redirect:/students";
+	}
+
+	private void updateStudentCredentials(Student existingStudent, Student student) {
 		existingStudent.setId(student.getId());
 		existingStudent.setFirstName(student.getFirstName());
 		existingStudent.setLastName(student.getLastName());
 		existingStudent.setEmail(student.getEmail());
-
-		studentService.updateStudent(existingStudent);
-		return "redirect:/students";
 	}
 }
