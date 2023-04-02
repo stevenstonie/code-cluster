@@ -15,9 +15,9 @@ public class Student {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO) // automatically determines the best strategy for generating IDs based on the underlying database 
 	private long id;
-	@Column(name = "firstName", nullable = false)
+	@Column(name = "first_name", nullable = false)
 	private String firstName;
-	@Column(name = "lastName")
+	@Column(name = "last_name")
 	private String lastName;
 	@Column(name = "email")
 	private String email;

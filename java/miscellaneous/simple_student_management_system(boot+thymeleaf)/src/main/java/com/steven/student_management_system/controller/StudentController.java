@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.steven.student_management_system.entity.Student;
 import com.steven.student_management_system.service.StudentService;
 
+// handles HTTP requests to '/students'
 @Controller
 @RequestMapping("/students")
 public class StudentController {
