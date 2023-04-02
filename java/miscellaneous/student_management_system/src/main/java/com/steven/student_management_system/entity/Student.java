@@ -7,12 +7,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+// just a pojo class representing a student entity in the database
 @Entity
 @Table(name = "students")
 public class Student {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO) // automatically determines the best strategy for generating IDs based on the underlying database 
 	private long id;
 	@Column(name = "firstName", nullable = false)
 	private String firstName;
@@ -22,10 +23,10 @@ public class Student {
 	private String email;
 
 	public Student() {
+		// empty for hibernate -> it uses reflection to create objects of the entity class, and it requires a no-argument constructor to create an instance of the class
 	}
 
 	public Student(String firstName, String lastName, String email) {
-		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

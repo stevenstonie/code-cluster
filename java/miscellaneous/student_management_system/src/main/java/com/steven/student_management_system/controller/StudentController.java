@@ -16,34 +16,38 @@ public class StudentController {
 	private StudentService studentService;
 
 	public StudentController(StudentService studentService) {
-		super();
 		this.studentService = studentService;
 	}
 
+	// handles HTTP GET requests to '/students' and returns a list of all the students
 	@GetMapping("/students")
 	public String listStudents(Model model) {
 		model.addAttribute("students", studentService.getAllStudents());
 		return "students";
 	}
 
+	// handles GET requests to '/students/add' which returns a form to add a new student
 	@GetMapping("/students/add")
 	public String addStudentForm(Model model) {
 		model.addAttribute("student", new Student());
 		return "add_student";
 	}
 
+	// handles the submission of the form to add a new student via a POST request to '/students'
 	@PostMapping("/students")
 	public String addStudent(@ModelAttribute("student") Student student) {
 		studentService.saveStudent(student);
 		return "redirect:/students";
 	}
 
+	// handles GET requests to '/students/edit/{id}' which returns a form to edit an existing student
 	@GetMapping("/students/edit/{id}")
 	public String editStudentForm(@PathVariable Long id, Model model) {
 		model.addAttribute("student", studentService.getStudentById(id));
 		return "edit_student";
 	}
 
+	// handles the submission of the form to edit a student via a POST request to '/students/{id}'
 	@PostMapping("/students/{id}")
 	public String updateStudent(@PathVariable Long id, @ModelAttribute("student") Student student, Model model) {
 		Student existingStudent = studentService.getStudentById(id);
@@ -54,6 +58,7 @@ public class StudentController {
 		return "redirect:/students";
 	}
 
+	// handles GET requests to '/students/{id}' to delete an existing student
 	@GetMapping("/students/{id}")
 	public String deleteStudent(@PathVariable Long id) {
 		studentService.deleteStudentById(id);

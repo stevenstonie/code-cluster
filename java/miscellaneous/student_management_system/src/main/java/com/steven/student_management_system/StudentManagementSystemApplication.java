@@ -10,3 +10,4 @@ public class StudentManagementSystemApplication {
 		SpringApplication.run(StudentManagementSystemApplication.class, args);
 	}
 }
+// the tutorial can be found at https://www.youtube.com/watch?v=HYGnVeCs0Yg

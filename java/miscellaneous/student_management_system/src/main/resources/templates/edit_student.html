@@ -10,21 +10,8 @@
 
 <body>
 	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
-		<!-- Brand -->
-		<a class="navbar-brand" href="#">student management system</a>
-
-		<!-- Toggler/collapsibe Button -->
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<!-- Navbar links -->
-		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/students}">student management</a>
-				</li>
-			</ul>
+		<div style="padding: 0px 0px 5px 20px">
+			<h1><a class="navbar-brand" th:href="@{/students}">simple student management system</a></h1>
 		</div>
 	</nav>
 	<br>
@@ -34,13 +21,16 @@
 			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
 				<h1 class="text-center">update student</h1>
 				<div class="card-body">
+					<!-- The "id" variable is substituted with the value of "${student.id}", which is a Thymeleaf expression that evaluates to the value of the "student.id". -->
+					<!-- The $ symbol is used to reference variable expressions, which are used to embed dynamic content into a Thymeleaf template. These expressions can contain operators, functions, and other logic to generate dynamic output. -->
 					<form th:action="@{/students/{id}(id=${student.id})}" th:object="${student}" method="POST">
 						<div class="form-group">
 							<label>student first name</label>
+							<!-- th:field="*{something}": is a Thymeleaf attribute that binds the input field to a model attribute called something. The * in front of {something} specifies that it should be bound to the current form object. -->
+							<!-- The * symbol is used to reference selection expressions, which are used to access specific properties or methods of a Thymeleaf context object. These context objects can include things like model attributes, iteration variables, request parameters and more -->
 							<input type="text" name="firstName" th:field="*{firstName}" class="form-control"
 								placeholder="enter the student's first name" />
 						</div>
-
 						<div class="form-group">
 							<label>student last name</label>
 							<input type="text" name="lastName" th:field="*{lastName}" class="form-control"
@@ -53,11 +43,9 @@
 								placeholder="enter the student's email" />
 						</div>
 
-						<!-- <button type="submit" class="btn btn-primary">save</button> -->
+						<br>
 						<div class="footer-body">
-							<button type="submit" class="btn btn-primary">
-								submit
-							</button>
+							<button type="submit" class="btn btn-primary">save</button>
 						</div>
 					</form>
 				</div>
@@ -65,5 +53,6 @@
 		</div>
 	</div>
 </body>
+<!-- * is used to access specific properties or methods of a Thymeleaf context object, whereas $ is used to embed dynamic content into a template. -->
 
 </html>
