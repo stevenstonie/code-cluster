@@ -9,6 +9,26 @@
 </head>
 
 <body>
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<!-- Brand -->
+		<a class="navbar-brand" href="#">student management system</a>
+
+		<!-- Toggler/collapsibe Button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- Navbar links -->
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/students}">student management</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<br>
+	<br>
 	<div class="container">
 		<div class="row">
 			<h1> list of students</h1>
@@ -33,6 +53,9 @@
 					<td th:text="${student.firstName}"></td>"
 					<td th:text="${student.lastName}"></td>"
 					<td th:text="${student.email}"></td>"
+					<td>
+						<a th:href="@{/students/edit/{id}(id=${student.id})}" class="btn btn-primary">update</a>
+						<!-- <a th:href="@{/students/delete/{id}(id=${student.id})}" class="btn btn-danger">delete</a> -->
 				</tr>
 			</tbody>
 
