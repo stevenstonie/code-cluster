@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'frontend_part';
+  title = 'Employee Management System with Angular and Spring Boot';
 }
