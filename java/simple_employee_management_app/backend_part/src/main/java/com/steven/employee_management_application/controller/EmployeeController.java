@@ -12,7 +12,7 @@ import com.steven.employee_management_application.model.Employee;
 import com.steven.employee_management_application.repository.EmployeeRepository;
 
 // This is the base path for all the endpoints in this controller
-@CrossOrigin("*") // allow all origins to access this API. This is for development purposes only. In production, you should specify the origins that are allowed to access this API.
+@CrossOrigin("http://localhost:4200/") // allows the Angular app to access this API
 @RestController
 @RequestMapping("/api/v1/") // standard REST API versioning. 1.0, 2.0, etc.
 public class EmployeeController {

@@ -13,3 +13,5 @@ change the username and password to your own username and password
 **for the angular part**
 
 for newer versions of typescript add the postfix operator '!' in front of any variable that you dont initialize when declaring to disable the strict checking property initialization
+
+if the frontend cannot fetch data from the server it is most probably because @CrossOrigin hasnt been set up on the controller. set it up with the parameter as the url of the frontend
