@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Employee } from '../employee';
 
 @Component({
   selector: 'app-create-employee',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class CreateEmployeeComponent {
 
+  employee: Employee = new Employee();
+  constructor() { }
+
+  ngOnInit(): void {
+
+  }
+
+  onSubmit() {
+    console.log(this.employee);
+  }
 }
