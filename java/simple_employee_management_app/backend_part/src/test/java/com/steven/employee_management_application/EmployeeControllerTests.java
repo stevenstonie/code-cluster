@@ -17,7 +17,7 @@ import com.steven.employee_management_application.controller.EmployeeController;
 import com.steven.employee_management_application.model.Employee;
 
 @SpringBootTest
-public class EmployeeManagementApplicationTests {
+public class EmployeeControllerTests {
 	Employee employee;
 	Employee newEmployee;
 
@@ -26,10 +26,7 @@ public class EmployeeManagementApplicationTests {
 
 	@BeforeEach
 	public void setUp() {
-		employee = new Employee();
-		employee.setFirstName("Gica");
-		employee.setLastName("Dude");
-		employee.setEmailId("gigadude@ceva.altceva");
+		employee = createNewEmployeeGicaDude();
 
 		newEmployee = employeeController.createEmployee(employee);
 	}
@@ -46,9 +43,7 @@ public class EmployeeManagementApplicationTests {
 		assertNotNull(newEmployee);
 
 		assertEquals(employee.getId(), newEmployee.getId());
-		assertEquals(employee.getFirstName(), newEmployee.getFirstName());
-		assertEquals(employee.getLastName(), newEmployee.getLastName());
-		assertEquals(employee.getEmailId(), newEmployee.getEmailId());
+		assertEqualsOfTwoEmployees(employee, newEmployee);
 	}
 
 	@Test
@@ -59,9 +54,7 @@ public class EmployeeManagementApplicationTests {
 		assertNotNull(foundEmployee);
 
 		assertEquals(newEmployee.getId(), foundEmployee.getId());
-		assertEquals(newEmployee.getFirstName(), foundEmployee.getFirstName());
-		assertEquals(newEmployee.getLastName(), foundEmployee.getLastName());
-		assertEquals(newEmployee.getEmailId(), foundEmployee.getEmailId());
+		assertEqualsOfTwoEmployees(newEmployee, foundEmployee);
 	}
 
 	@Test
@@ -78,9 +71,7 @@ public class EmployeeManagementApplicationTests {
 		assertNotNull(updatedEmployeeResponse);
 
 		assertEquals(newEmployee.getId(), updatedEmployeeResponse.getId());
-		assertEquals(updatedEmployee.getFirstName(), updatedEmployeeResponse.getFirstName());
-		assertEquals(updatedEmployee.getLastName(), updatedEmployeeResponse.getLastName());
-		assertEquals(updatedEmployee.getEmailId(), updatedEmployeeResponse.getEmailId());
+		assertEqualsOfTwoEmployees(updatedEmployee, updatedEmployeeResponse);
 	}
 
 	@Test
@@ -93,4 +84,19 @@ public class EmployeeManagementApplicationTests {
 		assertTrue(response.get("deleted"));
 	}
 
+	//
+
+	private void assertEqualsOfTwoEmployees(Employee employee, Employee newEmployee) {
+		assertEquals(employee.getFirstName(), newEmployee.getFirstName());
+		assertEquals(employee.getLastName(), newEmployee.getLastName());
+		assertEquals(employee.getEmailId(), newEmployee.getEmailId());
+	}
+
+	private Employee createNewEmployeeGicaDude() {
+		Employee employee = new Employee();
+		employee.setFirstName("Gica");
+		employee.setLastName("Dude");
+		employee.setEmailId("gigadude@ceva.altceva");
+		return employee;
+	}
 }

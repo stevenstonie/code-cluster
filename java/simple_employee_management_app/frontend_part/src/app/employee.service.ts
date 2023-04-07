@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class EmployeeService {
 
-  private baseURL = "http://localhost:8081/api/v1/employees"
+  private baseURL = "http://localhost:8081/api/v1/employees"  // TODO: url of the backend
   constructor(private httpClient: HttpClient) { }
 
   getEmployeesList(): Observable<Employee[]> {

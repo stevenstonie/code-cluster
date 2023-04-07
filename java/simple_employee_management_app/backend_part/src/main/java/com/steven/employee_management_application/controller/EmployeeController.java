@@ -19,10 +19,10 @@ import com.steven.employee_management_application.exception.ResourceNotFoundExce
 import com.steven.employee_management_application.model.Employee;
 import com.steven.employee_management_application.repository.EmployeeRepository;
 
-// This is the base path for all the endpoints in this controller
 @CrossOrigin("http://localhost:4200/") // allows the Angular app to access this API
 @RestController
-@RequestMapping("/api/v1/") // standard REST API versioning. 1.0, 2.0, etc.
+// This is the base path for all the endpoints in this controller
+@RequestMapping("/api/v1/") // 'v1' represents standard REST API versioning. 1.0, 2.0, etc.
 public class EmployeeController {
 
 	@Autowired
@@ -34,7 +34,7 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/employees")
-	public Employee createEmployee(@RequestBody Employee employee) {
+	public Employee createEmployee(@RequestBody Employee employee) { // @RequestBody maps the HttpRequest body to a transfer or domain object, enabling automatic deserialization
 		return employeeRepository.save(employee);
 	}
 
