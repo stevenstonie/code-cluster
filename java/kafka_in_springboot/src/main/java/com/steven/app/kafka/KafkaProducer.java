@@ -10,6 +10,7 @@ public class KafkaProducer {
 	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 	private KafkaTemplate<String, String> kafkaTemplate;
 
+	// automatically injected because we have only one parameterized constructor here
 	public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
 		this.kafkaTemplate = kafkaTemplate;
 	}
