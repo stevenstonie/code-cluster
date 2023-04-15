@@ -1,6 +1,6 @@
 # exercise cluster
 
-this is a repository containing either small scale projects or different types of exercises, for example: dynamic programming, data structures, or just simple operations like number manipulation. the reason i created this repo and why i will update it regularly is mostly for beginners to have some content to learn from.
+this is a repo containing either small scale projects or different types of exercises regarding: dynamic programming, data structures etc. the reason i created this repo and why i will update it regularly is mostly for beginners to have some content to learn from.
 
 ### the cpp folder contains
 
@@ -12,6 +12,10 @@ group 1 -> etc. are based on "difficulty"
 random projects
 
 ### etc
+
+###
+
+###
 
 #### notable projects
 

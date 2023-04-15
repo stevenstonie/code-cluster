@@ -38,7 +38,7 @@ namespace MatchingTilesGame {
 			}
 			else {
 				if(cols % 2 != 0 && rows % 2 != 0) {
-					MessageBox.Show("at least dimension has to be even");
+					MessageBox.Show("at least one dimension has to be even");
 				}
 				else {
 					user["RoundsPlayed"] = user.Value<int>("RoundsPlayed") + 1;
