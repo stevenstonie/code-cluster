@@ -6,7 +6,7 @@ The students in the associations propose that on Saturday afternoon at 12:00, th
 
 The task involves planning as many sports events as possible during this time interval. The problem of scheduling the sports events is modeled as a problem of determining a maximum independent set of vertices in a graph. The graph has a node associated with each game, and two nodes are connected by an edge if there is at least one student who has registered for the corresponding games of the two nodes.
 
-### -----------------------------
+#### -----------------------------
 
 Write a Greedy heuristic algorithm (with polynomial complexity) to determine a MAXIMAL independent vertex set. The greedy method should select one node at a time to add to the independent set, according to certain criteria that you consider best.
 
