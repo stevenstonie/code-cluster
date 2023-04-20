@@ -9,5 +9,11 @@ public class GamesGraph {
 		this.games = games;
 	}
 
-	// getter and addGame method
+	public List<Game> getGames() {
+		return games;
+	}
+
+	public void addGame(Game game) {
+		games.add(game);
+	}
 }
