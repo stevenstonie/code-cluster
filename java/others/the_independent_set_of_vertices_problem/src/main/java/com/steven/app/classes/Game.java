@@ -22,7 +22,7 @@ public class Game {
 		return name;
 	}
 
-	public List<Game> get() {
+	public List<Game> getGamesWithRecurringParticipants() {
 		return gamesWithRecurringParticipants;
 	}
 

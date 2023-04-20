@@ -16,4 +16,6 @@ public class GamesGraph {
 	public void addGame(Game game) {
 		games.add(game);
 	}
+
+	// TODO: Greedy algorithm here
 }
