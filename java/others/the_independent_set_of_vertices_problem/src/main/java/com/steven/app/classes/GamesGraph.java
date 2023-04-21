@@ -18,6 +18,9 @@ public class GamesGraph {
 		games.add(game);
 	}
 
+	/*
+	
+	 */
 	public List<Game> scheduleMaximumNbOfGamesFor12PM() {
 		List<Game> independentSet = new ArrayList<>();
 		List<Game> remainingGames = new ArrayList<>(this.games);

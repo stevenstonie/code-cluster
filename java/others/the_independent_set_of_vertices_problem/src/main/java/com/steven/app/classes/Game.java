@@ -27,6 +27,18 @@ public class Game {
 	}
 
 	public void addGameWithRecurringParticipants(Game gameWithRecurringParticipants) {
-		this.gamesWithRecurringParticipants.add(gameWithRecurringParticipants);
+		if (!checkIfTheGamesAlreadyHaveRecurringParticipants(gameWithRecurringParticipants)) {
+			this.gamesWithRecurringParticipants.add(gameWithRecurringParticipants);
+			gameWithRecurringParticipants.addGameWithRecurringParticipants(this);
+		}
+	}
+
+	private boolean checkIfTheGamesAlreadyHaveRecurringParticipants(Game gameWithRecurringParticipants) {
+		for (Game game : this.gamesWithRecurringParticipants) {
+			if (game.getId() == gameWithRecurringParticipants.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
