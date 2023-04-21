@@ -35,5 +35,15 @@ public class Tools {
 		allGames.getGame(4).addGameWithRecurringParticipants(allGames.getGame(5));
 		allGames.getGame(5).addGameWithRecurringParticipants(allGames.getGame(6));
 		allGames.getGame(6).addGameWithRecurringParticipants(allGames.getGame(4));
+
+		allGames.getGame(7).addGameWithRecurringParticipants(allGames.getGame(8));
+		allGames.getGame(8).addGameWithRecurringParticipants(allGames.getGame(9));
+		allGames.getGame(9).addGameWithRecurringParticipants(allGames.getGame(10));
+		allGames.getGame(10).addGameWithRecurringParticipants(allGames.getGame(11));
+		allGames.getGame(11).addGameWithRecurringParticipants(allGames.getGame(12));
+		allGames.getGame(12).addGameWithRecurringParticipants(allGames.getGame(13));
+		allGames.getGame(13).addGameWithRecurringParticipants(allGames.getGame(14));
+		allGames.getGame(14).addGameWithRecurringParticipants(allGames.getGame(7));
+
 	}
 }
