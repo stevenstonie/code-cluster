@@ -26,6 +26,19 @@ public class Game {
 		return gamesWithRecurringParticipants;
 	}
 
+	public String getConflictingGamesToPrint() {
+		String conflictingGames = "";
+
+		for (Game game : this.gamesWithRecurringParticipants) {
+			conflictingGames += game.getName() + ", ";
+		}
+		try {
+			return conflictingGames.substring(0, conflictingGames.length() - 2);
+		} catch (StringIndexOutOfBoundsException e) {
+			return "";
+		}
+	}
+
 	public void addGameWithRecurringParticipants(Game gameWithRecurringParticipants) {
 		if (!checkIfTheGamesAlreadyHaveRecurringParticipants(gameWithRecurringParticipants)) {
 			this.gamesWithRecurringParticipants.add(gameWithRecurringParticipants);

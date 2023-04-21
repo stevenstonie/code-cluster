@@ -5,7 +5,7 @@ import java.util.Random;
 public class Tools {
 	public static GamesGraph createGames() {
 		GamesGraph allGames = new GamesGraph();
-		allGames.setNbOfGames(7);
+		allGames.setNbOfGames(15);
 
 		for (int i = 0; i < allGames.getNbOfGames(); i++) {
 			allGames.addGame(new Game(i, "game" + i));
@@ -15,23 +15,15 @@ public class Tools {
 	}
 
 	public static void addContestantsForTheFirstSubpoint(GamesGraph allGames) {
-		allGames.getGame(0).addGameWithRecurringParticipants(allGames.getGame(1));
-		allGames.getGame(0).addGameWithRecurringParticipants(allGames.getGame(2));
-		allGames.getGame(0).addGameWithRecurringParticipants(allGames.getGame(3));
+		Random random = new Random();
 
-		allGames.getGame(1).addGameWithRecurringParticipants(allGames.getGame(3));
-
-		allGames.getGame(4).addGameWithRecurringParticipants(allGames.getGame(5));
-
-		// Random random = new Random();
-
-		// for (Game game : allGames.getGames()) {
-		// 	int nbOfGamesWithConflicts = random.nextInt(allGames.getNbOfGames() / 4); // each game has a change of having from 0 to n/4 - 1 conflicts
-		// 	for (int j = 0; j < nbOfGamesWithConflicts; j++) {
-		// 		int gameWithConflict = random.nextInt(allGames.getNbOfGames());
-		// 		game.addGameWithRecurringParticipants(allGames.getGame(gameWithConflict));
-		// 	}
-		// }
+		for (Game game : allGames.getGames()) {
+			int nbOfGamesWithConflicts = random.nextInt(allGames.getNbOfGames() / 4); // each game has a change of having from 0 to n/4 - 1 conflicts
+			for (int j = 0; j < nbOfGamesWithConflicts; j++) {
+				int gameWithConflict = random.nextInt(allGames.getNbOfGames());
+				game.addGameWithRecurringParticipants(allGames.getGame(gameWithConflict));
+			}
+		}
 	}
 
 	public static void addContestantsForTheSecondSubpoint(GamesGraph allGames) {

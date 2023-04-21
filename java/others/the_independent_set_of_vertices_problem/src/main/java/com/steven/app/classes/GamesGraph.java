@@ -41,8 +41,8 @@ public class GamesGraph {
 	 * this algorithm descendingly sorts the entries and then for each game it checks if it is
 	 * independent from the games already added to the independent set (maximal independent set basically)
 	 */
-	public Set<Game> scheduleMaximumNbOfGamesFor12PM() {
-		Set<Game> independentSet = new HashSet<>();
+	public List<Game> scheduleMaximumNbOfGamesFor12PM() {
+		List<Game> independentSet = new ArrayList<>();
 		List<Game> remainingGames = new ArrayList<>(this.games);
 
 		remainingGames.sort((g1, g2) -> Integer.compare(g2.getGamesWithRecurringParticipants().size(),
@@ -70,8 +70,8 @@ public class GamesGraph {
 	 * this algorithm iterates through all the games and for those that are not visited
 	 * it adds them to the independent set + marks them and their 'neighbours' as visited
 	 */
-	public Set<Game> scheduleMaximumNbOfGamesFor12PM_2conflictsEach() {
-		Set<Game> independentSet = new HashSet<>();
+	public List<Game> scheduleMaximumNbOfGamesFor12PM_2conflictsEach() {
+		List<Game> independentSet = new ArrayList<>();
 		Set<Game> visited = new HashSet<>();
 
 		for (Game game : games) {
