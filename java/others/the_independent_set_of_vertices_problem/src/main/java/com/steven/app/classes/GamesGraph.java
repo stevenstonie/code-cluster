@@ -12,8 +12,16 @@ public class GamesGraph {
 		this.games = games;
 	}
 
+	public GamesGraph() {
+		this.games = new ArrayList<>();
+	}
+
 	public List<Game> getGames() {
 		return games;
+	}
+
+	public Game getGame(int index) {
+		return games.get(index);
 	}
 
 	public void addGame(Game game) {
@@ -21,7 +29,8 @@ public class GamesGraph {
 	}
 
 	/*
-	 * this algorithm descendingly sorts the entries and then 
+	 * this algorithm descendingly sorts the entries and then for each game it checks if it is
+	 * independent from the games already added to the independent set (maximal independent set basically)
 	 */
 	public Set<Game> scheduleMaximumNbOfGamesFor12PM() {
 		Set<Game> independentSet = new HashSet<>();
@@ -48,6 +57,7 @@ public class GamesGraph {
 	}
 
 	/*
+	 * (knowing that because each node has a degree of 2 then the graph is made of cycles. 
 	 * this algorithm iterates through all the games and for those that are not visited
 	 * it adds them to the independent set + marks them and their 'neighbours' as visited
 	 */
