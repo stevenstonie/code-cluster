@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class GamesGraph {
 	private List<Game> games;
+	private int nbOfGames = 50;
 
 	public GamesGraph(List<Game> games) {
 		this.games = games;
@@ -22,6 +23,14 @@ public class GamesGraph {
 
 	public Game getGame(int index) {
 		return games.get(index);
+	}
+
+	public int getNbOfGames() {
+		return nbOfGames;
+	}
+
+	public void setNbOfGames(int nbOfGames) {
+		this.nbOfGames = nbOfGames;
 	}
 
 	public void addGame(Game game) {
