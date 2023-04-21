@@ -8,6 +8,7 @@ The task involves planning as many sports events as possible during this time in
 
 #### -----------------------------
 
-Write a Greedy heuristic algorithm (with polynomial complexity) to determine a MAXIMAL independent vertex set. The greedy method should select one node at a time to add to the independent set, according to certain criteria that you consider best.
-
+1. Write a Greedy heuristic algorithm (with polynomial complexity) to determine a MAXIMAL independent vertex set. The greedy method should select one node at a time to add to the independent set, according to certain criteria that you consider best.
 The final solution should be an independent vertex set, even if it is not maximal. What is the selection criterion used? Could it be improved? Briefly justify that the algorithm runs in polynomial time.
+
+2. Particular case: if in the graph you have, each game conflicts with exactly two other games, investigate if there is an efficient algorithm for this type of graph. Find a polynomial-time algorithm for determining the maximum independent set in a graph G when each node in G has degree 2.
