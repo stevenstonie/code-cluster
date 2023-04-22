@@ -45,14 +45,14 @@ public class GamesGraph {
 		List<Game> independentSet = new ArrayList<>();
 		List<Game> remainingGames = new ArrayList<>(this.games);
 
-		remainingGames.sort((g1, g2) -> Integer.compare(g2.getGamesWithRecurringParticipants().size(),
-				g1.getGamesWithRecurringParticipants().size()));
+		remainingGames.sort((g1, g2) -> Integer.compare(g2.getConflictingGames().size(),
+				g1.getConflictingGames().size()));
 
 		while (!remainingGames.isEmpty()) {
 			Game currentGame = remainingGames.remove(0);
 			boolean isIndependent = true;
 			for (Game gameAddedToTheSet : independentSet) {
-				if (gameAddedToTheSet.getGamesWithRecurringParticipants().contains(currentGame)) {
+				if (gameAddedToTheSet.getConflictingGames().contains(currentGame)) {
 					isIndependent = false;
 					break;
 				}
@@ -68,7 +68,7 @@ public class GamesGraph {
 	/*
 	 * (knowing that because each node has a degree of 2 then the graph is made of cycles. 
 	 * this algorithm iterates through all the games and for those that are not visited
-	 * it adds them to the independent set + marks them and their 'neighbours' as visited
+	 * it adds them to the independent set + marks them AND their 'neighbours' as visited
 	 */
 	public List<Game> scheduleMaximumNbOfGamesFor12PM_2conflictsEach() {
 		List<Game> independentSet = new ArrayList<>();
@@ -78,7 +78,7 @@ public class GamesGraph {
 			if (!visited.contains(game)) {
 				independentSet.add(game);
 				visited.add(game);
-				visited.addAll(game.getGamesWithRecurringParticipants());
+				visited.addAll(game.getConflictingGames());
 			}
 		}
 

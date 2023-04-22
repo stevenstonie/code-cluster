@@ -1,7 +1,6 @@
 package com.steven.app;
 
 import java.util.List;
-import java.util.Set;
 
 import com.steven.app.classes.Game;
 import com.steven.app.classes.GamesGraph;
@@ -16,7 +15,7 @@ public class App {
 
     private static void subpoint1() {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        GamesGraph allGames = Tools.createGames();
+        GamesGraph allGames = Tools.createGames(15);
 
         Tools.addContestantsForTheFirstSubpoint(allGames);
 
@@ -24,7 +23,7 @@ public class App {
 
         System.out.println("for the games: ");
         for (Game game : allGames.getGames()) {
-            System.out.println(game.getName() + " (" + game.getConflictingGamesToPrint() + ")");
+            System.out.println(game.getName() + " (" + game.getStringOfConflictingGames() + ")");
         }
 
         System.out.println("the scheduled ones are:");
@@ -35,7 +34,7 @@ public class App {
 
     private static void subpoint2() {
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        GamesGraph allGames = Tools.createGames();
+        GamesGraph allGames = Tools.createGames(15);
 
         Tools.addContestantsForTheSecondSubpoint(allGames);
 
@@ -43,7 +42,7 @@ public class App {
 
         System.out.println("for the games: ");
         for (Game game : allGames.getGames()) {
-            System.out.println(game.getName() + " (" + game.getConflictingGamesToPrint() + ")");
+            System.out.println(game.getName() + " (" + game.getStringOfConflictingGames() + ")");
         }
 
         System.out.println("the scheduled ones are:");

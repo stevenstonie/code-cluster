@@ -22,11 +22,11 @@ public class Game {
 		return name;
 	}
 
-	public List<Game> getGamesWithRecurringParticipants() {
+	public List<Game> getConflictingGames() {
 		return gamesWithRecurringParticipants;
 	}
 
-	public String getConflictingGamesToPrint() {
+	public String getStringOfConflictingGames() {
 		String conflictingGames = "";
 
 		for (Game game : this.gamesWithRecurringParticipants) {
@@ -39,14 +39,14 @@ public class Game {
 		}
 	}
 
-	public void addGameWithRecurringParticipants(Game gameWithRecurringParticipants) {
-		if (!checkIfTheGamesAlreadyHaveRecurringParticipants(gameWithRecurringParticipants)) {
+	public void addConflictingGame(Game gameWithRecurringParticipants) {
+		if (!checkIfGamesAreAlreadyConflicting(gameWithRecurringParticipants)) {
 			this.gamesWithRecurringParticipants.add(gameWithRecurringParticipants);
-			gameWithRecurringParticipants.addGameWithRecurringParticipants(this);
+			gameWithRecurringParticipants.addConflictingGame(this);
 		}
 	}
 
-	private boolean checkIfTheGamesAlreadyHaveRecurringParticipants(Game gameWithRecurringParticipants) {
+	private boolean checkIfGamesAreAlreadyConflicting(Game gameWithRecurringParticipants) {
 		for (Game game : this.gamesWithRecurringParticipants) {
 			if (game.getId() == gameWithRecurringParticipants.getId()) {
 				return true;
