@@ -397,7 +397,7 @@ FodyWeavers.xsd
 *.tar.gz
 *.rar
 
-# angular
+# Angular
 
 .DS_STORE
 
@@ -406,6 +406,15 @@ FodyWeavers.xsd
 /integration/bazel/bazel-*
 *.log
 /node_modules/
+
+# Miscellaneous
+*/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
 
 # CircleCI temporary file for cache key computation.
 # See `save_month_to_file` in `.circleci/config.yml`.

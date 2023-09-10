@@ -1,0 +1,20 @@
+@import '~ol/ol.css';
+
+#map {
+	height: 97vh;
+	width: 100%;
+}
+
+.map-container {
+	height: 100vh;
+}
+
+button {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	top: -47px;
+	left: -7px;
+	transform: rotate(17deg);
+	opacity: 0;
+}
