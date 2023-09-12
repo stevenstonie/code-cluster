@@ -13,10 +13,10 @@
   <form method="post" action='https://register-demo.freecodecamp.org'>
     <fieldset>
       <legend>Account Information</legend>
-      <label for="first-name">Enter Your First Name: <input id="first-name" type="text" required /></label>
-      <label for="last-name">Enter Your Last Name: <input id="last-name" type="text" required /></label>
-      <label for="email">Enter Your Email: <input id="email" type="email" required /></label>
-      <label for="new-password">Create a New Password: <input id="new-password" type="password" pattern="[a-z0-5]{8,}"
+      <label for="first-name">Enter Your First Name: <input id="first-name" name="first-name" type="text" required /></label>
+      <label for="last-name">Enter Your Last Name: <input id="last-name" name="last-name" type="text" required /></label>
+      <label for="email">Enter Your Email: <input id="email" name="email" type="email" required /></label>
+      <label for="new-password">Create a New Password: <input id="new-password" name="new-password" type="password" pattern="[a-z0-5]{8,}"
           required /></label>
     </fieldset>
 
@@ -27,13 +27,28 @@
       <label for="business-account"><input id="business-account" type="radio" name="account-type" /> Business
         Account</label>
       <label for="terms-and-conditions">
-        <input id="terms-and-conditions" type="checkbox" required /> I accept the <a
-          href="https://http.cat/418">teapot cat</a>
+        <input id="terms-and-conditions" name="terms-and-conditions" type="checkbox" required /> I accept the <a href="https://http.cat/418">teapot
+          cat</a>
       </label>
     </fieldset>
 
     <fieldset>
-      <legend>empty atm</legend>
+      <legend>Personal Information</legend>
+      <label for="profile-picture">Upload a profile picture: <input id="profile-picture" type="file"
+          name="file" /></label>
+      <label for="age">Input your age (years): <input id="age" type="number" name="age" min="13" max="120" /></label>
+      <label for="referrer">How did you hear about us?
+        <select id="referrer" name="referrer">
+          <option value="">(select one)</option>
+          <option value="1">Random ghettos</option>
+          <option value="2">steven.stonie Youtube Channel</option>
+          <option value="3">huh?</option>
+          <option value="4"></option>
+        </select>
+      </label>
+      <label for="bio">Provide a bio:
+        <textarea id="bio" name="bio" rows="3" cols="30" placeholder="I like chilling in the woods..."></textarea>
+      </label>
     </fieldset>
     <input type="submit" value="Submit" />
   </form>
