@@ -43,7 +43,7 @@ ol {
 }
 
 p {
-	padding: 0 20%;
+	padding: 0 25%;
 	margin-top: 5%;
 	text-align: center;
 	
@@ -67,5 +67,6 @@ p {
 }
 
 .strip-wrapper {
-	background-color: rgb(255, 234, 208);
+	background-color: #ffdd7f;
+	margin: 0 -8.8%;
 }
