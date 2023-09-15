@@ -107,11 +107,11 @@ body {
 
 .cat-right-inner-eye {
 	position: absolute;
-	top: 8px;
-	left: 18px;
-	transform: rotate(-5deg);
+	top: 2px;
+	left: 6px;
 	width: 10px;
 	height: 20px;
+	transform: rotate(55deg);
 	background-color: #fff;
 	border-radius: 60%;
 }
