@@ -1,0 +1,19 @@
+body {
+	font-family: Verdana, sans-serif;
+}
+
+.header-description {
+	font-size: 0.8rem;
+}
+
+.indented {
+	padding-left: 3rem;
+}
+
+.indented2 {
+	padding-left: calc(3rem * 2);
+}
+
+.highlighted {
+	background-color: rgb(223, 223, 223);
+}
