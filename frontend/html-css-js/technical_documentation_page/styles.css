@@ -1,3 +1,7 @@
+:root {
+	--padding-left: 1rem;
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	* {
 		scroll-behavior: smooth;
@@ -64,15 +68,15 @@ nav>ul>li:hover {
 }
 
 .indented1 {
-	padding-left: 1rem;
+	padding-left: (--padding-left);
 }
 
 .indented3 {
-	padding-left: 3rem;
+	padding-left: calc(3 * var(--padding-left));
 }
 
 .indented6 {
-	padding-left: calc(3rem * 2);
+	padding-left: calc(6 * var(--padding-left));
 }
 
 .highlighted {
