@@ -10,24 +10,20 @@
 </head>
 
 <body>
+  <header id="header">
+    <a href="https://http.cat/418" target="_blank"><img src="./spring_logo.png" alt="logo"></a>
+  </header>
 	<h1>Spring Boot Reference Documentation</h1>
   <nav id="navbar">
     <ul>
-      <li><a href="#Core_Features" accesskey="I">Core Features</a></li>
-      <li><a href="#Web" accesskey="H">Web</a></li>
-      <li><a href="#IO" accesskey="C">IO</a></li>
-      <li><a href="#Production-ready_Features" accesskey="C">Production-ready Features</a></li>
+      <li><a class="nav-link" href="#Documentation_Overview">Documentation Overview</a></li>
+      <li><a class="nav-link" href="#Core_Features">Core Features</a></li>
+      <li><a class="nav-link" href="#Web">Web</a></li>
+      <li><a class="nav-link" href="#IO">IO</a></li>
+      <li><a class="nav-link" href="#Production-ready_Features">Production-ready Features</a></li>
     </ul>
   </nav>
 	<main id="main-doc">
-    <!-- <section id="section_topic" class="main-section">
-      <h2>section topic</h2>
-      <p>something</p>
-      <code>
-        &lt;div class="example"&gt;&lt;p&gt;This is a code example&lt;/p&gt;&lt;/div&gt;
-      </code>
-      <li>item</li>
-    </section> -->
     	<section id="Documentation_Overview" class="main-section">
       		<h2>Documentation Overview</h2>
       		<p>Hello. This documentation page is only a reference and most of the  info is missing (and it may also be incorrectly placed). If you wish to actually be informed about Spring Boot and all its features then you should visit <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/" target="_blank">docs.spring.io</a>'s official page.</p>
@@ -38,8 +34,8 @@
       	<p class="header-description">This section dives into the details of Spring Boot. Here you can learn about the key features that you may want to use and customize.</p>
 
       	<section id="SpringApplication" class="secondary-section">
-        	<h3 class="indented">SpringApplication</h3>
-        	<p class="indented">The <span class="highlighted">SpringApplication</span> class provides a convenient way to bootstrap a Spring application that is started from a <span class="highlighted">main()</span> method. In many situations, you can delegate to the static <span class="highlighted">SpringApplication.run</span> method, as shown in the following example:</p>
+        	<h3 class="indented3">SpringApplication</h3>
+        	<p class="indented3">The <span class="highlighted">SpringApplication</span> class provides a convenient way to bootstrap a Spring application that is started from a <span class="highlighted">main()</span> method. In many situations, you can delegate to the static <span class="highlighted">SpringApplication.run</span> method, as shown in the following example:</p>
         		<pre>
           			<code>
                   import org.springframework.boot.SpringApplication;
@@ -55,18 +51,18 @@
                   }
 					</code>
 				</pre>
-        		<p class="indented">By default, <span class="highlighted">INFO</span> logging messages are shown, including some relevant startup details, such as the user that launched the application. If you need a log level other than <span class="highlighted">INFO</span>, you can set it, as described in Log Levels. The application version is determined using the implementation version from the main application class’s package. Startup information logging can be turned off by setting <span class="highlighted">spring.main.log-startup-info</span> to <span class="highlighted">false</span>. This will also turn off logging of the application’s active profiles.</p>
+        <p class="indented3">By default, <span class="highlighted">INFO</span> logging messages are shown, including some relevant startup details, such as the user that launched the application. If you need a log level other than <span class="highlighted">INFO</span>, you can set it, as described in Log Levels. The application version is determined using the implementation version from the main application class’s package. Startup information logging can be turned off by setting <span class="highlighted">spring.main.log-startup-info</span> to <span class="highlighted">false</span>. This will also turn off logging of the application’s active profiles.</p>
       </section>
       <section id="Web_Environment" class="secondary-section">
-				<h3 class="indented">Web Environment</h3>
-				<p class="indented">A <span class="highlighted">SpringApplication</span> attempts to create the right type of <span class="highlighted">ApplicationContext</span> on your behalf. The algorithm used to determine a <span class="highlighted">WebApplicationType</span> is the following:</p>
-				<ul class="indented2">
-				<li>If Spring MVC is present, an <span class="highlighted">AnnotationConfigServletWebServerApplicationContext</span> is used</li>
-				<li>If Spring MVC is not present and Spring WebFlux is present, an <span class="highlighted">AnnotationConfigReactiveWebServerApplicationContext</span> is used</li>
-				<li>Otherwise, <span class="highlighted">AnnotationConfigApplicationContext</span> is used</li>
+				<h3 class="indented3">Web Environment</h3>
+				<p class="indented3">A <span class="highlighted">SpringApplication</span> attempts to create the right type of <span class="highlighted">ApplicationContext</span> on your behalf. The algorithm used to determine a <span class="highlighted">WebApplicationType</span> is the following:</p>
+				<ul class="indented6">
+          <li>If Spring MVC is present, an <span class="highlighted">AnnotationConfigServletWebServerApplicationContext</span> is used</li>
+          <li>If Spring MVC is not present and Spring WebFlux is present, an <span class="highlighted">AnnotationConfigReactiveWebServerApplicationContext</span> is used</li>
+          <li>Otherwise, <span class="highlighted">AnnotationConfigApplicationContext</span> is used</li>
 				</ul>
-				<p class="indented">This means that if you are using Spring MVC and the new <span class="highlighted">WebClient</span> from Spring WebFlux in the same application, Spring MVC will be used by default. You can override that easily by calling <span class="highlighted">setWebApplicationType(WebApplicationType)</span>.</p>
-				<p class="indented">It is also possible to take complete control of the <span class="highlighted">Applic<span class="highlighted">ationContext</span></span> type that is used by calling <span class="highlighted">setApplicationContextFactory(…​)</span>.</p>
+				<p class="indented3">This means that if you are using Spring MVC and the new <span class="highlighted">WebClient</span> from Spring WebFlux in the same application, Spring MVC will be used by default. You can override that easily by calling <span class="highlighted">setWebApplicationType(WebApplicationType)</span>.</p>
+				<p class="indented3">It is also possible to take complete control of the <span class="highlighted">Applic<span class="highlighted">ationContext</span></span> type that is used by calling <span class="highlighted">setApplicationContextFactory(…​)</span>.</p>
 			</section>
   		</section>
 
@@ -126,9 +122,9 @@
 			<h2>IO</h2>
       <p class="header-description">Most applications will need to deal with input and output concerns at some point. Spring Boot provides utilities and integrations with a range of technologies to help when you need IO capabilities. This section covers standard IO features such as caching and validation as well as more advanced topics such as scheduling and distributed transactions. We will also cover calling remote REST or SOAP services and sending email.</p>
       <section id="Caching" class="secondary-section">
-		<h3 class="indented">Caching</h3>
-        <p class="indented">The Spring Framework provides support for transparently adding caching to an application. At its core, the abstraction applies caching to methods, thus reducing the number of executions based on the information available in the cache. The caching logic is applied transparently, without any interference to the invoker. Spring Boot auto-configures the cache infrastructure as long as caching support is enabled by using the <span class="highlighted">@EnableCaching</span> annotation.</p>
-        <p class="indented">In a nutshell, to add caching to an operation of your service add the relevant annotation to its method, as shown in the following example:</p>
+		    <h3 class="indented3">Caching</h3>
+        <p class="indented3">The Spring Framework provides support for transparently adding caching to an application. At its core, the abstraction applies caching to methods, thus reducing the number of executions based on the information available in the cache. The caching logic is applied transparently, without any interference to the invoker. Spring Boot auto-configures the cache infrastructure as long as caching support is enabled by using the <span class="highlighted">@EnableCaching</span> annotation.</p>
+        <p class="indented3">In a nutshell, to add caching to an operation of your service add the relevant annotation to its method, as shown in the following example:</p>
         <pre>
           <code>
             import org.springframework.cache.annotation.Cacheable;
@@ -145,7 +141,7 @@
             }
           </code>
         </pre>
-        <p class="indented">This example demonstrates the use of caching on a potentially costly operation. Before invoking <span class="highlighted">computePiDecimal</span>, the abstraction looks for an entry in the <span class="highlighted">piDecimals</span> cache that matches the <span class="highlighted">i</span> argument. If an entry is found, the content in the cache is immediately returned to the caller, and the method is not invoked. Otherwise, the method is invoked, and the cache is updated before returning the value.</p>
+        <p class="indented3">This example demonstrates the use of caching on a potentially costly operation. Before invoking <span class="highlighted">computePiDecimal</span>, the abstraction looks for an entry in the <span class="highlighted">piDecimals</span> cache that matches the <span class="highlighted">i</span> argument. If an entry is found, the content in the cache is immediately returned to the caller, and the method is not invoked. Otherwise, the method is invoked, and the cache is updated before returning the value.</p>
       </section>
     </section>
 
@@ -172,7 +168,12 @@
           }
         </code>
       </pre>
+      <section id="Caching" class="secondary-section">
+		    <h3 class="indented3">Caching</h3>
+        <p class="indented3">The Spring Framework provides support for transparently adding caching to an application. At its core, the abstraction applies caching to methods, thus reducing the number of executions based on the information available in the cache. The caching logic is applied transparently, without any interference to the invoker. Spring Boot auto-configures the cache infrastructure as long as caching support is enabled by using the <span class="highlighted">@EnableCaching</span> annotation.</p>
+      </section>
     </section>
+    
 	</main>
 </body>
 
