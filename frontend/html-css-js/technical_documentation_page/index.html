@@ -31,24 +31,24 @@
 
     	<section id="Core_Features" class="main-section">
       	<h2>Core Features</h2>
-      	<p class="header-description">This section dives into the details of Spring Boot. Here you can learn about the key features that you may want to use and customize.</p>
+      	<p class="section-description">This section dives into the details of Spring Boot. Here you can learn about the key features that you may want to use and customize.</p>
 
       	<section id="SpringApplication" class="secondary-section">
         	<h3 class="indented3">SpringApplication</h3>
         	<p class="indented3">The <span class="highlighted">SpringApplication</span> class provides a convenient way to bootstrap a Spring application that is started from a <span class="highlighted">main()</span> method. In many situations, you can delegate to the static <span class="highlighted">SpringApplication.run</span> method, as shown in the following example:</p>
         		<pre>
           			<code>
-                  import org.springframework.boot.SpringApplication;
-                  import org.springframework.boot.autoconfigure.SpringBootApplication;
+          import org.springframework.boot.SpringApplication;
+          import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-                  @SpringBootApplication
-                  public class MyApplication {
+          @SpringBootApplication
+          public class MyApplication {
 
-                    public static void main(String[] args) {
-                      SpringApplication.run(MyApplication.class, args);
-                    }
+            public static void main(String[] args) {
+              SpringApplication.run(MyApplication.class, args);
+            }
 
-                  }
+          }
 					</code>
 				</pre>
         <p class="indented3">By default, <span class="highlighted">INFO</span> logging messages are shown, including some relevant startup details, such as the user that launched the application. If you need a log level other than <span class="highlighted">INFO</span>, you can set it, as described in Log Levels. The application version is determined using the implementation version from the main application class’s package. Startup information logging can be turned off by setting <span class="highlighted">spring.main.log-startup-info</span> to <span class="highlighted">false</span>. This will also turn off logging of the application’s active profiles.</p>
@@ -68,7 +68,7 @@
 
 		<section id="Web" class="main-section">
 			<h2>Web</h2>
-			<p class="header-description">Spring Boot is well suited for web application development. You can create a self-contained HTTP server by using embedded Tomcat, Jetty, Undertow, or Netty. Most web applications use the <span class="highlighted">spring-boot-starter-web</span> module to get up and running quickly. You can also choose to build reactive web applications by using the <span class="highlighted">spring-boot-starter-webflux</span> module.</p>
+			<p class="section-description">Spring Boot is well suited for web application development. You can create a self-contained HTTP server by using embedded Tomcat, Jetty, Undertow, or Netty. Most web applications use the <span class="highlighted">spring-boot-starter-web</span> module to get up and running quickly. You can also choose to build reactive web applications by using the <span class="highlighted">spring-boot-starter-webflux</span> module.</p>
 			<p>If you want to build servlet-based web applications, you can take advantage of Spring Boot’s auto-configuration for Spring MVC or Jersey.</p>
 			<p>The <a href="https://docs.spring.io/spring-framework/reference/web/webmvc.html" target="_blank">Spring Web MVC framework</a> (often referred to as “Spring MVC”) is a rich “model view controller” web framework. Spring MVC lets you create special <span class="highlighted">@Controller</span> or <span class="highlighted">@RestController</span> beans to handle incoming HTTP requests. Methods in your controller are mapped to HTTP by using <span class="highlighted">@RequestMapping</span> annotations.</p>
 			<p>The following code shows a typical <span class="highlighted">@RestController</span> that serves JSON data:</p>
@@ -107,6 +107,55 @@
           }
 				</code>
 			</pre>
+      <p>“WebMvc.fn”, the functional variant, separates the routing configuration from the actual handling of the requests, as shown in the following example:</p>
+      <pre>
+        <code>
+          /* imports */
+
+          @Configuration(proxyBeanMethods = false)
+          public class MyRoutingConfiguration {
+
+              private static final RequestPredicate ACCEPT_JSON = accept(MediaType.APPLICATION_JSON);
+
+              @Bean
+              public RouterFunction&ltServerResponse&gt routerFunction(MyUserHandler userHandler) {
+                  return route()
+                          .GET("/{user}", ACCEPT_JSON, userHandler::getUser)
+                          .GET("/{user}/customers", ACCEPT_JSON, userHandler::getUserCustomers)
+                          .DELETE("/{user}", ACCEPT_JSON, userHandler::deleteUser)
+                          .build();
+              }
+
+          }
+        </code>
+      </pre>
+      <pre>
+        <code>
+          /* imports */
+
+          @Component
+          public class MyUserHandler {
+
+              public ServerResponse getUser(ServerRequest request) {
+                  ...
+                  return ServerResponse.ok().build();
+              }
+
+              public ServerResponse getUserCustomers(ServerRequest request) {
+                  ...
+                  return ServerResponse.ok().build();
+              }
+
+              public ServerResponse deleteUser(ServerRequest request) {
+                  ...
+                  return ServerResponse.ok().build();
+              }
+
+          }
+        </code>
+      </pre>
+      <p>Spring MVC is part of the core Spring Framework, and detailed information is available in the <a href="https://docs.spring.io/spring-framework/docs/6.0.11/reference/html/web.html#mvc" target="_blank">reference documentation</a>. There are also several guides that cover Spring MVC available at <a href="https://spring.io/guides" target="_blank">spring.io/guides</a>.</p>
+
       <p>If <a href="https://spring.io/projects/spring-security" target="_blank">Spring Security</a> is on the classpath, then web applications are secured by default. Spring Boot relies on Spring Security’s content-negotiation strategy to determine whether to use <span class="highlighted">httpBasic</span> or <span class="highlighted">formLogin</span>. To add method-level security to a web application, you can also add <span class="highlighted">@EnableGlobalMethodSecurity</span> with your desired settings. Additional information can be found in the <a href="https://docs.spring.io/spring-security/reference/6.1.3/servlet/authorization/method-security.html" target="_blank">Spring Security Reference Guide</a>.</p>
       <p>You can change the username and password by providing a <span class="highlighted">spring.security.user.name</span> and <span class="highlighted">spring.security.user.password</span>.</p>
       <p>The basic features you get by default in a web application are:</p>
@@ -120,7 +169,7 @@
 
     <section id="IO" class="main-section">
 			<h2>IO</h2>
-      <p class="header-description">Most applications will need to deal with input and output concerns at some point. Spring Boot provides utilities and integrations with a range of technologies to help when you need IO capabilities. This section covers standard IO features such as caching and validation as well as more advanced topics such as scheduling and distributed transactions. We will also cover calling remote REST or SOAP services and sending email.</p>
+      <p class="section-description">Most applications will need to deal with input and output concerns at some point. Spring Boot provides utilities and integrations with a range of technologies to help when you need IO capabilities. This section covers standard IO features such as caching and validation as well as more advanced topics such as scheduling and distributed transactions. We will also cover calling remote REST or SOAP services and sending email.</p>
       <section id="Caching" class="secondary-section">
 		    <h3 class="indented3">Caching</h3>
         <p class="indented3">The Spring Framework provides support for transparently adding caching to an application. At its core, the abstraction applies caching to methods, thus reducing the number of executions based on the information available in the cache. The caching logic is applied transparently, without any interference to the invoker. Spring Boot auto-configures the cache infrastructure as long as caching support is enabled by using the <span class="highlighted">@EnableCaching</span> annotation.</p>
@@ -147,7 +196,7 @@
 
     <section id="Production-ready_Features" class="main-section">
 			<h2>Production-ready Features</h2>
-      <p class="header-description">Spring Boot includes a number of additional features to help you monitor and manage your application when you push it to production. You can choose to manage and monitor your application by using HTTP endpoints or with JMX. Auditing, health, and metrics gathering can also be automatically applied to your application.</p>
+      <p class="section-description">Spring Boot includes a number of additional features to help you monitor and manage your application when you push it to production. You can choose to manage and monitor your application by using HTTP endpoints or with JMX. Auditing, health, and metrics gathering can also be automatically applied to your application.</p>
       <p>The <span class="highlighted"><a href="https://github.com/spring-projects/spring-boot/tree/v3.1.3/spring-boot-project/spring-boot-actuator" target="_blank">spring-boot-actuator</a></span> module provides all of Spring Boot’s production-ready features. The recommended way to enable the features is to add a dependency on the <span class="highlighted">spring-boot-starter-actuator</span> “Starter”.</p>
       <p>To add the actuator to a Maven-based project, add the following “Starter” dependency:</p>
       <pre>
