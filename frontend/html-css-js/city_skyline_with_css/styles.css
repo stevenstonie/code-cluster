@@ -46,11 +46,11 @@ body {
 	background: radial-gradient(closest-corner circle at 15% 15%,
 			#ffcf33,
 			#ffcf33 20%,
-			#ffff66 21%,
+			#ffff66 23%,
 			#bbeeff 100%);
 }
 
-/* BACKGROUND BUILDINGS - "bb" stands for "background building" */
+/* BACKGROUND BUILDINGS */
 .bb1 {
 	width: 10%;
 	height: 70%;
@@ -139,7 +139,7 @@ body {
 	background-color: var(--window-color4);
 }
 
-/* FOREGROUND BUILDINGS - "fb" stands for "foreground building" */
+/* FOREGROUND BUILDINGS */
 .fb1 {
 	width: 10%;
 	height: 60%;
@@ -291,8 +291,8 @@ body {
 	.sky {
 		background: radial-gradient(closest-corner circle at 15% 15%,
 				#ccc,
-				#ccc 20%,
-				#445 21%,
-				#223 100%);
+				#ccc 14%,
+				#445 18%,
+				#223 80%);
 	}
 }
