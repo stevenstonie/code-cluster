@@ -10,24 +10,34 @@
 
 <body>
 	<header id="header">
-		<img id="header-img" src="" alt="image of crocks" />
-		<nav id="nav-bar">
+		<nav id="navbar">
+			<img id="logo" src="https://http.cat/418" alt="image of crocks" />
 			<ul>
-				<li><a class="nav-link" href="#video">video</a></li>
-				<li><a class="nav-link" href="#email">email</a></li>
-				<li><a class="nav-link" href="#submit">submit</a></li>
+				<li><a class="nav-link" href="#video-section">video</a></li>
+				<li><a class="nav-link" href="#email-section">email</a></li>
+				<li><a class="nav-link" href="#submit-section">submit</a></li>
 			</ul>
 		</nav>
 	</header>
-	<video id="video" alt="video?" src="https://www.youtube.com/watch?v=C-aeuFlp4bE&t=3s&pp=ygUGY3JvY2tz">
-		<track kind="subtitles" src="subtitles.vtt" srclang="en" label="English">
-		<track kind="description" src="description.vtt" srclang="en" label="English">
-	</video>
-	<form id="form" action="https://www.freecodecamp.com/email-submit" method="POST">
-		<input id="email" type="email" name="email" placeholder="enter your email here"></input>
-		<input id="submit" type="submit"></input>
-	</form>
-	<div id="empty-space"></div>
+	<div id="sections-container">
+		<section id="title-section">
+			<p>crokkz - feel like you're walking on water</p>
+		</section>
+		<section id="video-section">
+			<video id="video" alt="video?" src="https://www.youtube.com/watch?v=C-aeuFlp4bE&t=3s&pp=ygUGY3JvY2tz">
+				<track kind="subtitles" src="subtitles.vtt" srclang="en" label="English">
+				<track kind="description" src="description.vtt" srclang="en" label="English">
+			</video>
+		</section>
+		<form id="form" action="about:blank" method="POST">
+			<section id="email-section" class="bubble-section">
+				<input id="email" type="email" name="email" placeholder="enter your email here" required></input>
+			</section>
+			<section id="submit-section" class="bubble-section">
+				<input id="submit" type="submit"></input>
+			</section>
+		</form>
+	</div>
 </body>
 
 </html>
