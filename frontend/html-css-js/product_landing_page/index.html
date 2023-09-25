@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Crocks</title>
+	<link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+	<header id="header">
+		<img id="header-img" src="" alt="image of crocks" />
+		<nav id="nav-bar">
+			<ul>
+				<li><a class="nav-link" href="#video">video</a></li>
+				<li><a class="nav-link" href="#email">email</a></li>
+				<li><a class="nav-link" href="#submit">submit</a></li>
+			</ul>
+		</nav>
+	</header>
+	<video id="video" alt="video?" src="https://www.youtube.com/watch?v=C-aeuFlp4bE&t=3s&pp=ygUGY3JvY2tz">
+		<track kind="subtitles" src="subtitles.vtt" srclang="en" label="English">
+		<track kind="description" src="description.vtt" srclang="en" label="English">
+	</video>
+	<form id="form" action="https://www.freecodecamp.com/email-submit" method="POST">
+		<input id="email" type="email" name="email" placeholder="enter your email here"></input>
+		<input id="submit" type="submit"></input>
+	</form>
+	<div id="empty-space"></div>
+</body>
+
+</html>

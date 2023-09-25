@@ -1,0 +1,29 @@
+*{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: orangered;
+}
+
+nav {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+#nav-bar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background-color: white;
+	z-index: 1;
+}
+
+#empty-space {
+	height: 2000px;
+	background-color: antiquewhite;
+}
