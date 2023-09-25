@@ -1,5 +1,6 @@
 :root {
-	--padding-left: 1rem;
+	--padding_left: 1rem;
+	--color_dark_grey: rgb(27, 27, 39);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -10,13 +11,13 @@
 
 html {
 	margin-left: 280px;
-	background-color: rgb(27, 27, 39);
+	background-color: var(--color_dark_grey);
 	box-sizing: border-box;
 }
 
 body {
 	font-family: monospace, Tahoma, sans-serif;
-	background-color: rgb(27, 27, 39);
+	background-color: var(--color_dark_grey);
 	color: rgb(200, 200, 200);
 }
 
@@ -72,11 +73,11 @@ nav>ul>li:hover {
 }
 
 .indented3 {
-	padding-left: calc(3 * var(--padding-left));
+	padding-left: calc(3 * var(--padding_left));
 }
 
 .indented6 {
-	padding-left: calc(6 * var(--padding-left));
+	padding-left: calc(6 * var(--padding_left));
 }
 
 .highlighted {
