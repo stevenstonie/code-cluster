@@ -48,19 +48,19 @@ li {
 	margin: 0 30px;
 }
 
-#sections-container {
+section {
+	margin-bottom: 30px;
+}
+
+#presentation-section {
+	margin-left: 15vw;
+}
+
+#section-2 {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-}
-
-#sections-container section {
-	margin-bottom: 20px;
-}
-
-input {
-	border: none;
 }
 
 #submit {
@@ -75,10 +75,23 @@ input {
 	max-width: 200px;
 }
 
-.small-text {
-	font-size: 0.6em;
+#video {
+	width: 50vw;
+	height: 50vh;
 }
 
-.crossed-text {
-	text-decoration: line-through;
+.center-text {
+	text-align: center;
+}
+
+.icon {
+	width: 50px;
+	height: 50px;
+}
+
+.section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 70px 0;
 }
