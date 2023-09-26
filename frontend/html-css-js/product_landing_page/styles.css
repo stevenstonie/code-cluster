@@ -77,7 +77,7 @@ section {
 }
 
 #front-products-section h3 {
-	margin-top: 20px;
+	margin: 40px 40px 0 40px;
 }
 
 #submit-section, #video-section {
@@ -136,9 +136,10 @@ h2, h3 {
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
-	width: 300px;
+	width: 350px;
 	height: 300px;
 	border: 5px solid rgba(100, 130, 160, 0.4);
+	border-radius: 30px;
 	padding: 20px;
 	margin: 50px auto;
 }
@@ -155,7 +156,12 @@ input {
 	padding: 10px 20px;
 }
 
-@media screen and (max-width: 1000px) {
+.price {
+	margin: 10px 0;
+	font-weight: bold;
+}
+
+@media screen and (max-width: 1100px) {
 	#front-products-section {
 		display: grid;
 		grid-auto-flow: column;
@@ -164,7 +170,7 @@ input {
 	}
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 750px) {
 	#front-products-section {
 		display: grid;
 		grid-auto-flow: column;
