@@ -181,6 +181,10 @@ input {
 }
 
 @media screen and (max-width: 750px) {
+	:root {
+		--width-of-navbar: 90px;
+	}
+
 	#front-products-section {
 		display: grid;
 		grid-auto-flow: column;
@@ -188,33 +192,34 @@ input {
 		grid-template-rows: repeat(6, 0.2fr);
 	}
 
-	* {
-		font-size: 0.9rem;
+	html {
+		margin-left: var(--width-of-navbar);
 	}
 
 	#navbar {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
+		width: var(--width-of-navbar);
 		height: auto;
-		width: 20%;
-	  }
-	
-	  #navbar ul {
+	}
+
+	#navbar ul {
 		flex-direction: column;
 		width: 100%;
 		height: auto;
-	  }
-	
-	  #navbar ul li {
-		margin: 10px 0;
+	}
+
+	#navbar ul li {
+		margin: 10px 8px;
 		box-shadow: none;
 		border-radius: 0;
 		padding: 10px 0;
-		text-align: center;
-	  }
-	  
-	  #navbar a {
+	}
+
+	#navbar a {
 		align-self: flex-start;
-	  }
+		text-decoration: none;
+		color: black;
+	}
 }
