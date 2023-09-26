@@ -1,5 +1,6 @@
 :root {
 	--height-of-navbar: 50px;
+	--background-color: rgb(152, 234, 255);
 }
 
 * {
@@ -15,7 +16,7 @@ html {
 }
 
 body {
-	background-color: orangered;
+	background-color: var(--background-color);
 }
 
 #navbar {
@@ -23,7 +24,7 @@ body {
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: white;
+	background-color: var(--background-color);
 	z-index: 1;
 	display: flex;
 	justify-content: space-around;
@@ -43,20 +44,38 @@ body {
 	height: 100%;
 }
 
-li {
+#navbar ul li {
 	list-style: none;
 	margin: 0 30px;
+	color: black;
 }
 
 section {
-	margin-bottom: 30px;
+	margin-bottom: 10vh;
 }
 
-#presentation-section {
+#promotion-section {
 	margin-left: 15vw;
 }
 
-#section-2 {
+#promotion-section .section {
+	display: flex;
+	align-items: center;
+
+	margin: 50px 0;
+}
+
+#promotion-section .section img {
+	margin-right: 30px;
+}
+
+#more-details-section {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+#last-section, #video-section {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -89,9 +108,29 @@ section {
 	height: 50px;
 }
 
-.section {
+.product {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	justify-content: start;
 	align-items: center;
-	margin: 70px 0;
+	width: 300px;
+	height: 300px;
+	border: 2px solid black;
+	padding: 20px;
+	margin: 50px 0;
+}
+
+#page-logo {
+	margin-left: 20px;
+}
+
+h2 {
+	white-space: nowrap;
+}
+
+.centered {
+	display: flex;
+	justify-content: center; /* Horizontally center */
+	align-items: center; /* Vertically center */
+	height: 100%; /* Make sure the container takes up the full height */
 }
