@@ -3,6 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
 .VSCodeCounter
 
 # User-specific files
@@ -173,9 +175,6 @@ nCrunchTemp_*
 # MightyMoose
 *.mm.*
 AutoTest.Net/
-
-# Web workbench (sass)
-.sass-cache/
 
 # Installshield output folder
 [Ee]xpress/
@@ -381,9 +380,6 @@ FodyWeavers.xsd
 # Compiled class file
 *.class
 
-# Log file
-*.log
-
 # BlueJ files
 *.ctxt
 
@@ -401,15 +397,37 @@ FodyWeavers.xsd
 
 # Angular
 
-.DS_STORE
-
-/dist/
+# Compiled output
+/dist
+/tmp
+/out-tsc
 /bazel-out
-/integration/bazel/bazel-*
-*.log
+
+# Node
+/node_modules
 /node_modules/
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
 # Miscellaneous
+/.angular/cache
 */.angular/cache
 .sass-cache/
 /connect.lock
@@ -417,6 +435,12 @@ FodyWeavers.xsd
 /libpeerconnection.log
 testem.log
 /typings
+
+# System files
+.DS_Store
+Thumbs.db
+
+/integration/bazel/bazel-*
 
 # CircleCI temporary file for cache key computation.
 # See `save_month_to_file` in `.circleci/config.yml`.
