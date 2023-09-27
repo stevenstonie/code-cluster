@@ -1,6 +1,6 @@
 :root {
 	--height-of-navbar: 50px;
-	--background-color: rgb(152, 234, 255);
+	--background-color: linear-gradient(45deg, rgb(118, 201, 255), rgb(247, 255, 222));
 }
 
 * {
@@ -11,12 +11,12 @@
 }
 
 html {
-	margin-top: var(--height-of-navbar);
+	padding-top: var(--height-of-navbar);
 	scroll-behavior: smooth;
 }
 
 body {
-	background-color: var(--background-color);
+	background: var(--background-color);
 }
 
 #navbar {
@@ -24,7 +24,7 @@ body {
 	top: 0;
 	left: 0;
 	right: 0;
-	background-color: var(--background-color);
+	background: transparent;
 	z-index: 1;
 	display: flex;
 	justify-content: space-around;
@@ -68,8 +68,7 @@ section {
 #promotion-section .section {
 	display: flex;
 	align-items: center;
-
-	margin: 50px 0;
+	margin: 50px 7vw 50px 0;
 }
 
 #promotion-section .section img {
@@ -183,6 +182,15 @@ input {
 @media screen and (max-width: 750px) {
 	:root {
 		--width-of-navbar: 90px;
+	}
+
+	p {
+		font-size: 0.75rem;
+	}
+
+	h2,
+	h3 {
+		font-size: 1.1rem;
 	}
 
 	#front-products-section {
