@@ -14,15 +14,20 @@
 </div>
 
 <div class="games">
-	<div class="game">
-		<div class="game-thumb-container">
-			<img class="game-thumbnail" src="https://cdn-icons-png.flaticon.com/256/7591/7591003.png" alt="thumbnail" />
-		</div>
-		<div class="game-description">
-			<p class="game-name">Name</p>
-			<div class="game-platforms">
-				<img class="game-platform" src="https://cdn-icons-png.flaticon.com/512/1/1321.png" alt="slug" />
+	<ng-container *ngFor="let game of games">
+		<div class="game">
+			<div class="game-thumb-container">
+				<img *ngIf="game.background_image" src="{{game.background_image}}" class="game-thumbnail"
+					alt="thumbnail" />
+				<p *ngIf="!game.background_image">no image</p>
+			</div>
+			<div class="game-description">
+				<p class="game-name">{{ game.name }}</p>
+				<div class="game-platforms">
+					<img *ngFor="let gamePlatform of game.parent_platforms" class="game-platform"
+						src="assets/images/platforms/{{ gamePlatform.platform.slug }}.png" alt="{{gamePlatform.platform.slug}}" style="font-size: 0.5rem; overflow: hidden;" />
+				</div>
 			</div>
 		</div>
-	</div>
+	</ng-container>
 </div>
