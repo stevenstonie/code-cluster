@@ -15,7 +15,7 @@ export const environment = {
 	apiKey: 'get this from the https://rawg.io/apidocs site',
 };
 ```
-
+also create an empty environment.ts file in the same directory so that the app can be build.
 
 ## Development server
 
