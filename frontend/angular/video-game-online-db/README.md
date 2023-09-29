@@ -2,6 +2,21 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
 
+## Before
+
+Before running. in order for it to work, you need to get the necessary api keys from:
+https://rapidapi.com/accujazz/api/rawg-video-games-database/details and https://rawg.io/apidocs. create accounts, follow the links, get the three necessary keys and add them to an environment.hidden.ts file in the environments directory. the template is:
+```
+export const environment = {
+	production: false,
+	BASE_URL: 'https://rawg-video-games-database.p.rapidapi.com',
+	rapidApiKey: 'get this',
+	rapidApiHost: 'and this from https://rapidapi.com/accujazz/api/rawg-video-games-database',
+	apiKey: 'get this from the https://rawg.io/apidocs site',
+};
+```
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
