@@ -4,9 +4,8 @@
 	padding-left: 20px;
 }
 
-// TODO doesnt really work
+// TODO: doesnt really work
 ::ng-deep {
-
 	.mat-form-field-infix {
 		background-color: #3f51b5;
 	}
@@ -42,19 +41,20 @@
 	margin: 20px auto;
 }
 
+
 .game {
 	width: 280px;
 	margin: 10px;
-	height: 330px;
+	height: 370px;
 	overflow: hidden;
 	border-radius: 5px;
 	background-color: #202020;
-	box-shadow: 4px 3px 8px 0px rgb(29, 194, 240);
+	box-shadow: 4px 3px 8px 0px rgb(0, 200, 255);
 	transition-duration: 0.3s;
 	cursor: pointer;
 
 	&:hover {
-		box-shadow: 4px 3px 11px 6px rgb(29, 194, 240);
+		box-shadow: 4px 3px 11px 6px rgb(89, 219, 255);
 		transform: translateY(-3px);
 	}
 
