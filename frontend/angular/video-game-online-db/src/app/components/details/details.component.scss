@@ -48,7 +48,6 @@
 
 		&-img {
 			width: 100%;
-			filter: blur(5px);
 		}
 	}
 
@@ -59,6 +58,12 @@
 	}
 
 	&-header {
+		text-shadow:
+		-2px -2px 0 #000,
+		2px -2px 0 #000,
+		-2px 2px 0 #000,
+		2px 2px 0 #000;
+
 		&-title {
 			font-size: 70px;
 			color: #fff;
