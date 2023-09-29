@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Game } from 'src/app/models';
 
 @Component({
   selector: 'app-game-tabs',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./game-tabs.component.scss']
 })
 export class GameTabsComponent {
-
+  @Input() game?: Game;
 }

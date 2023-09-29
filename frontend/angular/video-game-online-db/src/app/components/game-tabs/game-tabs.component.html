@@ -1,37 +1,44 @@
 <div class="game-tabs">
 	<mat-tab-group mat-align-tabs="start" backgroundColor="primary">
 		<mat-tab label="About">
-			<p class="game-tabs-par">
+			<p *ngIf="game?.parent_platforms?.length" class="game-tabs-par">
 				Platforms:
-				<span>PC</span>
+				<span *ngFor="let game of game?.parent_platforms; let last = last">{{ game.platform.name }}<span
+						*ngIf="!last">, </span></span>
 			</p>
-			<p class="game-tabs-par">
+			<p *ngIf="game?.publishers?.length" class="game-tabs-par">
 				Publishers:
-				<span>Konami</span>
+				<span *ngFor="let publisher of game?.publishers; let last = last">{{ publisher.name }}<span
+						*ngIf="!last">, </span></span>
 			</p>
-			<p class="game-tabs-par">
+			<p *ngIf="game?.website" class="game-tabs-par">
 				Website:
-				<a class="game-tabs-link" href="#" target="_blank">http://</a>
+				<a class="game-tabs-link" href="{{ game?.website }}" target="_blank">{{
+					game?.website
+					}}</a>
 			</p>
-			<div class="game-description">Some description</div>
+			<div class="game-description" [innerHTML]="game?.description"></div>
 			<p class="game-tabs-votes">
-				<span>
-					<mat-icon class="game-votes-up">thumbs_up</mat-icon>
-					<span class="game-votes-count">51</span>
-				</span>
-				<span>
-					<mat-icon class="game-votes-down">thumbs_down</mat-icon>
-					<span class="game-votes-count">11</span>
-				</span>
+				<ng-container *ngFor="let rating of game?.ratings">
+					<span *ngIf="rating.title === 'exceptional'">
+						<mat-icon class="game-votes-up">thumb_up</mat-icon>
+						<span class="game-votes-count">{{ rating.count || 0 }}</span>
+					</span>
+					<span *ngIf="rating.title === 'skip'">
+						<mat-icon class="game-votes-down">thumb_down</mat-icon>
+						<span class="game-votes-count">{{ rating.count || 0 }}</span>
+					</span>
+				</ng-container>
 			</p>
 		</mat-tab>
-		<mat-tab label="Screenshots">
-			<img class="game-screenshots" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.dumpaday.com%2Fwp-content%2Fuploads%2F2016%2F02%2Frandom-pictures-1.jpg&f=1&nofb=1&ipt=b58393fc846a9767a4876c46059e14f7fb1f4ae251555f375fca59e08432312a&ipo=images" alt="screenshot">
+		<mat-tab label="Screenshots" *ngIf="game?.screenshots?.length">
+			<img class="game-screenshot" *ngFor="let screenshot of game?.screenshots" src="{{ screenshot.image }}"
+				alt="screenshot" />
 		</mat-tab>
-		<mat-tab label="Trailers">
-			<video class="game-trailer" controls>
-				<source src="https://steamcdn-a.akamaihd.net/steam/apps/256693661/movie_max.mp4" type="video/mp4">
-				Your browset does not support the video tag.
+		<mat-tab label="Trailers" *ngIf="game?.trailers?.length">
+			<video class="game-trailer" controls *ngFor="let trailer of game?.trailers">
+				<source src="{{ trailer.data.max }}" type="video/mp4" />
+				Your browser does not support the video tag.
 			</video>
 		</mat-tab>
 	</mat-tab-group>
