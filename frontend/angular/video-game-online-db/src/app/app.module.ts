@@ -25,7 +25,14 @@ import { HttpErrorsInterceptor } from './interceptors/http-errors.interceptor';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,
+    GaugeModule.forRoot(),
+    MatTabsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule
   ],
   providers: [
     {
