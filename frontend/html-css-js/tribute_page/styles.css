@@ -1,14 +1,19 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 body {
 	font-family: Tahoma, sans-serif;
 	background-color: #FAF3E0;
 	text-align: center;
+	overflow-x: hidden;
 }
 
 #image {
-	max-width: 100%;
-	width: 70%;
-	height: auto;
-	box-shadow: 4px 4px 5px 5px rgb(142, 130, 110);
+	width: 60%;
+	box-shadow: 4px 4px 7px 8px rgb(142, 130, 110);
 	border-radius: 5px;
 	margin: 20px auto;
 }
@@ -19,7 +24,8 @@ img {
 }
 
 section {
-	padding: 5%;
+	margin-top: 60px;
+	margin-bottom: 60px;
 }
 
 figcaption {
@@ -42,7 +48,7 @@ ol {
 	list-style: none;
 }
 
-p {
+p:not(#description) {
 	padding: 0 25%;
 	margin-top: 5%;
 	text-align: center;
@@ -53,19 +59,14 @@ p {
 }
 
 #description {
-	margin-top: -15px;
-	margin-bottom: 40px;
-}
-
-.enlarged {
-	font-size: 250%;
+	width: 100%;
+	margin-top: 15px;
+	margin-bottom: 60px;
+	background-color: #ffd460;
+	padding-top: 1px;
+	padding-bottom: 2px;
 }
 
 .less-margin-top {
 	margin-top: -20px;
-}
-
-.strip-wrapper {
-	background-color: #ffdd7f;
-	margin: 0 -6%;
 }
