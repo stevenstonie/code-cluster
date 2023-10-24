@@ -1,10 +1,5 @@
-body {
-	display: flex;
-	height: 100vh;
-	font-family: sans-serif, Arial, Helvetica;
-	font-size: 16px;
-	line-height: 1.5;
-	color: #333;
+:root {
+	--section-left-width: 180px;
 }
 
 * {
@@ -13,11 +8,33 @@ body {
 	box-sizing: border-box;
 }
 
-.left-section {
-	flex-basis: 33.33%;
+body {
+	display: flex;
+	font-family: sans-serif, Arial, Helvetica;
+	margin-top: 2vh;
+	margin-bottom: 2vh;
+	height: 96vh;
+	color: #333;
+	justify-content: center;
+}
+
+.section-left {
+	flex-basis: var(--section-left-width);
 	background: #f4f4f4;
 }
 
-.right-section {
-	flex-basis: auto;
+.section-right {
+	flex-basis: 340px;
+	background-color: aqua;
+}
+
+.profile-image-photo {
+	width: calc(var(--section-left-width) * .7);
+	height: calc(var(--section-left-width) * .7);
+	object-fit: cover;
+	border-radius: 50%;
+	border: 8px solid #dbdbdb;
+	margin: 20px auto;
+	display: block;
+	justify-content: center;
 }
