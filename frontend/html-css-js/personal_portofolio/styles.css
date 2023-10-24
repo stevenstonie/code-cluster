@@ -52,7 +52,12 @@ body {
 	margin-bottom: 8px;
 	text-transform: uppercase;
 	letter-spacing: 2px;
+	margin-top: 10px;
 
+	&:first-child {
+		margin-top: 0;
+	}
+	
 	&::after {
 		content: "";
 		position: absolute;
@@ -66,4 +71,22 @@ body {
 
 ul {
 	margin-left: 8px;
+}
+
+li {
+	margin-bottom: 5px;
+}
+
+.profile-details {
+	list-style: none;
+	display: grid;
+	grid-template-columns: auto 1fr;
+	grid-column-gap: 8px;
+	align-items: center;
+	margin-bottom: 16px;
+  }
+.profile-details-icon {
+	width: 20px;
+	height: 20px;
+	
 }
