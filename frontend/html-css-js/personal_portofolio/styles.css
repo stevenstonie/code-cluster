@@ -25,11 +25,11 @@ body {
 
 .section-right {
 	flex-basis: 340px;
-	background-color: aqua;
+	background-color: rgb(255, 255, 255);
 	padding: 15px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-  }
+}
 
 .profile-image-photo {
 	justify-content: center;
@@ -46,16 +46,24 @@ body {
 .header {
 	font-size: 1.4rem;
 	font-weight: bold;
+	display: inline-block;
+	color: rgb(74, 74, 74);
 	position: relative;
 	margin-bottom: 8px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+
+	&::after {
+		content: "";
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		right: -8px;
+		height: 1px;
+		background-color: #adadad;
+	}
 }
 
-.header::after {
-	content: "";
-	position: absolute;
-	bottom: 0px;
-	left: 0;
-	right: 0;
-	height: 1px;
-	background-color: #333;
+ul {
+	margin-left: 8px;
 }
