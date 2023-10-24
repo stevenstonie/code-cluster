@@ -10,31 +10,52 @@
 
 body {
 	display: flex;
+	justify-content: center;
 	font-family: sans-serif, Arial, Helvetica;
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 	height: 96vh;
 	color: #333;
-	justify-content: center;
 }
 
 .section-left {
 	flex-basis: var(--section-left-width);
-	background: #f4f4f4;
+	background: #ebebeb;
 }
 
 .section-right {
 	flex-basis: 340px;
 	background-color: aqua;
-}
+	padding: 15px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+  }
 
 .profile-image-photo {
+	justify-content: center;
+	display: block;
+	object-fit: cover;
 	width: calc(var(--section-left-width) * .7);
 	height: calc(var(--section-left-width) * .7);
-	object-fit: cover;
-	border-radius: 50%;
 	border: 8px solid #dbdbdb;
+	border-radius: 50%;
 	margin: 20px auto;
-	display: block;
-	justify-content: center;
+	background-color: white;
+}
+
+.header {
+	font-size: 1.4rem;
+	font-weight: bold;
+	position: relative;
+	margin-bottom: 8px;
+}
+
+.header::after {
+	content: "";
+	position: absolute;
+	bottom: 0px;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background-color: #333;
 }
