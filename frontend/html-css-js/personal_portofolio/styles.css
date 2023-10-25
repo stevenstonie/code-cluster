@@ -13,7 +13,8 @@
 body {
 	display: flex;
 	justify-content: center;
-	font-family: sans-serif, Arial, Helvetica;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-size: 0.9rem;
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 	height: 96vh;
@@ -60,15 +61,18 @@ li {
 
 .description {
 	margin-top: 5px;
+	font-size: 0.8rem;
 }
 
 .description ul {
 	margin-left: 20px;
-	font-size: 0.7rem;
+}
+
+.description ul li {
+	margin-top: -2px;
 }
 
 .description p {
-	font-size: 0.7rem;
 	margin-left: 10px;
 }
 
@@ -124,7 +128,7 @@ li {
 	grid-template-columns: auto 1fr;
 	align-items: center;
 	margin-top: 10px;
-	margin-bottom: 10px;
+	font-size: smaller;
 }
 
 .profile-details-icon {
