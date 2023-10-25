@@ -33,7 +33,7 @@ body {
 	letter-spacing: 2px;
 	margin-top: 10px;
 	max-width: calc(var(--section-right-width) - var(--edge-spacing) * 2);
-  	overflow-wrap: break-word;
+	overflow-wrap: break-word;
 
 	&:first-child {
 		margin-top: 0;
@@ -121,4 +121,20 @@ li {
 	flex-basis: var(--section-right-width);
 	background-color: rgb(187, 232, 234);
 	padding: var(--edge-spacing);
+}
+
+.allign-left-right p {
+	display: inline-block;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.left-alligned {
+	text-align: left;
+	width: 60%;
+}
+
+.right-alligned {
+	text-align: right;
+	width: 40%;
 }
