@@ -1,5 +1,7 @@
 :root {
-	--section-left-width: 180px;
+	--section-left-width: 200px;
+	--section-right-width: 360px;
+	--edge-spacing: 15px;
 }
 
 * {
@@ -15,7 +17,9 @@ body {
 	margin-top: 2vh;
 	margin-bottom: 2vh;
 	height: 96vh;
-	color: #333;
+	color: #3a3a3a;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .header {
@@ -28,6 +32,8 @@ body {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	margin-top: 10px;
+	max-width: calc(var(--section-right-width) - var(--edge-spacing) * 2);
+  	overflow-wrap: break-word;
 
 	&:first-child {
 		margin-top: 0;
@@ -39,7 +45,7 @@ body {
 		bottom: -2px;
 		left: 0;
 		right: -8px;
-		height: 1px;
+		height: 1.5px;
 		background-color: #adadad;
 	}
 }
@@ -52,6 +58,12 @@ li {
 	margin-bottom: 5px;
 }
 
+.name {
+	margin-bottom: 8px;
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+
 /* 
 * LEFT SECTION
 */
@@ -60,8 +72,9 @@ li {
 	flex-basis: var(--section-left-width);
 	background: #ebebeb;
 }
-.section-left *{
-	margin-left: 15px;
+
+.section-left * {
+	margin-left: var(--edge-spacing);
 }
 
 .profile-image-photo {
@@ -91,10 +104,13 @@ li {
 	margin: 3px 0;
 }
 
-
-
 .section-left ul li {
 	margin-top: 5px;
+}
+
+.section-left .header {
+	font-size: 1.1rem;
+	max-width: calc(var(--section-left-width) - var(--edge-spacing) * 2);
 }
 
 /* 
@@ -102,9 +118,7 @@ li {
 */
 
 .section-right {
-	flex-basis: 340px;
-	background-color: rgb(255, 255, 255);
-	padding: 15px;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	flex-basis: var(--section-right-width);
+	background-color: rgb(187, 232, 234);
+	padding: var(--edge-spacing);
 }
