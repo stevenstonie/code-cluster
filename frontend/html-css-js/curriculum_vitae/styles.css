@@ -19,8 +19,7 @@ body {
 	margin-bottom: 2vh;
 	height: 96vh;
 	color: #3a3a3a;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	overflow-wrap: break-word;
 }
 
 .header {
@@ -34,7 +33,6 @@ body {
 	letter-spacing: 2px;
 	margin-top: 10px;
 	max-width: calc(var(--section-right-width) - var(--edge-spacing) * 2);
-	overflow-wrap: break-word;
 
 	&:first-child {
 		margin-top: 0;
@@ -79,18 +77,17 @@ li {
 .allign-left-right p {
 	display: inline-block;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	font-size: medium;
 	text-transform: uppercase;
 }
 
 .left-alligned {
 	text-align: left;
-	width: 60%;
+	width: 65%;
 }
 
 .right-alligned {
 	text-align: right;
-	width: 40%;
+	width: 35%;
 }
 
 .additional-info {
@@ -108,6 +105,7 @@ li {
 
 .section-left * {
 	margin-left: var(--edge-spacing);
+	margin-right: var(--edge-spacing);
 }
 
 .profile-image-photo {
@@ -123,12 +121,16 @@ li {
 }
 
 .profile-details {
-	list-style: none;
-	display: grid;
-	grid-template-columns: auto 1fr;
-	align-items: center;
-	margin-top: 10px;
-	font-size: smaller;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    align-items: center;
+    margin-top: 10px;
+    font-size: smaller;
+}
+
+.profile-details * {
+	overflow: hidden;
 }
 
 .profile-details-icon {
