@@ -2,6 +2,7 @@
 	--section-left-width: 200px;
 	--section-right-width: 360px;
 	--edge-spacing: 15px;
+	--operational-height: 96vh;
 }
 
 * {
@@ -15,10 +16,11 @@ body {
 	justify-content: center;
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 	font-size: 0.9rem;
-	margin-top: 2vh;
-	margin-bottom: 2vh;
-	height: 96vh;
+	height: var(--operational-height);
+	margin-top: calc((100vh - var(--operational-height)) / 2);
+	margin-bottom: calc((100vh - var(--operational-height)) / 2);
 	color: #3a3a3a;
+	overflow: hidden;
 	overflow-wrap: break-word;
 }
 
@@ -57,37 +59,35 @@ li {
 	margin-bottom: 5px;
 }
 
-.description {
+.section-description {
 	margin-top: 5px;
 	font-size: 0.8rem;
 }
 
-.description ul {
+.section-description ul {
 	margin-left: 20px;
 }
 
-.description ul li {
+.section-description ul li {
 	margin-top: -2px;
 }
 
-.description p {
+.section-description p {
 	margin-left: 10px;
 }
 
-.allign-left-right p {
+.align-left-right p {
 	display: inline-block;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	text-transform: uppercase;
 }
 
-.left-alligned {
+.left-aligned {
 	text-align: left;
-	width: 65%;
 }
 
-.right-alligned {
+.right-aligned {
 	text-align: right;
-	width: 35%;
 }
 
 .additional-info {
@@ -101,6 +101,7 @@ li {
 .section-left {
 	flex-basis: var(--section-left-width);
 	background: #ebebeb;
+	overflow: auto;
 }
 
 .section-left * {
@@ -114,6 +115,8 @@ li {
 	object-fit: cover;
 	width: calc(var(--section-left-width) * .7);
 	height: calc(var(--section-left-width) * .7);
+	min-width: calc(var(--section-left-width) * .7);
+	min-height: calc(var(--section-left-width) * .7);
 	border: 8px solid #dbdbdb;
 	border-radius: 50%;
 	margin: 20px auto;
@@ -121,12 +124,12 @@ li {
 }
 
 .profile-details {
-    list-style: none;
-    display: grid;
-    grid-template-columns: 20px 1fr;
-    align-items: center;
-    margin-top: 10px;
-    font-size: smaller;
+	list-style: none;
+	display: grid;
+	grid-template-columns: 20px 1fr;
+	align-items: center;
+	margin-top: 10px;
+	font-size: smaller;
 }
 
 .profile-details * {
@@ -161,4 +164,5 @@ li {
 .section-right {
 	flex-basis: var(--section-right-width);
 	padding: var(--edge-spacing);
+	overflow: auto;
 }
