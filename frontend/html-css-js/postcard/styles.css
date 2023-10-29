@@ -9,7 +9,7 @@
 	overflow: auto;
 }
 
-.container {
+.photo-container {
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -29,6 +29,54 @@ li {
 img {
 	max-height: 100%;
 	min-width: 100%;
-	object-fit: cover;	
+	object-fit: cover;
 }
 
+.postcard {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background-color: aqua;
+	height: 60vh;
+	width: 80vh;
+	margin: 0 auto;
+}
+
+.up {
+	text-transform: uppercase
+}
+
+#intro {
+	display: inline-block;
+	padding: 5px 10px;
+}
+
+#pointer {
+	width: 80%;
+	height: 40px;
+	position: relative;
+	background: red;
+}
+
+#pointer:after {
+	content: "";
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 0;
+	height: 0;
+	border-left: 20px solid white;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+}
+
+#pointer:before {
+	content: "";
+	position: absolute;
+	right: -20px;
+	bottom: 0;
+	width: 0;
+	height: 0;
+	border-left: 20px solid red;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+}
