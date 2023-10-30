@@ -1,12 +1,18 @@
 @font-face {
 	font-family: DancingScript;
-	src: url(./fonts/DancingScript-Regular.ttf);
+	src: url(resources/fonts/DancingScript-VariableFont_wght.ttf);
+}
+
+@font-face {
+	font-family: PlaypenSans;
+	src: url(resources/fonts/PlaypenSans-VariableFont_wght.ttf);
 }
 
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	--orange: orangered;
 }
 
 .page {
@@ -50,12 +56,13 @@ img {
 	margin: 0 auto;
 	padding: 200px 25px 25px 25px;
 	color: rgb(0, 0, 152);
-	font-family: cursive;
+	font-family: PlaypenSans, sans-serif;
+	font-size: 20px;
 }
 
 @keyframes border-color {
 	0% {
-		border-color: red;
+		border-color: var(--orange);
 	}
 
 	50% {
@@ -63,7 +70,7 @@ img {
 	}
 
 	100% {
-		border-color: red;
+		border-color: var(--orange);
 	}
 }
 
@@ -77,7 +84,7 @@ img {
 	width: 250px;
 	height: 40px;
 	position: sticky;
-	background: orangered;
+	background: var(--orange);
 	text-align: center;
 	line-height: 40px;
 	margin-top: -60px;
@@ -86,16 +93,14 @@ img {
 
 #pointer>p {
 	color: white;
-	font-size: 20px;
-	font-style: italic;
-	font-family: DancingScript;
+	font-size: 28px;
 }
 
 #pointer:before {
 	content: "";
 	position: absolute;
 	right: -20px;
-	border-left: 20px solid orangered;
+	border-left: 20px solid var(--orange);
 	border-top: 20px solid transparent;
 	border-bottom: 20px solid transparent;
 }
@@ -109,5 +114,37 @@ img {
 }
 
 .orange-text {
-	color: orangered;
+	color: var(--orange);
+}
+
+.fancy-font {
+	font-family: DancingScript, cursive;
+}
+
+.point-burst-12 {
+	background: var(--orange);
+	width: 80px;
+	height: 80px;
+	position: sticky;
+	text-align: center;
+	margin-top: 80px;
+}
+
+.point-burst-12:before,
+.point-burst-12:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 80px;
+	width: 80px;
+	background: var(--orange);
+}
+
+.point-burst-12:before {
+	transform: rotate(30deg);
+}
+
+.point-burst-12:after {
+	transform: rotate(60deg);
 }
