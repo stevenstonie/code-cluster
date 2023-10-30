@@ -1,3 +1,8 @@
+@font-face {
+	font-family: DancingScript;
+	src: url(./fonts/DancingScript-Regular.ttf);
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -12,6 +17,10 @@
 .photo-container {
 	display: flex;
 	flex-wrap: wrap;
+}
+
+.up {
+	text-transform: uppercase
 }
 
 ul {
@@ -35,48 +44,70 @@ img {
 .postcard {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	background-color: aqua;
-	height: 60vh;
-	width: 80vh;
+	background-color: rgb(255, 255, 210);
+	width: 800px;
+	height: 600px;
 	margin: 0 auto;
+	padding: 200px 25px 25px 25px;
+	color: rgb(0, 0, 152);
+	font-family: cursive;
 }
 
-.up {
-	text-transform: uppercase
+@keyframes border-color {
+	0% {
+		border-color: red;
+	}
+
+	50% {
+		border-color: rgb(24, 138, 214);
+	}
+
+	100% {
+		border-color: red;
+	}
 }
 
-#intro {
-	display: inline-block;
-	padding: 5px 10px;
+.border {
+	border-style: solid;
+	border-width: 10px;
+	animation: border-color 3s infinite;
 }
 
 #pointer {
-	width: 80%;
+	width: 250px;
 	height: 40px;
-	position: relative;
-	background: red;
+	position: sticky;
+	background: orangered;
+	text-align: center;
+	line-height: 40px;
+	margin-top: -60px;
+	margin-bottom: 20px;
 }
 
-#pointer:after {
-	content: "";
-	position: absolute;
-	left: 0;
-	bottom: 0;
-	width: 0;
-	height: 0;
-	border-left: 20px solid white;
-	border-top: 20px solid transparent;
-	border-bottom: 20px solid transparent;
+#pointer>p {
+	color: white;
+	font-size: 20px;
+	font-style: italic;
+	font-family: DancingScript;
 }
 
 #pointer:before {
 	content: "";
 	position: absolute;
 	right: -20px;
-	bottom: 0;
-	width: 0;
-	height: 0;
-	border-left: 20px solid red;
+	border-left: 20px solid orangered;
 	border-top: 20px solid transparent;
 	border-bottom: 20px solid transparent;
+}
+
+.side {
+	padding: 20px;
+}
+
+.underline {
+	border-bottom: 2px solid rgb(68, 68, 68);
+}
+
+.orange-text {
+	color: orangered;
 }
