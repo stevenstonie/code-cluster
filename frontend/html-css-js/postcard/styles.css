@@ -55,9 +55,11 @@ img {
 	height: 600px;
 	margin: 0 auto;
 	padding: 200px 25px 25px 25px;
-	color: rgb(0, 0, 152);
+	color: rgb(32, 71, 178);
 	font-family: PlaypenSans, sans-serif;
-	font-size: 20px;
+	font-size: 25px;
+	position: relative;
+	top: calc( (100vh - 600px) / 2);
 }
 
 @keyframes border-color {
@@ -80,20 +82,18 @@ img {
 	animation: border-color 3s infinite;
 }
 
+
 #pointer {
 	width: 250px;
-	height: 40px;
+	height: 50px;
 	position: sticky;
 	background: var(--orange);
-	text-align: center;
-	line-height: 40px;
 	margin-top: -60px;
 	margin-bottom: 20px;
-}
-
-#pointer>p {
 	color: white;
 	font-size: 28px;
+	text-align: center;
+	line-height: 50px;
 }
 
 #pointer:before {
@@ -101,8 +101,8 @@ img {
 	position: absolute;
 	right: -20px;
 	border-left: 20px solid var(--orange);
-	border-top: 20px solid transparent;
-	border-bottom: 20px solid transparent;
+	border-top: 25px solid transparent;
+	border-bottom: 25px solid transparent;
 }
 
 .side {
@@ -121,30 +121,12 @@ img {
 	font-family: DancingScript, cursive;
 }
 
-.point-burst-12 {
-	background: var(--orange);
-	width: 80px;
-	height: 80px;
-	position: sticky;
-	text-align: center;
-	margin-top: 80px;
-}
-
-.point-burst-12:before,
-.point-burst-12:after {
-	content: "";
+.vertical-line {
+	width: 2px;
+	height: 55%;
+	background-color: rgb(85, 85, 85);
 	position: absolute;
-	top: 0;
-	left: 0;
-	height: 80px;
-	width: 80px;
-	background: var(--orange);
-}
-
-.point-burst-12:before {
-	transform: rotate(30deg);
-}
-
-.point-burst-12:after {
-	transform: rotate(60deg);
+	left: 50%;
+	top: 35%;
+	transform: translateX(-50%);
 }
