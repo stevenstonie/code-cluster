@@ -77,24 +77,53 @@ img {
 	}
 }
 
+@keyframes background-color {
+	0% {
+		background-color: var(--orange);
+	}
+
+	50% {
+		background-color: var(--blue);
+	}
+
+	100% {
+		background-color: var(--orange);
+	}
+}
+
+@keyframes border-left-color {
+	0% {
+		border-left-color: var(--orange);
+	}
+
+	50% {
+		border-left-color: var(--blue);
+	}
+
+	100% {
+		border-left-color: var(--orange);
+	}
+}
+
 .border {
 	border-style: solid;
 	border-width: 10px;
 	animation: border-color 3s infinite;
 }
 
-
 #pointer {
-	width: 250px;
+	width: 280px;
 	height: 50px;
-	position: sticky;
+	position: absolute;
 	background: var(--orange);
 	margin-top: -60px;
 	margin-bottom: 20px;
+	left: 0px;
 	color: white;
 	font-size: 28px;
 	text-align: center;
 	line-height: 50px;
+	animation: background-color 3s infinite;
 }
 
 #pointer:before {
@@ -104,6 +133,7 @@ img {
 	border-left: 20px solid var(--orange);
 	border-top: 25px solid transparent;
 	border-bottom: 25px solid transparent;
+	animation: border-left-color 3s infinite;
 }
 
 .side {
