@@ -14,7 +14,27 @@
 *.userosscache
 *.sln.docstates
 
-### Maven ###
+# java ##############################################################
+
+# Compiled class file
+*.class
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven ##################################################################
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -74,7 +94,7 @@ dlldata.c
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
 
-# .NET Core
+# .NET Core ################################################
 project.lock.json
 project.fragment.lock.json
 artifacts/
@@ -375,27 +395,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# java
-
-# Compiled class file
-*.class
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# Angular
+# Angular ##########################################################
 
 # Compiled output
 /dist
@@ -493,3 +493,20 @@ baseline.json
 # Husky
 .husky/_
 aio/content/examples/.DS_Store
+
+# godot ##############################################
+
+.godot/
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
