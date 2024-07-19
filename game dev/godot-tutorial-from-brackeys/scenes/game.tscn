@@ -1,12 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://dpyihkq78amip"]
+[gd_scene load_steps=12 format=3 uid="uid://dpyihkq78amip"]
 
-[ext_resource type="PackedScene" uid="uid://cyqxrekolt66q" path="res://scenes/player.tscn" id="1_d7ycp"]
-[ext_resource type="Texture2D" uid="uid://c4ntibeimlei1" path="res://assets/sprites/world_tileset.png" id="2_vwmp5"]
-[ext_resource type="PackedScene" uid="uid://hjvs28dix2hk" path="res://scenes/platform.tscn" id="3_tqp3u"]
-[ext_resource type="PackedScene" uid="uid://bb5avwddo7hwy" path="res://scenes/coin.tscn" id="4_uxnkm"]
+[ext_resource type="Texture2D" uid="uid://c4ntibeimlei1" path="res://assets/sprites/world_tileset.png" id="1_gyvfk"]
+[ext_resource type="PackedScene" uid="uid://cyqxrekolt66q" path="res://scenes/player.tscn" id="2_xbjpb"]
+[ext_resource type="PackedScene" uid="uid://hjvs28dix2hk" path="res://scenes/platform.tscn" id="3_vpjkl"]
+[ext_resource type="PackedScene" uid="uid://bb5avwddo7hwy" path="res://scenes/coin.tscn" id="4_q1418"]
+[ext_resource type="PackedScene" uid="uid://c37bh87o2225a" path="res://scenes/killzone.tscn" id="5_vsj35"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g0gdi"]
-texture = ExtResource("2_vwmp5")
+texture = ExtResource("1_gyvfk")
 0:0/0 = 0
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
@@ -443,23 +444,27 @@ _data = {
 "move": SubResource("Animation_d8kgp")
 }
 
-[node name="Game Scene" type="Node2D"]
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_y8a64"]
+
+[node name="game" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_agcbo")
 format = 2
 layer_0/tile_data = PackedInt32Array(65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 8, 0, 0, -65530, 0, 0, -65529, 0, 0, -131064, 0, 0, -131063, 0, 0, -196598, 0, 0, -196597, 0, 0, -196596, 0, 0, -196595, 0, 0, -196594, 0, 0, -196593, 0, 0, -917493, 0, 1, -917492, 0, 1, -917491, 0, 1)
 
-[node name="player" parent="." instance=ExtResource("1_d7ycp")]
+[node name="player" parent="." instance=ExtResource("2_xbjpb")]
 z_index = 5
 position = Vector2(1, -1)
 
 [node name="Camera2D" type="Camera2D" parent="player"]
 position = Vector2(0, -8)
 zoom = Vector2(4, 4)
+limit_bottom = 95
+limit_smoothed = true
 position_smoothing_enabled = true
 
-[node name="platform" parent="." instance=ExtResource("3_tqp3u")]
+[node name="platform" parent="." instance=ExtResource("3_vpjkl")]
 position = Vector2(101, -93)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="platform"]
@@ -468,14 +473,20 @@ libraries = {
 }
 autoplay = "move"
 
-[node name="coin" parent="." instance=ExtResource("4_uxnkm")]
+[node name="coin" parent="." instance=ExtResource("4_q1418")]
 position = Vector2(184, -232)
 
-[node name="coin4" parent="." instance=ExtResource("4_uxnkm")]
+[node name="coin4" parent="." instance=ExtResource("4_q1418")]
 position = Vector2(248, -59)
 
-[node name="coin3" parent="." instance=ExtResource("4_uxnkm")]
+[node name="coin3" parent="." instance=ExtResource("4_q1418")]
 position = Vector2(216, -232)
 
-[node name="coin2" parent="." instance=ExtResource("4_uxnkm")]
+[node name="coin2" parent="." instance=ExtResource("4_q1418")]
 position = Vector2(200, -232)
+
+[node name="killzone" parent="." instance=ExtResource("5_vsj35")]
+position = Vector2(25, 36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+shape = SubResource("WorldBoundaryShape2D_y8a64")
