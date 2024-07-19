@@ -1,5 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://dpyihkq78amip"]
+[gd_scene load_steps=15 format=3 uid="uid://dpyihkq78amip"]
 
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_0nvwm"]
 [ext_resource type="Texture2D" uid="uid://c4ntibeimlei1" path="res://assets/sprites/world_tileset.png" id="1_gyvfk"]
 [ext_resource type="PackedScene" uid="uid://cyqxrekolt66q" path="res://scenes/player.tscn" id="2_xbjpb"]
 [ext_resource type="PackedScene" uid="uid://hjvs28dix2hk" path="res://scenes/platform.tscn" id="3_vpjkl"]
@@ -449,6 +450,18 @@ _data = {
 }
 
 [node name="game" type="Node2D"]
+
+[node name="gameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_0nvwm")
+
+[node name="coinsLabel" type="Label" parent="gameManager"]
+offset_left = -344.0
+offset_top = -154.0
+offset_right = -252.0
+offset_bottom = -101.0
+theme_override_fonts/font = ExtResource("7_ew8th")
+text = "helo"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_agcbo")
