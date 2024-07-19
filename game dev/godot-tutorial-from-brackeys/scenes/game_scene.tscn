@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dpyihkq78amip"]
+[gd_scene load_steps=10 format=3 uid="uid://dpyihkq78amip"]
 
 [ext_resource type="PackedScene" uid="uid://cyqxrekolt66q" path="res://scenes/player.tscn" id="1_d7ycp"]
 [ext_resource type="Texture2D" uid="uid://c4ntibeimlei1" path="res://assets/sprites/world_tileset.png" id="2_vwmp5"]
 [ext_resource type="PackedScene" uid="uid://hjvs28dix2hk" path="res://scenes/platform.tscn" id="3_tqp3u"]
+[ext_resource type="PackedScene" uid="uid://bb5avwddo7hwy" path="res://scenes/coin.tscn" id="4_uxnkm"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_g0gdi"]
 texture = ExtResource("2_vwmp5")
@@ -405,6 +406,21 @@ texture = ExtResource("2_vwmp5")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_g0gdi")
 
+[sub_resource type="Animation" id="Animation_00jlw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(101, -93)]
+}
+
 [sub_resource type="Animation" id="Animation_d8kgp"]
 resource_name = "move"
 loop_mode = 2
@@ -421,21 +437,6 @@ tracks/0/keys = {
 "values": [Vector2(101, -93), Vector2(101, -177)]
 }
 
-[sub_resource type="Animation" id="Animation_00jlw"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(101, -93)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_bwiyw"]
 _data = {
 "RESET": SubResource("Animation_00jlw"),
@@ -447,7 +448,7 @@ _data = {
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_agcbo")
 format = 2
-layer_0/tile_data = PackedInt32Array(65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 8, 0, 0, -65530, 0, 0, -65529, 0, 0, -131064, 0, 0, -131063, 0, 0, -196598, 0, 0, -196597, 0, 0, -196596, 0, 0, -196595, 0, 0, -196594, 0, 0, -196593, 0, 0, -524277, 0, 1, -524276, 0, 1, -524275, 0, 1, -524274, 0, 1, -524273, 0, 1, -524272, 0, 1, -524271, 0, 1)
+layer_0/tile_data = PackedInt32Array(65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 8, 0, 0, -65530, 0, 0, -65529, 0, 0, -131064, 0, 0, -131063, 0, 0, -196598, 0, 0, -196597, 0, 0, -196596, 0, 0, -196595, 0, 0, -196594, 0, 0, -196593, 0, 0, -917493, 0, 1, -917492, 0, 1, -917491, 0, 1)
 
 [node name="player" parent="." instance=ExtResource("1_d7ycp")]
 z_index = 5
@@ -466,3 +467,15 @@ libraries = {
 "": SubResource("AnimationLibrary_bwiyw")
 }
 autoplay = "move"
+
+[node name="coin" parent="." instance=ExtResource("4_uxnkm")]
+position = Vector2(184, -232)
+
+[node name="coin4" parent="." instance=ExtResource("4_uxnkm")]
+position = Vector2(248, -59)
+
+[node name="coin3" parent="." instance=ExtResource("4_uxnkm")]
+position = Vector2(216, -232)
+
+[node name="coin2" parent="." instance=ExtResource("4_uxnkm")]
+position = Vector2(200, -232)
