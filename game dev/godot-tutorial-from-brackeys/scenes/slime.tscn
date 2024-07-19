@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://pt5uyqaglff5"]
+
+[ext_resource type="Texture2D" uid="uid://blnc4jejaam70" path="res://assets/sprites/slime_green.png" id="1_15kns"]
+[ext_resource type="Script" path="res://scripts/slime.gd" id="1_yw8jg"]
+[ext_resource type="PackedScene" uid="uid://c37bh87o2225a" path="res://scenes/killzone.tscn" id="2_udy2w"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wqf4r"]
+atlas = ExtResource("1_15kns")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cqmyh"]
+atlas = ExtResource("1_15kns")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prk3l"]
+atlas = ExtResource("1_15kns")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pfr0u"]
+atlas = ExtResource("1_15kns")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_16sle"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wqf4r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cqmyh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prk3l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pfr0u")
+}],
+"loop": true,
+"name": &"default",
+"speed": 6.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a36qj"]
+size = Vector2(10, 11)
+
+[node name="slime" type="Node2D"]
+script = ExtResource("1_yw8jg")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -12)
+sprite_frames = SubResource("SpriteFrames_16sle")
+frame_progress = 0.726028
+
+[node name="killzone" parent="." instance=ExtResource("2_udy2w")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="killzone"]
+position = Vector2(0, -6.5)
+shape = SubResource("RectangleShape2D_a36qj")
+
+[node name="rayCastRight" type="RayCast2D" parent="."]
+position = Vector2(0, -6)
+target_position = Vector2(10, 0)
+
+[node name="rayCastLeft" type="RayCast2D" parent="."]
+position = Vector2(0, -6)
+target_position = Vector2(-10, 0)
