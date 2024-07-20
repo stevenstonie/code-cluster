@@ -1,8 +1,11 @@
 extends Node
 
-@onready var coinsLabel = $coinsLabel;
+@onready var scoreLabel = $scoreLabel;
 var coins = 0;
 
 func add_point():
 	coins += 1;
-	coinsLabel.text = "you collected " + str(coins) + " coins.";
+	if coins >= 27:
+		scoreLabel.text = "congrats. you collected all the coins";
+		return;
+	scoreLabel.text = "congrats. you collected " + str(coins) + " coins.";
